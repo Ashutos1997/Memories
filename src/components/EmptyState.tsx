@@ -71,7 +71,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ onAction }) => {
         </div>
 
         {/* Refined Shortcuts Footer */}
-        <div className="flex flex-wrap justify-center items-center gap-4 md:gap-8 text-[12px] font-mono text-text-muted tracking-widest opacity-60">
+        <div className="hidden md:flex flex-wrap justify-center items-center gap-4 md:gap-8 text-[12px] font-mono text-text-muted tracking-widest opacity-60">
           <span className="flex items-center gap-2 group"><kbd className="text-primary/80 bg-white/5 px-1.5 py-0.5 rounded border border-white/10 group-hover:border-primary/40 transition-colors">V</kbd> 선택</span>
           <span className="flex items-center gap-2 group"><kbd className="text-primary/80 bg-white/5 px-1.5 py-0.5 rounded border border-white/10 group-hover:border-primary/40 transition-colors">H</kbd> 이동</span>
           <span className="flex items-center gap-2 group"><kbd className="text-primary/80 bg-white/5 px-1.5 py-0.5 rounded border border-white/10 group-hover:border-primary/40 transition-colors">D</kbd> 그리기</span>
