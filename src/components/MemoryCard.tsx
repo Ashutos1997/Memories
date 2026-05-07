@@ -284,6 +284,7 @@ export const QuoteCard: React.FC<{
   x?: number;
   y?: number;
   onDragStart?: (e: React.PointerEvent) => void; 
+  onDelete?: () => void;
   isDragging?: boolean;
 }> = ({ serial, tag, date, quote, author, isHighlighted, variant, x, y, onDragStart, onDelete, isDragging }) => (
   <MemoryCard type="quote" serial={serial} tag={tag} date={date} isHighlighted={isHighlighted} variant={variant} x={x} y={y} onDragStart={onDragStart} onDelete={onDelete} isDragging={isDragging}>
