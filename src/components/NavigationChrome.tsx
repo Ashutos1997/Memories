@@ -13,7 +13,7 @@ interface NavigationChromeProps {
 
 export const NavigationChrome: React.FC<NavigationChromeProps> = ({ memories, zoom, onZoomIn, onZoomOut }) => {
   return (
-    <nav className="fixed top-auto bottom-[210px] md:bottom-auto md:top-8 right-4 md:right-8 z-[200]">
+    <nav className="fixed top-4 md:top-8 right-4 md:right-8 z-[200]">
       <div className="flex items-center gap-2 p-1 bg-chrome border border-border-subtle rounded-lg shadow-2xl h-[40px] md:h-[56px]">
         {/* Memory Count */}
         <div className="px-2 md:px-4 flex items-center gap-2">
