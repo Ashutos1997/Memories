@@ -19,8 +19,14 @@
   --color-border-focus: hsla(38, 42%, 61%, 0.5);
 
   --color-text-primary: hsl(0, 0%, 100%);
-  --color-text-secondary: hsla(0, 0%, 100%, 0.6);
-  --color-text-muted: hsla(0, 0%, 100%, 0.4);
+  --color-text-secondary: hsla(0, 0%, 100%, 0.7);
+  --color-text-muted: hsla(0, 0%, 100%, 0.65);
+
+  /* Variant Tokens */
+  --color-scrapbook-border: #E2D1C3;
+  --color-scrapbook-surface: #F4E9D5;
+  --color-scrapbook-text: #5D4037;
+  --color-scrapbook-accent: #8D6E63;
 
   /* Spacing - 8pt Grid */
   --spacing-1: 4px;
@@ -32,6 +38,7 @@
   --spacing-12: 48px;
 
   /* Radius - Archival Geometric System */
+  --radius-archival: 2px;
   --radius-sm: 4px;   /* Badges, Tags, Small utility buttons */
   --radius-md: 8px;   /* Memory Cards, Primary buttons, Navigation items */
   --radius-lg: 12px;  /* Main Prompt Bar, Minimap, Popups */
@@ -70,7 +77,8 @@ body {
 
 @layer utilities {
   .interactive-state {
-    @apply transition-all duration-300;
+    transition-property: transform, opacity, filter, background-color, border-color, box-shadow;
+    transition-duration: 300ms;
     transition-timing-function: var(--transition-timing-function-archival);
   }
 

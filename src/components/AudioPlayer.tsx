@@ -99,7 +99,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, variant = "defaul
         </button>
         <div className="flex items-center gap-2">
           <SpeakerHigh size={14} className={variant === 'scrapbook' ? 'text-[#5D4037]' : 'text-primary'} weight="bold" />
-          <span className={`text-[12px] font-bold uppercase tracking-[0.2em] ${variant === 'scrapbook' ? 'text-[#5D4037]/60 font-handwriting' : variant === 'vector' ? 'text-primary' : 'text-text-muted'}`}>Voice Memory</span>
+          <span className={`text-[12px] font-bold uppercase tracking-[0.2em] ${variant === 'scrapbook' ? 'text-[#5D4037]/60 font-handwriting' : variant === 'vector' ? 'text-primary' : 'text-text-muted'}`}>음성 메모</span>
         </div>
       </div>
 

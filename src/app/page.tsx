@@ -442,7 +442,7 @@ export default function Home() {
       >
         {isLoading && (
           <div className="absolute z-[60] pointer-events-none animate-manifest" style={{ left: `calc(50% + ${manifestingPos.x}px)`, top: `calc(50% + ${manifestingPos.y}px)`, transform: 'translate(-50%, -50%)' }}>
-            <div className={`flex flex-col items-center justify-center gap-2 md:gap-4 animate-ghost glass border-border-subtle rounded-md px-3.5 py-5 md:p-6 shadow-2xl ${
+            <div className={`flex flex-col items-center justify-center gap-2 md:gap-4 animate-ghost glass border-border-subtle rounded-md px-4 py-5 md:p-6 shadow-2xl ${
               manifestingType === 'image' ? 'w-[200px] md:w-[320px] h-[140px] md:h-[200px]' : 
               manifestingType === 'audio' ? 'w-[85vw] max-w-[320px] md:max-w-[400px] h-[100px] md:h-[120px]' :
               'w-[85vw] max-w-[320px] md:max-w-[400px] h-[160px] md:h-[240px]'
@@ -462,7 +462,7 @@ export default function Home() {
                   </div>
                 )}
               </div>
-              <span className={`text-[11px] font-mono tracking-[0.4em] uppercase font-bold ${manifestingType === 'image' ? 'text-text-muted' : 'text-primary/60'}`}>
+              <span className={`text-[12px] font-mono tracking-[0.4em] uppercase font-bold ${manifestingType === 'image' ? 'text-text-muted' : 'text-primary/60'}`}>
                 {manifestingType === 'audio' ? '오디오 동기화' : '기억 선명화'}
               </span>
             </div>

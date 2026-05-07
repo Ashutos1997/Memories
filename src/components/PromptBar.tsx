@@ -167,7 +167,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
                 >
                   <CursorClick size={22} weight={mode === 'select' ? 'fill' : 'bold'} />
                 </button>
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-chrome border border-border-subtle rounded-md text-[10px] font-mono text-primary whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 pointer-events-none transition-all duration-200 translate-y-1 group-hover/tooltip:translate-y-0 z-[500] shadow-xl">
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-chrome border border-border-subtle rounded-md text-[12px] font-mono text-primary whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 pointer-events-none transition-all duration-200 translate-y-1 group-hover/tooltip:translate-y-0 z-[500] shadow-xl">
                   선택 모드 (V)
                 </div>
               </div>
@@ -183,7 +183,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
                 >
                   <HandPalm size={22} weight={mode === 'pan' ? 'fill' : 'bold'} />
                 </button>
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-chrome border border-border-subtle rounded-md text-[10px] font-mono text-primary whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 pointer-events-none transition-all duration-200 translate-y-1 group-hover/tooltip:translate-y-0 z-[500] shadow-xl">
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-chrome border border-border-subtle rounded-md text-[12px] font-mono text-primary whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 pointer-events-none transition-all duration-200 translate-y-1 group-hover/tooltip:translate-y-0 z-[500] shadow-xl">
                   이동 모드 (H)
                 </div>
               </div>
@@ -199,7 +199,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
                 >
                   <PencilLine size={22} weight={mode === 'draw' ? 'fill' : 'bold'} />
                 </button>
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-chrome border border-border-subtle rounded-md text-[10px] font-mono text-primary whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 pointer-events-none transition-all duration-200 translate-y-1 group-hover/tooltip:translate-y-0 z-[500] shadow-xl">
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-chrome border border-border-subtle rounded-md text-[12px] font-mono text-primary whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 pointer-events-none transition-all duration-200 translate-y-1 group-hover/tooltip:translate-y-0 z-[500] shadow-xl">
                   드로잉 모드 (D)
                 </div>
               </div>
@@ -213,7 +213,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
                 >
                   <Notebook size={22} weight={activeTemplate === 'scrapbook' ? 'fill' : 'bold'} />
                 </button>
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-chrome border border-border-subtle rounded-md text-[10px] font-mono text-primary whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 pointer-events-none transition-all duration-200 translate-y-1 group-hover/tooltip:translate-y-0 z-[500] shadow-xl">
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-chrome border border-border-subtle rounded-md text-[12px] font-mono text-primary whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 pointer-events-none transition-all duration-200 translate-y-1 group-hover/tooltip:translate-y-0 z-[500] shadow-xl">
                   스크랩북 모드
                 </div>
               </div>
@@ -227,7 +227,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
                   >
                     <ArrowCounterClockwise size={22} weight="bold" />
                   </button>
-                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-chrome border border-border-subtle rounded-md text-[10px] font-mono text-primary whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 pointer-events-none transition-all duration-200 translate-y-1 group-hover/tooltip:translate-y-0 z-[500] shadow-xl">
+                  <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-chrome border border-border-subtle rounded-md text-[12px] font-mono text-primary whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 pointer-events-none transition-all duration-200 translate-y-1 group-hover/tooltip:translate-y-0 z-[500] shadow-xl">
                     레이아웃 초기화 (U)
                   </div>
                 </div>
@@ -244,7 +244,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
                 >
                   <MagnifyingGlass size={22} weight={mode === 'search' ? 'fill' : 'bold'} />
                 </button>
-                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-chrome border border-border-subtle rounded-md text-[10px] font-mono text-primary whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 pointer-events-none transition-all duration-200 translate-y-1 group-hover/tooltip:translate-y-0 z-[500] shadow-xl">
+                <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-chrome border border-border-subtle rounded-md text-[12px] font-mono text-primary whitespace-nowrap opacity-0 group-hover/tooltip:opacity-100 pointer-events-none transition-all duration-200 translate-y-1 group-hover/tooltip:translate-y-0 z-[500] shadow-xl">
                   저장소 검색 / 태그 (#tag) (S)
                 </div>
               </div>

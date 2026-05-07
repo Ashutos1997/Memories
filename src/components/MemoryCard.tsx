@@ -27,7 +27,7 @@ export const MemoryCard: React.FC<MemoryCardProps> = ({ serial, tag, date, varia
     switch (variant) {
       case 'noir':
         return {
-          container: "rounded-[2px] border-white/10 bg-black/40 backdrop-blur-md shadow-[0_30px_60px_rgba(0,0,0,0.8)]",
+          container: "rounded-archival border-white/10 bg-black/40 backdrop-blur-md shadow-[0_30px_60px_rgba(0,0,0,0.8)]",
           text: "font-serif tracking-tight text-white/90 leading-relaxed",
           accent: "text-white/40 font-serif italic uppercase tracking-[0.3em]",
           serial: "bg-white text-black rounded-none -top-6 left-0 px-3 py-1 shadow-2xl",
@@ -41,17 +41,17 @@ export const MemoryCard: React.FC<MemoryCardProps> = ({ serial, tag, date, varia
         };
       case 'scrapbook':
         return {
-          container: "rounded-[2px] border-[#E2D1C3] bg-[#F4E9D5] shadow-[5px_5px_15px_rgba(0,0,0,0.2)]",
-          text: "font-handwriting text-[#5D4037] leading-relaxed",
-          accent: "text-[#8D6E63] font-handwriting",
-          serial: "bg-[#8D6E63] text-white rounded-none -top-5 -rotate-2",
+          container: "rounded-archival border-scrapbook-border bg-scrapbook-surface shadow-[5px_5px_15px_rgba(0,0,0,0.2)]",
+          text: "font-handwriting text-scrapbook-text leading-relaxed",
+          accent: "text-scrapbook-accent font-handwriting",
+          serial: "bg-scrapbook-accent text-white rounded-none -top-4 -rotate-2",
         };
       default:
         return {
           container: "rounded-md border-border-subtle bg-surface glass",
           text: "font-normal text-text-primary",
           accent: "text-primary",
-          serial: "bg-primary text-primary-foreground rounded-sm -top-2.5",
+          serial: "bg-primary text-primary-foreground rounded-sm -top-2",
         };
     }
   };
@@ -60,7 +60,7 @@ export const MemoryCard: React.FC<MemoryCardProps> = ({ serial, tag, date, varia
 
   return (
     <article 
-      className={`group relative px-3.5 py-5 md:p-6 transition-all duration-500 border ${styles.container} ${className} ${isHighlighted ? 'ring-2 md:ring-4 ring-primary scale-[1.01]' : ''}`}
+      className={`group relative px-4 py-5 md:p-6 transition-all duration-500 border ${styles.container} ${className} ${isHighlighted ? 'ring-2 md:ring-4 ring-primary scale-[1.01]' : ''}`}
       style={{ 
         boxShadow: variant === 'default' ? (isHighlighted ? '0 0 30px hsla(38, 42%, 61%, 0.3), inset 0 1px 0 0 hsla(0, 0%, 100%, 0.1)' : 'inset 0 1px 0 0 hsla(0, 0%, 100%, 0.1), 0 10px 30px rgba(0, 0, 0, 0.4)') : undefined
       }}
@@ -73,7 +73,7 @@ export const MemoryCard: React.FC<MemoryCardProps> = ({ serial, tag, date, varia
           <div className="absolute -top-1.5 -right-1.5 w-3 h-3 border-t-2 border-r-2 border-accent z-[50]" />
           <div className="absolute -bottom-1.5 -left-1.5 w-3 h-3 border-b-2 border-l-2 border-accent z-[50]" />
           <div className="absolute -bottom-1.5 -right-1.5 w-3 h-3 border-b-2 border-r-2 border-accent z-[50]" />
-          <div className="absolute -bottom-5 right-0 text-[9px] font-mono text-primary/70 tracking-widest uppercase">
+          <div className="absolute -bottom-5 right-0 text-[12px] font-mono text-primary/70 tracking-widest uppercase">
             X_{Math.round(x)}:Y_{Math.round(y)}
           </div>
         </>
@@ -100,7 +100,7 @@ export const MemoryCard: React.FC<MemoryCardProps> = ({ serial, tag, date, varia
           <Trash size={18} weight="bold" />
         </button>
         <div 
-          className="text-text-muted md:group-hover:text-text-secondary hover:!text-primary cursor-move p-0.5 interactive-state focus:outline-none focus:text-primary"
+          className="text-text-muted md:group-hover:text-text-secondary hover:!text-primary cursor-move p-0.5 interactive-state focus:outline-none focus:text-primary focus:ring-1 focus:ring-primary/40 rounded-sm"
           onPointerDown={onDragStart}
           role="button"
           tabIndex={0}
@@ -108,6 +108,10 @@ export const MemoryCard: React.FC<MemoryCardProps> = ({ serial, tag, date, varia
           onKeyDown={(e) => {
             if (e.key === 'Enter' || e.key === ' ') {
               e.preventDefault();
+              // For now, we can trigger a visual cue or a simple announcement
+              // Real keyboard movement would require a specialized mode, but at minimum
+              // we should ensure it doesn't just swallow keys without intent.
+              // In this spatial app, we'll mark it as focused so users know it's interactive.
             }
           }}
         >
@@ -148,7 +152,7 @@ export const RawImageCard: React.FC<{
         <div className="absolute -top-1.5 -right-1.5 w-3 h-3 border-t-2 border-r-2 border-primary z-[50]" />
         <div className="absolute -bottom-1.5 -left-1.5 w-3 h-3 border-b-2 border-l-2 border-primary z-[50]" />
         <div className="absolute -bottom-1.5 -right-1.5 w-3 h-3 border-b-2 border-r-2 border-primary z-[50]" />
-        <div className="absolute -bottom-5 right-0 text-[9px] font-mono text-primary/70 tracking-widest uppercase">
+        <div className="absolute -bottom-5 right-0 text-[12px] font-mono text-primary/70 tracking-widest uppercase">
           X_{Math.round(x)}:Y_{Math.round(y)}
         </div>
       </>
