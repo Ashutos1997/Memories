@@ -84,6 +84,7 @@ export default function Home() {
   const [manifestingType, setManifestingType] = useState<"text" | "image" | "audio">("text");
   const [externalAction, setExternalAction] = useState<{ type: 'note' | 'image' | 'audio'; timestamp: number } | null>(null);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
 
 
   // Mobile Detection
@@ -552,13 +553,22 @@ export default function Home() {
             }} 
             onPointerDown={(e) => onMemoryDragStart(memory.id, e, e.currentTarget)}
           >
-            <div className={`${memory.type === 'image-raw' ? 'w-[200px] md:w-[320px]' : 'w-[85vw] max-w-[320px] md:max-w-[400px]'}`}>
-              {memory.type === "note" && <NoteCard id={memory.id} serial={memory.serial} tag={memory.tag} date={memory.date} content={memory.data.content} onDelete={() => handleDeleteMemory(memory.id)} isHighlighted={highlightedId === memory.id} variant={activeTemplate} x={memory.x} y={memory.y} />}
-              {memory.type === "gallery" && <GalleryCard id={memory.id} serial={memory.serial} tag={memory.tag} date={memory.date} images={Array.isArray(memory.data.content) ? memory.data.content : []} onDelete={() => handleDeleteMemory(memory.id)} isHighlighted={highlightedId === memory.id} variant={activeTemplate} x={memory.x} y={memory.y} />}
-              {memory.type === "timeline" && <TimelineCard id={memory.id} serial={memory.serial} tag={memory.tag} date={memory.date} items={Array.isArray(memory.data.content) ? memory.data.content : []} onDelete={() => handleDeleteMemory(memory.id)} isHighlighted={highlightedId === memory.id} variant={activeTemplate} x={memory.x} y={memory.y} />}
-              {memory.type === "quote" && <QuoteCard id={memory.id} serial={memory.serial} tag={memory.tag} date={memory.date} quote={memory.data.content} author={memory.data.author || "익명"} onDelete={() => handleDeleteMemory(memory.id)} isHighlighted={highlightedId === memory.id} variant={activeTemplate} x={memory.x} y={memory.y} />}
-              {memory.type === "image-raw" && <RawImageCard serial={memory.serial} tag={memory.tag} src={memory.data.src} onDelete={() => handleDeleteMemory(memory.id)} isHighlighted={highlightedId === memory.id} variant={activeTemplate} x={memory.x} y={memory.y} />}
-              {memory.type === "audio" && <AudioMemoryCard id={memory.id} serial={memory.serial} tag={memory.tag} date={memory.date} src={memory.data.src} onDelete={() => handleDeleteMemory(memory.id)} isHighlighted={highlightedId === memory.id} variant={activeTemplate} x={memory.x} y={memory.y} />}
+            <div className={`${memory.type === 'image-raw' ? 'w-[200px] md:w-[320px]' : 'w-[85vw] max-w-[320px] md:max-w-[400px]'} ${activeDragId === memory.id ? 'scale-[1.02] rotate-[2deg]' : ''} transition-transform duration-300`}>
+              {memory.type === "note" && <NoteCard id={memory.id} serial={memory.serial} tag={memory.tag} date={memory.date} content={memory.data.content} onDelete={() => handleDeleteMemory(memory.id)} isHighlighted={highlightedId === memory.id} variant={activeTemplate} x={memory.x} y={memory.y} isDragging={activeDragId === memory.id} />}
+              {memory.type === "gallery" && <GalleryCard id={memory.id} serial={memory.serial} tag={memory.tag} date={memory.date} images={Array.isArray(memory.data.content) ? memory.data.content : []} onDelete={() => handleDeleteMemory(memory.id)} isHighlighted={highlightedId === memory.id} variant={activeTemplate} x={memory.x} y={memory.y} isDragging={activeDragId === memory.id} />}
+              {memory.type === "timeline" && <TimelineCard id={memory.id} serial={memory.serial} tag={memory.tag} date={memory.date} items={Array.isArray(memory.data.content) ? memory.data.content : []} onDelete={() => handleDeleteMemory(memory.id)} isHighlighted={highlightedId === memory.id} variant={activeTemplate} x={memory.x} y={memory.y} isDragging={activeDragId === memory.id} />}
+              {memory.type === "quote" && <QuoteCard id={memory.id} serial={memory.serial} tag={memory.tag} date={memory.date} quote={memory.data.content} author={memory.data.author || "익명"} onDelete={() => handleDeleteMemory(memory.id)} isHighlighted={highlightedId === memory.id} variant={activeTemplate} x={memory.x} y={memory.y} isDragging={activeDragId === memory.id} />}
+              {memory.type === "image-raw" && (
+                <div onClick={(e) => {
+                  if (!isDraggingMove.current) {
+                    e.stopPropagation();
+                    setLightboxImage(memory.data.src);
+                  }
+                }}>
+                  <RawImageCard serial={memory.serial} tag={memory.tag} src={memory.data.src} onDelete={() => handleDeleteMemory(memory.id)} isHighlighted={highlightedId === memory.id} variant={activeTemplate} x={memory.x} y={memory.y} isDragging={activeDragId === memory.id} />
+                </div>
+              )}
+              {memory.type === "audio" && <AudioMemoryCard id={memory.id} serial={memory.serial} tag={memory.tag} date={memory.date} src={memory.data.src} onDelete={() => handleDeleteMemory(memory.id)} isHighlighted={highlightedId === memory.id} variant={activeTemplate} x={memory.x} y={memory.y} isDragging={activeDragId === memory.id} />}
             </div>
           </div>
         ))}
@@ -582,6 +592,28 @@ export default function Home() {
         activeTemplate={activeTemplate}
         externalAction={externalAction}
       />
+
+      {/* Focus Mode Lightbox */}
+      {lightboxImage && (
+        <div 
+          className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/90 backdrop-blur-xl animate-[fadeIn_0.3s_ease-out] cursor-zoom-out p-4 md:p-12"
+          onClick={() => setLightboxImage(null)}
+        >
+          <div className="relative max-w-full max-h-full flex flex-col items-center gap-4">
+            <img 
+              src={lightboxImage} 
+              alt="Archival Focus" 
+              className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-[0_0_80px_rgba(197,165,114,0.15)] animate-[scaleIn_0.4s_cubic-bezier(0.16,1,0.3,1)]"
+            />
+            <button 
+              className="px-6 py-2 bg-white/10 hover:bg-white/20 text-white rounded-full font-mono text-[12px] tracking-widest uppercase transition-colors"
+              onClick={() => setLightboxImage(null)}
+            >
+              닫기 (ESC)
+            </button>
+          </div>
+        </div>
+      )}
     </main>
     </>
   );
