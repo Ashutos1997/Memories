@@ -561,6 +561,7 @@ export default function Home() {
         mode={interactionMode} 
         onModeChange={setInteractionMode} 
         activeTemplate={activeTemplate}
+        tags={Array.from(new Set(memories.map(m => m.tag).filter(Boolean))) as string[]}
       />
     </main>
     </>

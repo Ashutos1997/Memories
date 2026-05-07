@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Plus, CursorClick, HandPalm, MagnifyingGlass, Stop, Notebook, PencilLine, ArrowCounterClockwise } from "@phosphor-icons/react";
+import { Plus, CursorClick, HandPalm, MagnifyingGlass, Stop, Notebook, PencilLine, ArrowCounterClockwise, Hash } from "@phosphor-icons/react";
 import { AttachmentPopup } from "./AttachmentPopup";
 import { InteractionMode } from "../types";
 
@@ -13,11 +13,13 @@ interface PromptBarProps {
   mode: InteractionMode;
   onModeChange: (mode: InteractionMode) => void;
   activeTemplate: string;
+  tags?: string[];
 }
 
-export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSearch, onScrapbook, onReset, isLoading, mode, onModeChange, activeTemplate }) => {
+export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSearch, onScrapbook, onReset, isLoading, mode, onModeChange, activeTemplate, tags = [] }) => {
   const [value, setValue] = useState("");
   const [showAttachmentPopup, setShowAttachmentPopup] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const [statusIndicator, setStatusIndicator] = useState<{ message: string; type: 'info' | 'error' | 'success' } | null>(null);
   
   // Recording States
@@ -134,6 +136,55 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
           </div>
         ) : (
           <div className="flex flex-col md:flex-row items-stretch md:items-center gap-2 md:gap-3">
+            
+            {/* Tag Suggestions */}
+            {(isFocused || value.includes('#')) && tags.length > 0 && (
+              <div className="absolute bottom-full left-0 w-full mb-3 px-1 animate-[fadeIn_0.2s_ease-out]">
+                <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-hide no-scrollbar">
+                  <div className="flex items-center gap-1.5 p-1.5 bg-chrome/80 backdrop-blur-md border border-border-subtle rounded-xl shadow-xl">
+                    <div className="px-2 py-1 text-[10px] font-mono text-primary/60 font-bold uppercase tracking-wider border-r border-border-subtle mr-1">
+                      추천 태그
+                    </div>
+                    {tags.filter(tag => {
+                      const lastWord = value.split(' ').pop() || '';
+                      if (lastWord.startsWith('#')) {
+                        return tag.toLowerCase().includes(lastWord.slice(1).toLowerCase());
+                      }
+                      return true;
+                    }).slice(0, 8).map(tag => (
+                      <button
+                        key={tag}
+                        type="button"
+                        onClick={() => {
+                          const words = value.split(' ');
+                          const lastWord = words[words.length - 1];
+                          if (lastWord.startsWith('#')) {
+                            words[words.length - 1] = `#${tag}`;
+                            setValue(words.join(' ') + ' ');
+                          } else {
+                            setValue(value + (value.endsWith(' ') ? '' : ' ') + `#${tag} `);
+                          }
+                          inputRef.current?.focus();
+                        }}
+                        className="px-3 py-1 bg-white/5 hover:bg-primary/20 hover:text-primary border border-border-subtle rounded-lg text-[12px] font-medium transition-all whitespace-nowrap"
+                      >
+                        #{tag}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Empty state tag hint */}
+            {isFocused && value === "" && tags.length === 0 && (
+              <div className="absolute bottom-full left-0 w-full mb-3 px-1 animate-[fadeIn_0.3s_ease-out]">
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-chrome/80 backdrop-blur-md border border-border-subtle rounded-xl shadow-xl">
+                  <Hash size={14} className="text-primary" weight="bold" />
+                  <span className="text-[12px] text-text-muted">팁: <span className="text-primary font-bold">#태그</span>를 사용해 기록을 분류해보세요 (예: #여행)</span>
+                </div>
+              </div>
+            )}
             
             {/* Desktop Mode Toggles */}
             <div 
@@ -324,6 +375,22 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
                   />
                 </div>
               )}
+
+              {mode !== 'search' && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (!value.includes('#')) {
+                      setValue(value + (value.length > 0 && !value.endsWith(' ') ? ' #' : '#'));
+                    }
+                    inputRef.current?.focus();
+                  }}
+                  className="flex items-center justify-center w-8 h-8 md:w-11 md:h-11 rounded-md border border-border-subtle bg-white/5 text-text-muted hover:text-primary hover:bg-primary/10 transition-all mr-1 md:mr-2"
+                  aria-label="Add tag"
+                >
+                  <Hash weight="bold" className="w-4 h-4 md:w-5 md:h-5" />
+                </button>
+              )}
               
               <input type="file" ref={fileInputRef} onChange={(e) => onUpload?.(e.target.files![0], value)} className="hidden" accept="image/*" />
               
@@ -335,6 +402,8 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
                 placeholder={mode === 'search' ? "태그 또는 ID 검색..." : "기억 기록..."}
                 className={`flex-1 bg-transparent border-none outline-none py-1.5 md:py-3 px-2 md:px-4 transition-colors duration-500 text-[14px] md:text-base tracking-tight ${mode === 'search' ? 'text-white placeholder:text-white/60' : 'text-white placeholder:text-white/50'}`}
                 aria-label={mode === 'search' ? "ID 검색" : "기억 기록"}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setTimeout(() => setIsFocused(false), 200)}
                 disabled={isLoading && mode !== 'search'}
               />
               
