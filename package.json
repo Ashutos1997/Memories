@@ -9,9 +9,6 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@openuidev/react-headless": "latest",
-    "@openuidev/react-lang": "latest",
-    "@openuidev/react-ui": "latest",
     "@phosphor-icons/react": "^2.1.10",
     "html-to-image": "^1.11.13",
     "next": "16.1.6",
