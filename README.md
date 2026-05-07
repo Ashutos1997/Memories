@@ -1,66 +1,66 @@
-# 🏛️ Memories: The Infinite Spatial Archive
+# 🏛️ Memories: 무한한 공간적 아카이브
 
-A high-fidelity, mobile-responsive archival interface designed for the spatial curation of memories. Built with a minimalist "Archival Obsidian" aesthetic, it transforms traditional data entry into a tactile, cinematic experience.
+기억의 공간적 큐레이션을 위해 설계된 고해상도 모바일 반응형 아카이브 인터페이스입니다. 미니멀한 "Archival Obsidian" 미학으로 구축되어, 전통적인 데이터 입력을 촉각적이고 영화적인 경험으로 변화시킵니다.
 
 <img width="2856" height="1592" alt="image" src="https://github.com/user-attachments/assets/e919b152-f1db-43da-9121-0b8e0ae1ea63" />
 
-## ✨ Core Features
+## ✨ 주요 기능
 
-### 🌌 Infinite Archival Canvas
-*   **Spatial Curation**: Pan and zoom across an infinite workspace to organize memories geographically.
-*   **Minimap Navigation**: Real-time viewport tracking with a high-fidelity "Golden Rectangle" indicator for effortless navigation across large archives.
-*   **Cinematic Motion**: Every interaction—from manifestation to disposal—is driven by custom weighted archival transitions (cubic-bezier 0.65, 0, 0.35, 1).
+### 🌌 무한한 아카이브 캔버스
+*   **공간적 큐레이션**: 무한한 작업 공간에서 기억을 지리적으로 배치하고 팬/줌 기능을 통해 자유롭게 탐색하세요.
+*   **미니맵 네비게이션**: 고해상도 "황금 직사각형" 인디케이터가 포함된 실시간 뷰포트 트래킹으로 대규모 아카이브도 손쉽게 탐색할 수 있습니다.
+*   **영화적 모션**: 생성부터 삭제까지 모든 상호작용은 커스텀 가중치 아카이브 트랜지션(cubic-bezier 0.65, 0, 0.35, 1)에 의해 구동됩니다.
 
-### 🖋️ Spatial Drawing Engine
-*   **Archival Ink**: Annotate the canvas with real-time, ink-like strokes that are pinned to the world coordinate system.
-*   **Drawing Curation**: Sketches are first-class citizens; you can select, drag, and delete annotations with the same precision as memory cards.
-*   **Adaptive UI**: Control handles for drawings intelligently scale to maintain readability at any zoom level.
+### 🖋️ 공간적 드로잉 엔진
+*   **아카이브 잉크**: 월드 좌표계에 고정되는 실시간 잉크 스타일 스트로크로 캔버스에 주석을 남기세요.
+*   **드로잉 큐레이션**: 스케치 또한 기억 카드와 동일하게 선택, 드래그, 삭제가 가능한 일급 객체로 취급됩니다.
+*   **적응형 UI**: 드로잉 제어 핸들은 줌 레벨에 따라 지능적으로 크기가 조절되어 가독성을 유지합니다.
 
-### 🗃️ High-Fidelity Memory Cards
-*   **Diverse Formats**: Native support for **Notes**, **Galleries**, **Timelines**, **Quotes**, **Raw Images**, and **Audio Memories**.
-*   **Dynamic Manifestation**: Cards resolve from a blurred ghost state into sharp matter, ensuring a fluid and atmospheric loading experience.
-*   **Obsidian Design System**: A disciplined geometric language using 8px archival radii and a curated glassmorphic palette.
+### 🗃️ 고해상도 기억 카드
+*   **다양한 포맷**: **노트**, **갤러리**, **타임라인**, **인용구**, **원본 이미지**, 그리고 **음성 기억**을 기본적으로 지원합니다.
+*   **동적 구체화**: 카드가 흐릿한 "고스트" 상태에서 선명한 실체로 변화하며 시각적으로 매끄럽고 분위기 있는 로딩 경험을 제공합니다.
+*   **Obsidian 디자인 시스템**: 8px 아카이브 반경(Radius)과 정교한 글래스모피즘 팔레트를 사용하는 엄격한 기하학적 언어를 적용했습니다.
 
-### 📱 Performance & Persistence
-*   **Local-First Architecture**: Built on **IndexedDB**, ensuring all memories and drawings are persisted locally for high-speed retrieval.
-*   **Mobile Optimized**: A high-performance touch engine with specialized interaction modes for panning, selecting, and drawing.
+### 📱 성능 및 지속성
+*   **로컬 퍼스트 아키텍처**: **IndexedDB**를 기반으로 구축되어 모든 기억과 드로잉이 로컬에 저장되므로 초고속 검색이 가능합니다.
+*   **모바일 최적화**: 이동, 선택, 드로잉을 위한 특화된 상호작용 모드를 갖춘 고성능 터치 엔진을 탑재했습니다.
 
-## 🛠️ Technology Stack
+## 🛠️ 기술 스택
 
-*   **Core**: [Next.js](https://nextjs.org/) (React 19)
-*   **Styling**: Vanilla CSS with [Tailwind CSS 4](https://tailwindcss.com/) for geometric tokens.
-*   **Icons**: [Phosphor Icons](https://phosphoricons.com/)
-*   **Persistence**: IndexedDB (Native Web API)
-*   **Logic**: Web Audio API (for future frequency manifestation) & Canvas API (for the spatial drawing engine).
+*   **코어**: [Next.js](https://nextjs.org/) (React 19)
+*   **스타일링**: Vanilla CSS 및 기하학적 토큰을 위한 [Tailwind CSS 4](https://tailwindcss.com/)
+*   **아이콘**: [Phosphor Icons](https://phosphoricons.com/)
+*   **지속성**: IndexedDB (Native Web API)
+*   **로직**: Web Audio API 및 Canvas API (공간적 드로잉 엔진용)
 
-## 🚀 Getting Started
+## 🚀 시작하기
 
-1.  **Clone the Repository**:
+1.  **저장소 클론**:
     ```bash
     git clone https://github.com/Ashutos1997/Memories.git
     cd Memories
     ```
 
-2.  **Install Dependencies**:
+2.  **의존성 설치**:
     ```bash
     npm install
     ```
 
-3.  **Run Development Server**:
+3.  **개발 서버 실행**:
     ```bash
     npm run dev
     ```
 
-4.  **Open the Archive**:
-    Navigate to `http://localhost:3000` to begin your archival journey.
+4.  **아카이브 열기**:
+    브라우저에서 `http://localhost:3000`으로 접속하여 아카이브 여정을 시작하세요.
 
-## ⌨️ Hotkeys
+## ⌨️ 단축키
 
-*   **V**: Selection Mode
-*   **H**: Pan Mode
-*   **D**: Drawing Mode
-*   **S**: Search Focus
-*   **+ / -**: Zoom In / Out
+*   **V**: 선택 모드 (Selection)
+*   **H**: 이동 모드 (Pan)
+*   **D**: 드로잉 모드 (Draw)
+*   **S**: 검색 포커스
+*   **+ / -**: 확대 / 축소
 
 ---
 
