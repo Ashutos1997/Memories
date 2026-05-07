@@ -12,6 +12,8 @@ interface AudioMemoryCardProps {
   src: string;
   variant?: MemoryVariant;
   isHighlighted?: boolean;
+  x?: number;
+  y?: number;
   onDragStart?: (e: React.PointerEvent) => void;
   onDelete?: () => void;
   className?: string;
@@ -25,6 +27,8 @@ export const AudioMemoryCard: React.FC<AudioMemoryCardProps> = ({
   src, 
   variant = "default", 
   isHighlighted, 
+  x,
+  y,
   onDragStart, 
   onDelete, 
   className 
@@ -37,6 +41,8 @@ export const AudioMemoryCard: React.FC<AudioMemoryCardProps> = ({
       date={date} 
       isHighlighted={isHighlighted} 
       variant={variant} 
+      x={x}
+      y={y}
       onDragStart={onDragStart} 
       onDelete={onDelete}
       className={className}

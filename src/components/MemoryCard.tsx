@@ -3,7 +3,7 @@
 import React from "react";
 import { DotsSixVertical, Trash } from "@phosphor-icons/react";
 
-export type MemoryType = "note" | "gallery" | "timeline" | "quote" | "image-raw";
+export type MemoryType = "note" | "gallery" | "timeline" | "quote" | "image-raw" | "audio";
 export type MemoryVariant = "default" | "noir" | "vector" | "scrapbook";
 
 interface MemoryCardProps {
@@ -17,6 +17,7 @@ interface MemoryCardProps {
   children: React.ReactNode;
   className?: string;
   tag?: string;
+  isHighlighted?: boolean;
   onDragStart?: (e: React.PointerEvent) => void;
   onDelete?: () => void;
 }
@@ -127,7 +128,17 @@ export const MemoryCard: React.FC<MemoryCardProps> = ({ serial, tag, date, varia
   );
 };
 
-export const RawImageCard: React.FC<{ serial?: string; src: string; isHighlighted?: boolean; variant?: MemoryVariant; x?: number; y?: number; onDragStart?: (e: React.PointerEvent) => void; onDelete?: () => void }> = ({ serial, src, isHighlighted, variant = "default", x = 0, y = 0, onDragStart, onDelete }) => (
+export const RawImageCard: React.FC<{ 
+  serial?: string; 
+  tag?: string;
+  src: string; 
+  isHighlighted?: boolean; 
+  variant?: MemoryVariant; 
+  x?: number; 
+  y?: number; 
+  onDragStart?: (e: React.PointerEvent) => void; 
+  onDelete?: () => void;
+}> = ({ serial, tag, src, isHighlighted, variant = "default", x = 0, y = 0, onDragStart, onDelete }) => (
   <article className={`group relative shadow-card hover:shadow-elevated transition-all duration-500 border ${variant === 'noir' ? 'rounded-[4px] border-white/20' : variant === 'vector' ? 'rounded-none border-2 border-primary shadow-[8px_8px_0px_var(--color-primary)]' : variant === 'scrapbook' ? 'rounded-[2px] border-[#E2D1C3] bg-white p-2 shadow-[5px_10px_20px_rgba(0,0,0,0.15)]' : 'rounded-lg border-border-subtle'} ${isHighlighted ? 'ring-2 ring-primary scale-[1.01]' : ''}`}>
     <div className="absolute inset-0 bg-noise opacity-[0.03] pointer-events-none mix-blend-overlay" aria-hidden="true" />
     
@@ -145,10 +156,10 @@ export const RawImageCard: React.FC<{ serial?: string; src: string; isHighlighte
     {variant === 'scrapbook' && (
       <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-white/30 backdrop-blur-[2px] -rotate-2 border border-white/10 shadow-sm z-[200]" />
     )}
-    {serial && (
+    {(serial || tag) && (
       <div className={`absolute top-3 left-3 px-2 py-0.5 z-[100] shadow-xl transition-all duration-500 ${variant === 'noir' ? 'bg-white text-black' : variant === 'vector' ? 'bg-primary text-primary-foreground border-2 border-primary' : variant === 'scrapbook' ? 'bg-[#8D6E63] text-white -rotate-3' : 'bg-primary/90 backdrop-blur-md rounded-sm'} ${isHighlighted ? 'scale-110' : ''} ${variant === 'vector' ? 'rounded-none' : ''}`}>
         <span className={`text-[12px] font-mono font-bold tracking-[0.1em]`}>
-          {serial}
+          {tag ? `#${tag.toUpperCase()}` : serial}
         </span>
       </div>
     )}
@@ -176,14 +187,38 @@ export const RawImageCard: React.FC<{ serial?: string; src: string; isHighlighte
   </article>
 );
 
-export const NoteCard: React.FC<{ id?: string; serial?: string; date: string; content: string; isHighlighted?: boolean; variant?: MemoryVariant; onDragStart?: (e: React.PointerEvent) => void; onDelete?: () => void }> = ({ serial, date, content, isHighlighted, variant, onDragStart, onDelete }) => (
-  <MemoryCard type="note" serial={serial} date={date} isHighlighted={isHighlighted} variant={variant} onDragStart={onDragStart} onDelete={onDelete}>
+export const NoteCard: React.FC<{ 
+  id?: string; 
+  serial?: string; 
+  tag?: string;
+  date: string; 
+  content: string; 
+  isHighlighted?: boolean; 
+  variant?: MemoryVariant; 
+  x?: number;
+  y?: number;
+  onDragStart?: (e: React.PointerEvent) => void; 
+  onDelete?: () => void; 
+}> = ({ serial, tag, date, content, isHighlighted, variant, x, y, onDragStart, onDelete }) => (
+  <MemoryCard type="note" serial={serial} tag={tag} date={date} isHighlighted={isHighlighted} variant={variant} x={x} y={y} onDragStart={onDragStart} onDelete={onDelete}>
     <p className="whitespace-pre-wrap">{content}</p>
   </MemoryCard>
 );
 
-export const GalleryCard: React.FC<{ id?: string; serial?: string; date: string; images: string[]; isHighlighted?: boolean; variant?: MemoryVariant; onDragStart?: (e: React.PointerEvent) => void; onDelete?: () => void }> = ({ serial, date, images, isHighlighted, variant, onDragStart, onDelete }) => (
-  <MemoryCard type="gallery" serial={serial} date={date} isHighlighted={isHighlighted} variant={variant} onDragStart={onDragStart} onDelete={onDelete}>
+export const GalleryCard: React.FC<{ 
+  id?: string; 
+  serial?: string; 
+  tag?: string;
+  date: string; 
+  images: string[]; 
+  isHighlighted?: boolean; 
+  variant?: MemoryVariant; 
+  x?: number;
+  y?: number;
+  onDragStart?: (e: React.PointerEvent) => void; 
+  onDelete?: () => void;
+}> = ({ serial, tag, date, images, isHighlighted, variant, x, y, onDragStart, onDelete }) => (
+  <MemoryCard type="gallery" serial={serial} tag={tag} date={date} isHighlighted={isHighlighted} variant={variant} x={x} y={y} onDragStart={onDragStart} onDelete={onDelete}>
     <div className="grid grid-cols-1 gap-2 md:gap-3">
       {images.map((img, i) => (
         <div key={i} className={`aspect-video overflow-hidden border transition-all duration-700 ${variant === 'vector' ? 'rounded-none border-accent' : 'rounded-sm'} ${isHighlighted ? 'border-accent/40 bg-accent/10' : 'bg-white/5 border-white/5'} group/img`}>
@@ -194,8 +229,20 @@ export const GalleryCard: React.FC<{ id?: string; serial?: string; date: string;
   </MemoryCard>
 );
 
-export const TimelineCard: React.FC<{ id?: string; serial?: string; date: string; items: { time: string; text: string }[]; isHighlighted?: boolean; variant?: MemoryVariant; onDragStart?: (e: React.PointerEvent) => void; onDelete?: () => void }> = ({ serial, date, items, isHighlighted, variant, onDragStart, onDelete }) => (
-  <MemoryCard type="timeline" serial={serial} date={date} isHighlighted={isHighlighted} variant={variant} className="pl-6 md:pl-12" onDragStart={onDragStart} onDelete={onDelete}>
+export const TimelineCard: React.FC<{ 
+  id?: string; 
+  serial?: string; 
+  tag?: string;
+  date: string; 
+  items: { time: string; text: string }[]; 
+  isHighlighted?: boolean; 
+  variant?: MemoryVariant; 
+  x?: number;
+  y?: number;
+  onDragStart?: (e: React.PointerEvent) => void; 
+  onDelete?: () => void;
+}> = ({ serial, tag, date, items, isHighlighted, variant, x, y, onDragStart, onDelete }) => (
+  <MemoryCard type="timeline" serial={serial} tag={tag} date={date} isHighlighted={isHighlighted} variant={variant} x={x} y={y} className="pl-6 md:pl-12" onDragStart={onDragStart} onDelete={onDelete}>
     <div className="space-y-4 md:space-y-6">
       {items.map((item, i) => (
         <div key={i} className="relative">
@@ -208,8 +255,21 @@ export const TimelineCard: React.FC<{ id?: string; serial?: string; date: string
   </MemoryCard>
 );
 
-export const QuoteCard: React.FC<{ id?: string; serial?: string; date: string; quote: string; author: string; isHighlighted?: boolean; variant?: MemoryVariant; onDragStart?: (e: React.PointerEvent) => void; onDelete?: () => void }> = ({ serial, date, quote, author, isHighlighted, variant, onDragStart, onDelete }) => (
-  <MemoryCard type="quote" serial={serial} date={date} isHighlighted={isHighlighted} variant={variant} onDragStart={onDragStart} onDelete={onDelete}>
+export const QuoteCard: React.FC<{ 
+  id?: string; 
+  serial?: string; 
+  tag?: string;
+  date: string; 
+  quote: string; 
+  author: string; 
+  isHighlighted?: boolean; 
+  variant?: MemoryVariant; 
+  x?: number;
+  y?: number;
+  onDragStart?: (e: React.PointerEvent) => void; 
+  onDelete?: () => void;
+}> = ({ serial, tag, date, quote, author, isHighlighted, variant, x, y, onDragStart, onDelete }) => (
+  <MemoryCard type="quote" serial={serial} tag={tag} date={date} isHighlighted={isHighlighted} variant={variant} x={x} y={y} onDragStart={onDragStart} onDelete={onDelete}>
     <div className="relative py-1 md:py-4 pr-1 md:pr-4">
       <span className={`absolute -top-3 md:-top-4 -left-3 md:-left-4 text-4xl md:text-6xl font-bold opacity-30 select-none transition-colors duration-500 ${isHighlighted ? 'text-white' : 'text-accent/10'}`}>"</span>
       <blockquote className={`text-[16px] md:text-lg font-bold leading-relaxed tracking-tight italic transition-colors duration-500 ${isHighlighted ? 'text-white' : 'text-white/95'}`}>
