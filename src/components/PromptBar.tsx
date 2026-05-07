@@ -347,9 +347,9 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
                 type="text"
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
-                placeholder={mode === 'search' ? "태그/ID 검색 (예: #여행)" : "기억 기록... (#태그 추가)"}
+                placeholder={mode === 'search' ? "기억 검색 (예: #여행 또는 ID)" : "기억 기록... (#태그 추가)"}
                 className={`flex-1 bg-transparent border-none outline-none py-1.5 md:py-3 px-2 md:px-4 transition-colors duration-500 text-[14px] md:text-base tracking-tight ${mode === 'search' ? 'text-white placeholder:text-white/60' : 'text-white placeholder:text-white/50'}`}
-                aria-label={mode === 'search' ? "ID 검색" : "기억 기록"}
+                aria-label={mode === 'search' ? "기억 검색" : "기억 기록"}
                 disabled={isLoading && mode !== 'search'}
               />
               
@@ -359,7 +359,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
                 className={`relative overflow-hidden px-3 md:px-6 py-1.5 md:py-2.5 rounded-md interactive-state font-bold hover:brightness-110 flex items-center gap-2 text-[12px] md:text-sm bg-primary text-primary-foreground disabled:opacity-10 disabled:grayscale h-full md:h-auto`}
               >
                 {isLoading && mode !== 'search' && <div className="w-3 h-3 md:w-4 md:h-4 border-2 border-primary-foreground rounded-full animate-spin" />}
-                <span>{mode === 'search' ? '조회' : '기억'}</span>
+                <span>{mode === 'search' ? '검색' : '기억'}</span>
               </button>
             </form>
           </div>

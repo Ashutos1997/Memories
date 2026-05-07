@@ -75,6 +75,8 @@ export default function Home() {
   const [interactionMode, setInteractionMode] = useState<InteractionMode>("select");
   const [activeTemplate, setActiveTemplate] = useState<MemoryVariant>("default");
   const [highlightedId, setHighlightedId] = useState<string | null>(null);
+  const [zIndices, setZIndices] = useState<Record<string, number>>({});
+  const maxZ = useRef(10);
   const [isMobile, setIsMobile] = useState(false);
   const [drawings, setDrawings] = useState<{ id: string; points: { x: number; y: number }[] }[]>([]);
   
@@ -238,6 +240,11 @@ export default function Home() {
     if (mem && !mem.isDeleting) initialMemoryPos.current = { x: mem.x, y: mem.y };
     else { draggedMemoryId.current = null; return; }
     setActiveDragId(id);
+    
+    // Elevate Z-Index
+    maxZ.current += 1;
+    setZIndices(prev => ({ ...prev, [id]: maxZ.current }));
+    
     document.body.style.cursor = 'grabbing';
   };
 
@@ -264,12 +271,30 @@ export default function Home() {
       else if (key === 'h') setInteractionMode('pan');
       else if (key === 's') setInteractionMode('search');
       else if (key === 'd') setInteractionMode('draw');
+      else if (e.code === 'Space') {
+        if (interactionMode !== 'pan') {
+          e.preventDefault();
+          setInteractionMode('pan');
+        }
+      }
       else if (key === '+' || key === '=') { e.preventDefault(); handleZoomIn(); }
-      else if (key === '-') { e.preventDefault(); handleZoomOut(); }
+      else if (key === '-' || key === '_') { e.preventDefault(); handleZoomOut(); }
     };
+
+    const handleKeyUp = (e: KeyboardEvent) => {
+      if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+      if (e.code === 'Space') {
+        setInteractionMode('select');
+      }
+    };
+
     window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [handleZoomIn, handleZoomOut]);
+    window.addEventListener('keyup', handleKeyUp);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
+    };
+  }, [handleZoomIn, handleZoomOut, interactionMode]);
 
   // Template System Logic
   const applyTemplate = useCallback((templateId: string) => {
@@ -522,7 +547,8 @@ export default function Home() {
               top: `calc(50% + ${memory.y}px)`, 
               transform: `translate(-50%, -50%) rotate(${memory.rotation || 0}deg)`, 
               transition: activeDragId === memory.id || memory.isDeleting ? 'none' : 'all 1.2s var(--transition-timing-function-archival)', 
-              opacity: memory.isDeleting ? 0 : 1
+              opacity: memory.isDeleting ? 0 : 1,
+              zIndex: activeDragId === memory.id ? 999 : (zIndices[memory.id] || 10)
             }} 
             onPointerDown={(e) => onMemoryDragStart(memory.id, e, e.currentTarget)}
           >
