@@ -81,6 +81,7 @@ export default function Home() {
   const [manifestingPos, setManifestingPos] = useState({ x: 0, y: 0 });
   const [manifestingType, setManifestingType] = useState<"text" | "image" | "audio">("text");
   const [externalAction, setExternalAction] = useState<{ type: 'note' | 'image' | 'audio'; timestamp: number } | null>(null);
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
 
   // Mobile Detection
@@ -109,6 +110,7 @@ export default function Home() {
       if (savedDrawings) setDrawings(savedDrawings);
       if (savedOffset) setOffset(savedOffset);
       if (savedZoom) setZoom(savedZoom);
+      setIsInitialLoad(false);
     };
     loadArchive();
   }, []);
@@ -536,7 +538,7 @@ export default function Home() {
         ))}
       </Canvas>
 
-      {memories.length === 0 && drawings.length === 0 && !isLoading && (
+      {!isInitialLoad && memories.length === 0 && drawings.length === 0 && !isLoading && (
         <EmptyState 
           onModeChange={setInteractionMode}
           onAction={(type) => setExternalAction({ type, timestamp: Date.now() })}
