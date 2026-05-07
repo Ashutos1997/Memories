@@ -1,5 +1,16 @@
 @import "tailwindcss";
 
+@font-face {
+    font-family: 'GriunOksooni';
+    src: url('/fonts/GriunOksooni.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.font-handwriting {
+    font-family: 'GriunOksooni', cursive !important;
+}
+
 @theme {
   /* Colors - Pure Obsidian Structured Palette */
   --color-canvas: hsl(240, 10%, 4%);
@@ -46,6 +57,7 @@
 
   /* Typography */
   --font-pretendard: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  --font-handwriting: "GriunOksooni", cursive;
 
   /* Transitions */
   --transition-timing-function-archival: cubic-bezier(0.65, 0, 0.35, 1);
@@ -146,6 +158,24 @@ body {
 @keyframes ambientBreathing {
   0%, 100% { opacity: 0.015; }
   50% { opacity: 0.03; }
+}
+
+@keyframes sanctuaryPulse {
+  0%, 100% { transform: scale(1); opacity: 0.05; filter: blur(40px); }
+  50% { transform: scale(1.1); opacity: 0.12; filter: blur(60px); }
+}
+
+.animate-sanctuary {
+  animation: sanctuaryPulse 8s ease-in-out infinite;
+}
+
+@keyframes sharpenEntry {
+  0% { opacity: 0; filter: blur(20px); transform: scale(0.95); }
+  100% { opacity: 1; filter: blur(0px); transform: scale(1); }
+}
+
+.animate-sharpen {
+  animation: sharpenEntry 1.2s var(--transition-timing-function-archival) forwards;
 }
 
 .bg-ambient {
