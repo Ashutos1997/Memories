@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/react";
 
 const noto = Noto_Sans_KR({
   subsets: ["latin"],
@@ -28,6 +29,7 @@ export default function RootLayout({
     <html lang="ko" className={`${noto.variable}`}>
       <body className="font-noto touch-none">
         {children}
+        <Analytics />
       </body>
     </html>
   );
