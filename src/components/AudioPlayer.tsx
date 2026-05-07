@@ -86,7 +86,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, variant = "defaul
           onMouseDown={(e) => e.stopPropagation()}
           className={`w-7 h-7 flex items-center justify-center interactive-state ${
             variant === 'vector' ? 'rounded-none bg-primary text-primary-foreground border border-primary hover:bg-primary/80' : 
-            variant === 'scrapbook' ? 'rounded-none bg-[#5D4037]/10 text-[#5D4037] border border-[#5D4037]/20 hover:bg-[#5D4037]/20' :
+            variant === 'scrapbook' ? 'rounded-none bg-scrapbook-text-10 text-scrapbook-text border border-scrapbook-text/20 hover:bg-scrapbook-text/20' :
             'rounded-md bg-primary/10 hover:bg-primary/20 text-text-secondary hover:text-text-primary'
           }`}
           aria-label={isPlaying ? "Pause audio" : "Play audio"}
@@ -98,13 +98,13 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, variant = "defaul
           )}
         </button>
         <div className="flex items-center gap-2">
-          <SpeakerHigh size={14} className={variant === 'scrapbook' ? 'text-[#5D4037]' : 'text-primary'} weight="bold" />
-          <span className={`text-[12px] font-bold uppercase tracking-[0.2em] ${variant === 'scrapbook' ? 'text-[#5D4037]/60 font-handwriting' : variant === 'vector' ? 'text-primary' : 'text-text-muted'}`}>Voice Memory</span>
+          <SpeakerHigh size={14} className={variant === 'scrapbook' ? 'text-scrapbook-text' : 'text-primary'} weight="bold" />
+          <span className={`text-[12px] font-bold uppercase tracking-[0.2em] ${variant === 'scrapbook' ? 'text-scrapbook-text-subtle font-handwriting' : variant === 'vector' ? 'text-primary' : 'text-text-muted'}`}>음성 기억</span>
         </div>
       </div>
 
       {/* Seek & Progress Control */}
-      <div className="mb-1.5">
+      <div className="mb-2">
         <input
           type="range"
           min="0"
@@ -118,7 +118,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, variant = "defaul
           className={`w-full h-1 bg-transparent accent-primary cursor-pointer ${variant === 'vector' || variant === 'scrapbook' ? 'rounded-none h-2' : 'rounded-full'}`}
           style={{
             background: variant === 'scrapbook' ? 
-              `linear-gradient(to right, #5D4037 0%, #5D4037 ${duration > 0 ? (currentTime / duration) * 100 : 0}%, rgba(93, 64, 55, 0.1) 100%)` :
+              `linear-gradient(to right, var(--color-scrapbook-text) 0%, var(--color-scrapbook-text) ${duration > 0 ? (currentTime / duration) * 100 : 0}%, var(--color-scrapbook-text-10) 100%)` :
               `linear-gradient(to right, var(--color-primary) 0%, var(--color-primary) ${duration > 0 ? (currentTime / duration) * 100 : 0}%, ${variant === 'vector' ? 'rgba(197,165,114,0.1)' : 'rgba(255, 255, 255, 0.1)'} 100%)`
           }}
         />

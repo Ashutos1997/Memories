@@ -401,16 +401,16 @@ export default function Home() {
         id="main-content"
         ref={canvasRef}
         className={`relative h-screen w-screen overflow-hidden font-pretendard text-text-primary transition-all duration-1000 ${
-      activeTemplate === 'noir' ? 'bg-[#0a0a0a]' : 
+      activeTemplate === 'noir' ? 'bg-canvas' : 
       activeTemplate === 'vector' ? 'bg-canvas' : 
-      activeTemplate === 'scrapbook' ? 'bg-[#1a1410] bg-[url("https://www.transparenttextures.com/patterns/p6.png")]' : 
+      activeTemplate === 'scrapbook' ? 'bg-scrapbook-canvas bg-[url(\"https://www.transparenttextures.com/patterns/p6.png\")]' : 
       'bg-canvas'
     }`}>
       {activeTemplate === 'noir' && (
         <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)] z-10" />
       )}
       <div className={`absolute inset-0 bg-noise pointer-events-none noise-breathing ${
-        activeTemplate === 'vector' ? 'opacity-[0.1] bg-[linear-gradient(to_right,#C5A572_1px,transparent_1px),linear-gradient(to_bottom,#C5A572_1px,transparent_1px)] [background-size:50px_50px]' : ''
+        activeTemplate === 'vector' ? 'opacity-[0.1] bg-[linear-gradient(to_right,var(--color-primary)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-primary)_1px,transparent_1px)] [background-size:50px_50px]' : ''
       }`} />
       {activeTemplate === 'vector' && (
         <div className="absolute inset-0 pointer-events-none opacity-[0.05]" style={{ backgroundImage: 'linear-gradient(to right, var(--color-primary) 1px, transparent 1px), linear-gradient(to bottom, var(--color-primary) 1px, transparent 1px)', backgroundSize: '10px 10px' }} />
@@ -442,7 +442,7 @@ export default function Home() {
       >
         {isLoading && (
           <div className="absolute z-[60] pointer-events-none animate-manifest" style={{ left: `calc(50% + ${manifestingPos.x}px)`, top: `calc(50% + ${manifestingPos.y}px)`, transform: 'translate(-50%, -50%)' }}>
-            <div className={`flex flex-col items-center justify-center gap-2 md:gap-4 animate-ghost glass border-border-subtle rounded-md px-3.5 py-5 md:p-6 shadow-2xl ${
+            <div className={`flex flex-col items-center justify-center gap-2 md:gap-4 animate-ghost glass border-border-subtle rounded-md px-4 py-5 md:p-6 shadow-2xl ${
               manifestingType === 'image' ? 'w-[200px] md:w-[320px] h-[140px] md:h-[200px]' : 
               manifestingType === 'audio' ? 'w-[85vw] max-w-[320px] md:max-w-[400px] h-[100px] md:h-[120px]' :
               'w-[85vw] max-w-[320px] md:max-w-[400px] h-[160px] md:h-[240px]'
@@ -451,7 +451,7 @@ export default function Home() {
                 {manifestingType === 'image' ? (
                   <ImageIcon size={32} className="text-primary/20" />
                 ) : manifestingType === 'audio' ? (
-                  <div className="flex items-center gap-1.5 h-6">
+                  <div className="flex items-center gap-2 h-6">
                     {[1,2,3,4,5].map(i => (
                       <div key={i} className="w-1 bg-primary/40 rounded-full animate-pulse" style={{ height: `${20 + Math.random() * 80}%`, animationDelay: `${i * 0.2}s` }} />
                     ))}
@@ -516,7 +516,7 @@ export default function Home() {
         {memories.map((memory) => (
           <div 
             key={memory.id} 
-            className={`absolute will-change-transform z-10 cursor-grab active:cursor-grabbing ${memory.isDeleting ? 'animate-dispose pointer-events-none' : 'animate-manifest'}`} 
+            className={`absolute will-change-transform z-10 cursor-grab active:cursor-grabbing focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/60 focus-visible:ring-offset-2 focus-visible:ring-offset-canvas ${memory.isDeleting ? 'animate-dispose pointer-events-none' : 'animate-manifest'}`} 
             style={{ 
               left: `calc(50% + ${memory.x}px)`, 
               top: `calc(50% + ${memory.y}px)`, 
@@ -525,6 +525,17 @@ export default function Home() {
               opacity: memory.isDeleting ? 0 : 1
             }} 
             onPointerDown={(e) => onMemoryDragStart(memory.id, e, e.currentTarget)}
+            tabIndex={memory.isDeleting ? -1 : 0}
+            aria-label={`Memory ${memory.tag ? `#${memory.tag}` : memory.serial}. Use arrow keys to move. Hold Shift for larger steps.`}
+            onKeyDown={(e) => {
+              if (interactionMode !== 'select') return;
+              if (e.key !== 'ArrowUp' && e.key !== 'ArrowDown' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+              e.preventDefault();
+              const step = (e.shiftKey ? 64 : 16) / zoom;
+              const dx = e.key === 'ArrowLeft' ? -step : e.key === 'ArrowRight' ? step : 0;
+              const dy = e.key === 'ArrowUp' ? -step : e.key === 'ArrowDown' ? step : 0;
+              setMemories(prev => prev.map(m => m.id === memory.id ? { ...m, x: m.x + dx, y: m.y + dy } : m));
+            }}
           >
             <div className={`${memory.type === 'image-raw' ? 'w-[200px] md:w-[320px]' : 'w-[85vw] max-w-[320px] md:max-w-[400px]'}`}>
               {memory.type === "note" && <NoteCard id={memory.id} serial={memory.serial} tag={memory.tag} date={memory.date} content={memory.data.content} onDelete={() => handleDeleteMemory(memory.id)} isHighlighted={highlightedId === memory.id} variant={activeTemplate} x={memory.x} y={memory.y} />}

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Plus, CursorClick, HandPalm, MagnifyingGlass, Stop, Notebook, PencilLine, ArrowCounterClockwise } from "@phosphor-icons/react";
+import { Plus, CursorClick, HandPalm, MagnifyingGlass, Notebook, PencilLine, ArrowCounterClockwise } from "@phosphor-icons/react";
 import { AttachmentPopup } from "./AttachmentPopup";
 import { InteractionMode } from "../types";
 
@@ -14,10 +14,12 @@ interface PromptBarProps {
   onModeChange: (mode: InteractionMode) => void;
   activeTemplate: string;
   externalAction?: { type: 'note' | 'image' | 'audio'; timestamp: number } | null;
+  onExternalActionHandled?: () => void;
 }
 
-export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSearch, onScrapbook, onReset, isLoading, mode, onModeChange, activeTemplate, externalAction }) => {
-  const [value, setValue] = useState("");
+export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSearch, onScrapbook, onReset, isLoading, mode, onModeChange, activeTemplate, externalAction, onExternalActionHandled }) => {
+  const [composeValue, setComposeValue] = useState("");
+  const [searchValue, setSearchValue] = useState("");
   const [showAttachmentPopup, setShowAttachmentPopup] = useState(false);
   const [statusIndicator, setStatusIndicator] = useState<{ message: string; type: 'info' | 'error' | 'success' } | null>(null);
   
@@ -30,16 +32,18 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const valueRef = useRef(value);
+  const composeValueRef = useRef(composeValue);
+  const autoOpenAttachmentPopup = !!externalAction && (externalAction.type === 'image' || externalAction.type === 'audio');
+  const isAttachmentPopupOpen = showAttachmentPopup || autoOpenAttachmentPopup;
+  const value = mode === 'search' ? searchValue : composeValue;
 
   // Sync ref with state
   useEffect(() => {
-    valueRef.current = value;
-  }, [value]);
+    composeValueRef.current = composeValue;
+  }, [composeValue]);
 
   useEffect(() => {
     if (mode === 'search') {
-      setValue("");
       setTimeout(() => inputRef.current?.focus(), 10);
     }
     // We don't clear value here anymore to prevent losing tags when starting recordings
@@ -52,13 +56,16 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
         setTimeout(() => inputRef.current?.focus(), 50);
       } else if (externalAction.type === 'image') {
         onModeChange('select');
-        setShowAttachmentPopup(true);
       } else if (externalAction.type === 'audio') {
         onModeChange('select');
-        setShowAttachmentPopup(true);
       }
     }
-  }, [externalAction]);
+  }, [externalAction, onModeChange]);
+
+  const closeAttachmentPopup = () => {
+    setShowAttachmentPopup(false);
+    if (autoOpenAttachmentPopup) onExternalActionHandled?.();
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -68,14 +75,14 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
       onSearch?.(value);
     } else if (!isLoading) {
       onSubmit(value);
-      setValue("");
+      setComposeValue("");
     }
   };
 
   const handleImageSelect = (file: File) => {
-    onUpload?.(file, value);
-    setShowAttachmentPopup(false);
-    setValue("");
+    onUpload?.(file, composeValue);
+    closeAttachmentPopup();
+    setComposeValue("");
   };
 
   const startRecording = async () => {
@@ -92,9 +99,8 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
       mediaRecorder.onstop = () => {
         const blob = new Blob(chunksRef.current, { type: 'audio/wav' });
         const file = new File([blob], 'recording.wav', { type: 'audio/wav' });
-        // Use the captured valueRef to avoid stale closures
-        onUpload?.(file, valueRef.current);
-        setValue("");
+        onUpload?.(file, composeValueRef.current);
+        setComposeValue("");
         stream.getTracks().forEach(track => track.stop());
       };
 
@@ -104,7 +110,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
       timerRef.current = setInterval(() => {
         setRecordingTime(prev => prev + 1);
       }, 1000);
-      setShowAttachmentPopup(false);
+      closeAttachmentPopup();
     } catch (err) {
       console.error("Recording error:", err);
       setStatusIndicator({ message: "마이크 접근 권한이 필요합니다.", type: 'error' });
@@ -134,7 +140,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
     <>
       <div className="fixed bottom-4 md:bottom-[32px] left-1/2 -translate-x-1/2 w-full max-w-[840px] z-[200] px-3 md:px-6">
         {isRecording ? (
-          <div className="flex items-center justify-between bg-[#121214] border border-accent/40 rounded-[16px] p-2 md:p-3 shadow-2xl h-[48px] md:h-[64px] animate-[fadeIn_0.3s_ease-out]">
+          <div className="flex items-center justify-between bg-chrome border border-accent/40 rounded-[var(--radius-xl)] p-2 md:p-3 shadow-2xl h-[48px] md:h-[64px] animate-[fadeIn_0.3s_ease-out]">
             <div className="flex items-center gap-3 px-4">
               <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
               <span className="text-white text-[14px] md:text-[16px] font-mono font-bold tracking-tight">{formatTime(recordingTime)}</span>
@@ -142,7 +148,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
             </div>
             <button 
               onClick={stopRecording}
-              className="bg-primary text-primary-foreground px-4 md:px-6 py-1.5 md:py-2 rounded-md font-bold text-[12px] md:text-[14px] interactive-state shadow-lg"
+              className="bg-primary text-primary-foreground px-4 md:px-6 py-2 rounded-md font-bold text-[12px] md:text-[14px] interactive-state shadow-lg"
             >
               완료
             </button>
@@ -152,7 +158,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
             
             {/* Desktop Mode Toggles */}
             <div 
-              className="hidden md:flex items-center gap-2 md:gap-3 p-1.5 bg-chrome border border-border-subtle rounded-lg shadow-2xl h-[64px]"
+              className="hidden md:flex items-center gap-2 md:gap-3 p-2 bg-chrome border border-border-subtle rounded-lg shadow-2xl h-[64px]"
               role="radiogroup"
               aria-label="Interaction mode"
             >
@@ -251,7 +257,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
             </div>
 
             {/* Mobile Mode Toggles */}
-            <div className="md:hidden flex items-center gap-1.5 bg-chrome border border-border-subtle rounded-lg p-1 shadow-xl">
+            <div className="md:hidden flex items-center gap-2 bg-chrome border border-border-subtle rounded-lg p-1 shadow-xl">
               <button
                 type="button"
                 onClick={() => onModeChange("select")}
@@ -261,7 +267,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
                 <CursorClick size={18} weight={mode === 'select' ? 'fill' : 'bold'} />
               </button>
 
-              <div className="w-[1px] h-3 bg-border-subtle mx-0.5" />
+              <div className="w-[1px] h-3 bg-border-subtle mx-1" />
 
               <button
                 type="button"
@@ -271,7 +277,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
               >
                 <HandPalm size={18} weight={mode === 'pan' ? 'fill' : 'bold'} />
               </button>
-              <div className="w-[1px] h-3 bg-border-subtle mx-0.5" />
+              <div className="w-[1px] h-3 bg-border-subtle mx-1" />
               <button
                 type="button"
                 onClick={() => onModeChange(mode === 'search' ? 'select' : 'search')}
@@ -281,7 +287,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
                 <MagnifyingGlass size={18} weight={mode === 'search' ? 'fill' : 'bold'} />
               </button>
               
-              <div className="w-[1px] h-3 bg-border-subtle mx-0.5" />
+              <div className="w-[1px] h-3 bg-border-subtle mx-1" />
 
               <button
                 type="button"
@@ -292,7 +298,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
                 <PencilLine size={18} weight={mode === 'draw' ? 'fill' : 'bold'} />
               </button>
 
-              <div className="w-[1px] h-3 bg-border-subtle mx-0.5" />
+              <div className="w-[1px] h-3 bg-border-subtle mx-1" />
 
               <button
                 type="button"
@@ -317,7 +323,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
 
             <form 
               onSubmit={handleSubmit}
-              className={`flex-1 group relative flex items-center bg-chrome border rounded-lg p-1.5 md:p-2 shadow-2xl interactive-state h-[48px] md:h-[64px] ${mode === 'search' ? 'border-border focus-within:border-primary/40' : 'border-border-subtle focus-within:border-primary/40'}`}
+              className={`flex-1 group relative flex items-center bg-chrome border rounded-lg p-2 shadow-2xl interactive-state h-[48px] md:h-[64px] ${mode === 'search' ? 'border-border focus-within:border-primary/40' : 'border-border-subtle focus-within:border-primary/40'}`}
             >
               {mode !== 'search' && (
                 <div className="relative">
@@ -332,8 +338,8 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
                   </button>
 
                   <AttachmentPopup
-                    isOpen={showAttachmentPopup}
-                    onClose={() => setShowAttachmentPopup(false)}
+                    isOpen={isAttachmentPopupOpen}
+                    onClose={closeAttachmentPopup}
                     onImageSelect={handleImageSelect}
                     onVoiceRecord={handleVoiceRecord}
                   />
@@ -346,9 +352,9 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
                 ref={inputRef}
                 type="text"
                 value={value}
-                onChange={(e) => setValue(e.target.value)}
+                onChange={(e) => mode === 'search' ? setSearchValue(e.target.value) : setComposeValue(e.target.value)}
                 placeholder={mode === 'search' ? "태그/ID 검색 (예: #여행)" : "기억 기록... (#태그 추가)"}
-                className={`flex-1 bg-transparent border-none outline-none py-1.5 md:py-3 px-2 md:px-4 transition-colors duration-500 text-[14px] md:text-base tracking-tight ${mode === 'search' ? 'text-white placeholder:text-white/60' : 'text-white placeholder:text-white/50'}`}
+                className={`flex-1 bg-transparent border-none outline-none py-2 md:py-3 px-2 md:px-4 transition-colors duration-500 text-[14px] md:text-base tracking-tight ${mode === 'search' ? 'text-white placeholder:text-white/60' : 'text-white placeholder:text-white/50'}`}
                 aria-label={mode === 'search' ? "ID 검색" : "기억 기록"}
                 disabled={isLoading && mode !== 'search'}
               />
@@ -356,7 +362,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
               <button
                 type="submit"
                 disabled={!value.trim() || (isLoading && mode !== 'search')}
-                className={`relative overflow-hidden px-3 md:px-6 py-1.5 md:py-2.5 rounded-md interactive-state font-bold hover:brightness-110 flex items-center gap-2 text-[12px] md:text-sm bg-primary text-primary-foreground disabled:opacity-10 disabled:grayscale h-full md:h-auto`}
+                className={`relative overflow-hidden px-3 md:px-6 py-2 md:py-3 rounded-md interactive-state font-bold hover:brightness-110 flex items-center gap-2 text-[12px] md:text-sm bg-primary text-primary-foreground disabled:opacity-10 disabled:grayscale h-full md:h-auto`}
               >
                 {isLoading && mode !== 'search' && <div className="w-3 h-3 md:w-4 md:h-4 border-2 border-primary-foreground rounded-full animate-spin" />}
                 <span>{mode === 'search' ? '조회' : '기억'}</span>
@@ -367,7 +373,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
 
         {/* Status Indicator */}
         {statusIndicator && (
-          <div className="absolute -top-16 left-1/2 -translate-x-1/2 px-3 py-2 bg-[#1a1a1c] border border-white/10 rounded-[8px] text-center z-50 animate-[fadeIn_0.2s_ease-out]">
+          <div className="absolute -top-16 left-1/2 -translate-x-1/2 px-3 py-2 bg-chrome border border-white/10 rounded-md text-center z-50 animate-[fadeIn_0.2s_ease-out]">
             <span className={
               statusIndicator.type === 'success' ? 'text-green-400' :
               statusIndicator.type === 'error' ? 'text-red-400' :

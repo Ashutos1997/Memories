@@ -22,6 +22,14 @@
   --color-text-secondary: hsla(0, 0%, 100%, 0.6);
   --color-text-muted: hsla(0, 0%, 100%, 0.5);
 
+  --color-scrapbook-canvas: #1a1410;
+  --color-scrapbook-surface: #f4e9d5;
+  --color-scrapbook-border: #e2d1c3;
+  --color-scrapbook-text: #5d4037;
+  --color-scrapbook-accent: #8d6e63;
+  --color-scrapbook-text-subtle: rgba(93, 64, 55, 0.6);
+  --color-scrapbook-text-10: rgba(93, 64, 55, 0.1);
+
   /* Spacing - 8pt Grid */
   --spacing-1: 4px;
   --spacing-2: 8px;
@@ -147,7 +155,7 @@ body {
 }
 
 .bg-ambient {
-  background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.4) 100%), #0a0a0b;
+  background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.4) 100%), var(--color-canvas);
 }
 
 .noise-breathing {

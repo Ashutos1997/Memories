@@ -2,9 +2,10 @@
 
 import React from "react";
 import { Plus, Minus } from "@phosphor-icons/react";
+import { MemoryPosition } from "@/types";
 
 interface NavigationChromeProps {
-  memories: any[];
+  memories: MemoryPosition[];
   zoom: number;
   offset: { x: number; y: number };
   onZoomIn: () => void;
@@ -19,14 +20,14 @@ export const NavigationChrome: React.FC<NavigationChromeProps> = ({ memories, zo
         <div className="px-2 md:px-4 flex items-center gap-2">
           <span className="text-primary text-[12px] font-mono font-bold tracking-widest uppercase text-nowrap">
             {memories.length}
-            <span className="ml-1 md:ml-1.5 text-text-muted">기억</span>
+            <span className="ml-2 text-text-muted">기억</span>
           </span>
         </div>
 
         <div className="w-[1px] h-3 md:h-4 bg-border-subtle" />
 
         {/* Zoom Controls */}
-        <div className="flex items-center gap-0.5 md:gap-1 pr-1">
+        <div className="flex items-center gap-1 pr-1">
           <button 
             onClick={onZoomIn}
             className="w-7 h-7 md:w-10 md:h-10 rounded-md flex items-center justify-center text-text-muted hover:text-text-primary hover:bg-white/5 interactive-state"

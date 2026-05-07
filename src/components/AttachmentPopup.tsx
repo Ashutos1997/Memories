@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { Image, Microphone } from "@phosphor-icons/react";
+import { Image as ImageIcon, Microphone } from "@phosphor-icons/react";
 
 interface AttachmentPopupProps {
   isOpen: boolean;
@@ -73,11 +73,11 @@ export const AttachmentPopup: React.FC<AttachmentPopupProps> = ({
         {/* Image Option */}
         <label className="flex items-center gap-3 p-2 rounded-sm hover:bg-white/5 cursor-pointer interactive-state group border border-transparent hover:border-border-subtle">
           <div className="w-10 h-10 rounded-sm bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-            <Image size={18} className="text-primary" weight="bold" />
+            <ImageIcon size={18} className="text-primary" weight="bold" />
           </div>
           <div className="flex-1">
             <div className="text-text-primary text-[13px] font-semibold leading-tight">이미지</div>
-            <div className="text-text-muted text-[12px] mt-0.5">사진이나 이미지 업로드</div>
+            <div className="text-text-muted text-[12px] mt-1">사진이나 이미지 업로드</div>
           </div>
           <input
             type="file"
@@ -98,7 +98,7 @@ export const AttachmentPopup: React.FC<AttachmentPopupProps> = ({
           </div>
           <div className="flex-1">
             <div className="text-text-primary text-[13px] font-semibold leading-tight">음성 녹음</div>
-            <div className="text-text-muted text-[12px] mt-0.5">오디오 메모 녹음</div>
+            <div className="text-text-muted text-[12px] mt-1">오디오 메모 녹음</div>
           </div>
         </button>
       </div>

@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useEffect, useRef, useState, useCallback } from "react";
+import { MemoryPosition } from "@/types";
 
 interface MinimapProps {
-  memories: any[];
+  memories: MemoryPosition[];
   offset: { x: number; y: number };
   zoom: number;
 }
@@ -61,8 +62,8 @@ export const Minimap: React.FC<MinimapProps> = ({ memories, offset, zoom }) => {
 
   // Real-time listener for Canvas broadcasts
   useEffect(() => {
-    const handleUpdate = (e: any) => {
-      const { x, y, zoom: curZoom } = e.detail;
+    const handleUpdate = (e: Event) => {
+      const { x, y, zoom: curZoom } = (e as CustomEvent<{ x: number; y: number; zoom: number }>).detail;
       if (indicatorRef.current) {
         const pos = calculatePos(x, y, curZoom);
         indicatorRef.current.style.left = `${pos.x}px`;

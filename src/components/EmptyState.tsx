@@ -25,7 +25,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ onAction }) => {
         <div className="flex items-center gap-2 md:gap-3 w-full justify-center">
           <button 
             onClick={() => onAction("note")}
-            className="flex flex-1 items-center justify-center gap-2 py-2.5 md:py-4 bg-chrome border border-border-subtle rounded-lg interactive-state hover:border-primary/40 group pointer-events-auto"
+            className="flex flex-1 items-center justify-center gap-2 py-3 md:py-4 bg-chrome border border-border-subtle rounded-lg interactive-state hover:border-primary/40 group pointer-events-auto"
           >
             <Plus size={16} className="text-primary md:size-[18px]" />
             <span className="text-[13px] md:text-sm font-bold">새 노트</span>
@@ -33,7 +33,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ onAction }) => {
           
           <button 
             onClick={() => onAction("image")}
-            className="flex flex-1 items-center justify-center gap-2 py-2.5 md:py-4 bg-chrome border border-border-subtle rounded-lg interactive-state hover:border-primary/40 group pointer-events-auto"
+            className="flex flex-1 items-center justify-center gap-2 py-3 md:py-4 bg-chrome border border-border-subtle rounded-lg interactive-state hover:border-primary/40 group pointer-events-auto"
           >
             <ImageIcon size={16} className="text-primary md:size-[18px]" />
             <span className="text-[13px] md:text-sm font-bold">이미지</span>
@@ -41,7 +41,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ onAction }) => {
 
           <button 
             onClick={() => onAction("audio")}
-            className="flex flex-1 items-center justify-center gap-2 py-2.5 md:py-4 bg-chrome border border-border-subtle rounded-lg interactive-state hover:border-primary/40 group pointer-events-auto"
+            className="flex flex-1 items-center justify-center gap-2 py-3 md:py-4 bg-chrome border border-border-subtle rounded-lg interactive-state hover:border-primary/40 group pointer-events-auto"
           >
             <Microphone size={16} className="text-primary md:size-[18px]" />
             <span className="text-[13px] md:text-sm font-bold">음성</span>

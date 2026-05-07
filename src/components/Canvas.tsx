@@ -226,7 +226,7 @@ export const Canvas: React.FC<CanvasProps> = ({
         ref={gridRef}
         className="absolute inset-0 pointer-events-none opacity-[0.08]"
         style={{
-          backgroundImage: `radial-gradient(circle, #ffffff 1px, transparent 1px)`,
+          backgroundImage: `radial-gradient(circle, var(--color-text-primary) 1px, transparent 1px)`,
           backgroundSize: `${40 * zoom}px ${40 * zoom}px`,
           backgroundPosition: `${offset.x % (40 * zoom)}px ${offset.y % (40 * zoom)}px`,
         }}
@@ -304,7 +304,7 @@ export const Canvas: React.FC<CanvasProps> = ({
                           e.stopPropagation(); 
                           window.dispatchEvent(new CustomEvent('archival-delete-drawing', { detail: draw.id })); 
                         }}
-                        className="p-1.5 bg-chrome border border-red-500/30 text-red-400 rounded-sm shadow-xl interactive-state hover:bg-red-500/20"
+                        className="p-2 bg-chrome border border-red-500/30 text-red-400 rounded-sm shadow-xl interactive-state hover:bg-red-500/20"
                         title="Delete drawing"
                       >
                         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>

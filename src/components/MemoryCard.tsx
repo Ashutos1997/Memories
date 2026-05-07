@@ -27,7 +27,7 @@ export const MemoryCard: React.FC<MemoryCardProps> = ({ serial, tag, date, varia
     switch (variant) {
       case 'noir':
         return {
-          container: "rounded-[2px] border-white/10 bg-black/40 backdrop-blur-md shadow-[0_30px_60px_rgba(0,0,0,0.8)]",
+          container: "rounded-sm border-white/10 bg-black/40 backdrop-blur-md shadow-[0_30px_60px_rgba(0,0,0,0.8)]",
           text: "font-serif tracking-tight text-white/90 leading-relaxed",
           accent: "text-white/40 font-serif italic uppercase tracking-[0.3em]",
           serial: "bg-white text-black rounded-none -top-6 left-0 px-3 py-1 shadow-2xl",
@@ -41,17 +41,17 @@ export const MemoryCard: React.FC<MemoryCardProps> = ({ serial, tag, date, varia
         };
       case 'scrapbook':
         return {
-          container: "rounded-[2px] border-[#E2D1C3] bg-[#F4E9D5] shadow-[5px_5px_15px_rgba(0,0,0,0.2)]",
-          text: "font-handwriting text-[#5D4037] leading-relaxed",
-          accent: "text-[#8D6E63] font-handwriting",
-          serial: "bg-[#8D6E63] text-white rounded-none -top-5 -rotate-2",
+          container: "rounded-sm border-scrapbook-border bg-scrapbook-surface shadow-[5px_5px_15px_rgba(0,0,0,0.2)]",
+          text: "font-handwriting text-scrapbook-text leading-relaxed",
+          accent: "text-scrapbook-accent font-handwriting",
+          serial: "bg-scrapbook-accent text-white rounded-none -top-4 -rotate-2",
         };
       default:
         return {
           container: "rounded-md border-border-subtle bg-surface glass",
           text: "font-normal text-text-primary",
           accent: "text-primary",
-          serial: "bg-primary text-primary-foreground rounded-sm -top-2.5",
+          serial: "bg-primary text-primary-foreground rounded-sm -top-2",
         };
     }
   };
@@ -60,7 +60,7 @@ export const MemoryCard: React.FC<MemoryCardProps> = ({ serial, tag, date, varia
 
   return (
     <article 
-      className={`group relative px-3.5 py-5 md:p-6 transition-all duration-500 border ${styles.container} ${className} ${isHighlighted ? 'ring-2 md:ring-4 ring-primary scale-[1.01]' : ''}`}
+      className={`group relative px-4 py-5 md:p-6 transition-all duration-500 border ${styles.container} ${className} ${isHighlighted ? 'ring-2 md:ring-4 ring-primary scale-[1.01]' : ''}`}
       style={{ 
         boxShadow: variant === 'default' ? (isHighlighted ? '0 0 30px hsla(38, 42%, 61%, 0.3), inset 0 1px 0 0 hsla(0, 0%, 100%, 0.1)' : 'inset 0 1px 0 0 hsla(0, 0%, 100%, 0.1), 0 10px 30px rgba(0, 0, 0, 0.4)') : undefined
       }}
@@ -69,10 +69,10 @@ export const MemoryCard: React.FC<MemoryCardProps> = ({ serial, tag, date, varia
 
       {variant === 'vector' && (
         <>
-          <div className="absolute -top-1.5 -left-1.5 w-3 h-3 border-t-2 border-l-2 border-accent z-[50]" />
-          <div className="absolute -top-1.5 -right-1.5 w-3 h-3 border-t-2 border-r-2 border-accent z-[50]" />
-          <div className="absolute -bottom-1.5 -left-1.5 w-3 h-3 border-b-2 border-l-2 border-accent z-[50]" />
-          <div className="absolute -bottom-1.5 -right-1.5 w-3 h-3 border-b-2 border-r-2 border-accent z-[50]" />
+          <div className="absolute -top-2 -left-2 w-3 h-3 border-t-2 border-l-2 border-accent z-[50]" />
+          <div className="absolute -top-2 -right-2 w-3 h-3 border-t-2 border-r-2 border-accent z-[50]" />
+          <div className="absolute -bottom-2 -left-2 w-3 h-3 border-b-2 border-l-2 border-accent z-[50]" />
+          <div className="absolute -bottom-2 -right-2 w-3 h-3 border-b-2 border-r-2 border-accent z-[50]" />
           <div className="absolute -bottom-5 right-0 text-[12px] font-mono text-primary/70 tracking-widest uppercase">
             X_{Math.round(x)}:Y_{Math.round(y)}
           </div>
@@ -84,32 +84,25 @@ export const MemoryCard: React.FC<MemoryCardProps> = ({ serial, tag, date, varia
       )}
 
       {(serial || tag) && (
-        <div className={`absolute left-6 px-2 py-0.5 shadow-lg z-[100] transform transition-all duration-500 ${styles.serial} ${isHighlighted ? 'scale-110' : ''} ${variant === 'vector' ? 'rounded-none' : ''}`}>
+        <div className={`absolute left-6 px-2 py-1 shadow-lg z-[100] transform transition-all duration-500 ${styles.serial} ${isHighlighted ? 'scale-110' : ''} ${variant === 'vector' ? 'rounded-none' : ''}`}>
           <span className={`text-[12px] font-mono font-bold tracking-[0.1em]`}>
             {tag ? `#${tag.toUpperCase()}` : serial}
           </span>
         </div>
       )}
 
-      <div className="absolute top-3.5 right-3.5 md:top-5 md:right-5 flex items-center gap-1 z-[100]">
+      <div className="absolute top-4 right-4 md:top-5 md:right-5 flex items-center gap-1 z-[100]">
         <button 
           onClick={(e) => { e.stopPropagation(); onDelete?.(); }}
-          className="opacity-30 md:opacity-0 md:group-hover:opacity-20 hover:!opacity-100 text-text-primary hover:text-red-400 p-0.5 interactive-state"
+          className="opacity-30 md:opacity-0 md:group-hover:opacity-20 hover:!opacity-100 text-text-primary hover:text-red-400 p-1 interactive-state"
           aria-label="Delete memory"
         >
           <Trash size={18} weight="bold" />
         </button>
         <div 
-          className="text-text-muted md:group-hover:text-text-secondary hover:!text-primary cursor-move p-0.5 interactive-state focus:outline-none focus:text-primary"
+          className="text-text-muted md:group-hover:text-text-secondary hover:!text-primary cursor-move p-1 interactive-state"
           onPointerDown={onDragStart}
-          role="button"
-          tabIndex={0}
-          aria-label="Drag to move memory"
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-            }
-          }}
+          aria-hidden="true"
         >
           <DotsSixVertical size={20} weight="bold" aria-hidden="true" />
         </div>
@@ -139,15 +132,15 @@ export const RawImageCard: React.FC<{
   onDragStart?: (e: React.PointerEvent) => void; 
   onDelete?: () => void;
 }> = ({ serial, tag, src, isHighlighted, variant = "default", x = 0, y = 0, onDragStart, onDelete }) => (
-  <article className={`group relative shadow-card hover:shadow-elevated transition-all duration-500 border ${variant === 'noir' ? 'rounded-[4px] border-white/20' : variant === 'vector' ? 'rounded-none border-2 border-primary shadow-[8px_8px_0px_var(--color-primary)]' : variant === 'scrapbook' ? 'rounded-[2px] border-[#E2D1C3] bg-white p-2 shadow-[5px_10px_20px_rgba(0,0,0,0.15)]' : 'rounded-lg border-border-subtle'} ${isHighlighted ? 'ring-2 ring-primary scale-[1.01]' : ''}`}>
+  <article className={`group relative shadow-card hover:shadow-elevated transition-all duration-500 border ${variant === 'noir' ? 'rounded-[4px] border-white/20' : variant === 'vector' ? 'rounded-none border-2 border-primary shadow-[8px_8px_0px_var(--color-primary)]' : variant === 'scrapbook' ? 'rounded-sm border-scrapbook-border bg-white p-2 shadow-[5px_10px_20px_rgba(0,0,0,0.15)]' : 'rounded-lg border-border-subtle'} ${isHighlighted ? 'ring-2 ring-primary scale-[1.01]' : ''}`}>
     <div className="absolute inset-0 bg-noise opacity-[0.03] pointer-events-none mix-blend-overlay" aria-hidden="true" />
     
     {variant === 'vector' && (
       <>
-        <div className="absolute -top-1.5 -left-1.5 w-3 h-3 border-t-2 border-l-2 border-primary z-[50]" />
-        <div className="absolute -top-1.5 -right-1.5 w-3 h-3 border-t-2 border-r-2 border-primary z-[50]" />
-        <div className="absolute -bottom-1.5 -left-1.5 w-3 h-3 border-b-2 border-l-2 border-primary z-[50]" />
-        <div className="absolute -bottom-1.5 -right-1.5 w-3 h-3 border-b-2 border-r-2 border-primary z-[50]" />
+        <div className="absolute -top-2 -left-2 w-3 h-3 border-t-2 border-l-2 border-primary z-[50]" />
+        <div className="absolute -top-2 -right-2 w-3 h-3 border-t-2 border-r-2 border-primary z-[50]" />
+        <div className="absolute -bottom-2 -left-2 w-3 h-3 border-b-2 border-l-2 border-primary z-[50]" />
+        <div className="absolute -bottom-2 -right-2 w-3 h-3 border-b-2 border-r-2 border-primary z-[50]" />
         <div className="absolute -bottom-5 right-0 text-[12px] font-mono text-primary/70 tracking-widest uppercase">
           X_{Math.round(x)}:Y_{Math.round(y)}
         </div>
@@ -157,7 +150,7 @@ export const RawImageCard: React.FC<{
       <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 bg-white/30 backdrop-blur-[2px] -rotate-2 border border-white/10 shadow-sm z-[200]" />
     )}
     {(serial || tag) && (
-      <div className={`absolute top-3 left-3 px-2 py-0.5 z-[100] shadow-xl transition-all duration-500 ${variant === 'noir' ? 'bg-white text-black' : variant === 'vector' ? 'bg-primary text-primary-foreground border-2 border-primary' : variant === 'scrapbook' ? 'bg-[#8D6E63] text-white -rotate-3' : 'bg-primary/90 backdrop-blur-md rounded-sm'} ${isHighlighted ? 'scale-110' : ''} ${variant === 'vector' ? 'rounded-none' : ''}`}>
+        <div className={`absolute top-3 left-3 px-2 py-1 z-[100] shadow-xl transition-all duration-500 ${variant === 'noir' ? 'bg-white text-black' : variant === 'vector' ? 'bg-primary text-primary-foreground border-2 border-primary' : variant === 'scrapbook' ? 'bg-scrapbook-accent text-white -rotate-3' : 'bg-primary/90 backdrop-blur-md rounded-sm'} ${isHighlighted ? 'scale-110' : ''} ${variant === 'vector' ? 'rounded-none' : ''}`}>
         <span className={`text-[12px] font-mono font-bold tracking-[0.1em]`}>
           {tag ? `#${tag.toUpperCase()}` : serial}
         </span>
@@ -166,22 +159,20 @@ export const RawImageCard: React.FC<{
     <div className="absolute top-3 right-3 flex items-center gap-1 z-[100]">
       <button 
         onClick={(e) => { e.stopPropagation(); onDelete?.(); }}
-        className={`opacity-60 md:opacity-0 md:group-hover:opacity-60 hover:!opacity-100 text-text-primary hover:text-red-400 p-1.5 bg-black/40 backdrop-blur-md interactive-state ${variant === 'vector' ? 'rounded-none border border-primary/20' : 'rounded-md'}`}
+        className={`opacity-60 md:opacity-0 md:group-hover:opacity-60 hover:!opacity-100 text-text-primary hover:text-red-400 p-2 bg-black/40 backdrop-blur-md interactive-state ${variant === 'vector' ? 'rounded-none border border-primary/20' : 'rounded-md'}`}
         aria-label="Delete image memory"
       >
         <Trash size={18} weight="bold" />
       </button>
       <div 
-        className={`text-text-muted md:group-hover:text-text-secondary hover:!text-text-primary cursor-move p-1.5 bg-black/40 backdrop-blur-md interactive-state focus:outline-none focus:text-white ${variant === 'vector' ? 'rounded-none border border-primary/20' : 'rounded-md'}`}
+        className={`text-text-muted md:group-hover:text-text-secondary hover:!text-text-primary cursor-move p-2 bg-black/40 backdrop-blur-md interactive-state ${variant === 'vector' ? 'rounded-none border border-primary/20' : 'rounded-md'}`}
         onPointerDown={onDragStart}
-        role="button"
-        tabIndex={0}
-        aria-label="Drag to move image memory"
+        aria-hidden="true"
       >
         <DotsSixVertical size={20} weight="bold" aria-hidden="true" />
       </div>
     </div>
-    <div className={`overflow-hidden ${variant === 'noir' ? 'rounded-[4px]' : variant === 'vector' ? 'rounded-none' : variant === 'scrapbook' ? 'rounded-[2px]' : 'rounded-sm'}`}>
+    <div className={`overflow-hidden ${variant === 'noir' ? 'rounded-[4px]' : variant === 'vector' ? 'rounded-none' : variant === 'scrapbook' ? 'rounded-sm' : 'rounded-sm'}`}>
       <img src={src} alt={`Memory Archive: ${serial || 'Image'}`} className={`w-full h-auto object-cover transition-all duration-700 block select-none ${isHighlighted ? 'opacity-100 scale-105' : 'opacity-90 group-hover:opacity-100'} ${variant === 'noir' ? 'border-[12px] border-white/5 shadow-inner' : variant === 'scrapbook' ? 'border border-black/5' : ''}`} draggable="false" />
     </div>
   </article>
@@ -246,8 +237,8 @@ export const TimelineCard: React.FC<{
     <div className="space-y-4 md:space-y-6">
       {items.map((item, i) => (
         <div key={i} className="relative">
-          <div className={`absolute -left-[22px] md:-left-[38px] top-1.5 md:top-2 w-1 md:w-1.5 h-1 md:h-1.5 interactive-state ${variant === 'vector' ? 'rounded-none bg-primary shadow-[4px_4px_0px_rgba(0,0,0,0.5)]' : 'rounded-full bg-primary shadow-[0_0_8px_hsla(38, 42%, 61%, 0.4)]'} ${isHighlighted ? 'bg-text-primary shadow-[0_0_12px_#fff]' : ''}`} />
-          <span className={`text-[12px] font-mono mb-0.5 md:mb-1 block uppercase tracking-[0.2em] font-bold transition-colors duration-500 ${isHighlighted ? 'text-text-primary' : 'text-primary/60'}`}>{item.time}</span>
+          <div className={`absolute -left-[22px] md:-left-[38px] top-2 w-1 md:w-2 h-1 md:h-2 interactive-state ${variant === 'vector' ? 'rounded-none bg-primary shadow-[4px_4px_0px_rgba(0,0,0,0.5)]' : 'rounded-full bg-primary shadow-[0_0_8px_hsla(38, 42%, 61%, 0.4)]'} ${isHighlighted ? 'bg-text-primary shadow-[0_0_12px_var(--color-text-primary)]' : ''}`} />
+          <span className={`text-[12px] font-mono mb-1 block uppercase tracking-[0.2em] font-bold transition-colors duration-500 ${isHighlighted ? 'text-text-primary' : 'text-primary/60'}`}>{item.time}</span>
           <p className={`text-[13px] md:text-[13px] font-normal leading-relaxed transition-colors duration-500 ${isHighlighted ? 'text-white' : 'text-white/90'}`}>{item.text}</p>
         </div>
       ))}
@@ -271,7 +262,7 @@ export const QuoteCard: React.FC<{
 }> = ({ serial, tag, date, quote, author, isHighlighted, variant, x, y, onDragStart, onDelete }) => (
   <MemoryCard type="quote" serial={serial} tag={tag} date={date} isHighlighted={isHighlighted} variant={variant} x={x} y={y} onDragStart={onDragStart} onDelete={onDelete}>
     <div className="relative py-1 md:py-4 pr-1 md:pr-4">
-      <span className={`absolute -top-3 md:-top-4 -left-3 md:-left-4 text-4xl md:text-6xl font-bold opacity-30 select-none transition-colors duration-500 ${isHighlighted ? 'text-white' : 'text-accent/10'}`}>"</span>
+      <span className={`absolute -top-3 md:-top-4 -left-3 md:-left-4 text-4xl md:text-6xl font-bold opacity-30 select-none transition-colors duration-500 ${isHighlighted ? 'text-white' : 'text-accent/10'}`}>&quot;</span>
       <blockquote className={`text-[16px] md:text-lg font-bold leading-relaxed tracking-tight italic transition-colors duration-500 ${isHighlighted ? 'text-white' : 'text-white/95'}`}>
         {quote}
       </blockquote>
