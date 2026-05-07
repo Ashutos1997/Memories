@@ -126,9 +126,8 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
             </div>
             <button 
               onClick={stopRecording}
-              className="bg-primary text-primary-foreground px-4 md:px-6 py-1.5 md:py-2 rounded-md font-bold text-[12px] md:text-[14px] interactive-state flex items-center gap-2 shadow-lg"
+              className="bg-primary text-primary-foreground px-4 md:px-6 py-1.5 md:py-2 rounded-md font-bold text-[12px] md:text-[14px] interactive-state shadow-lg"
             >
-              <Stop size={16} weight="bold" />
               완료
             </button>
           </div>
