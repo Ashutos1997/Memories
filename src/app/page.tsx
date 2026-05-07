@@ -399,9 +399,12 @@ export default function Home() {
       if (draggedMemoryId.current) {
         draggedMemoryId.current = null;
         draggedElementRef.current = null;
-        isDraggingMove.current = false;
         setActiveDragId(null);
         document.body.style.cursor = '';
+        // Small delay to prevent onClick from firing immediately after drag
+        setTimeout(() => {
+          isDraggingMove.current = false;
+        }, 50);
       }
     };
     window.addEventListener('pointermove', onGlobalMove);
