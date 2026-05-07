@@ -8,7 +8,7 @@ interface EmptyStateProps {
 
 export const EmptyState: React.FC<EmptyStateProps> = ({ onAction }) => {
   return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center p-6 z-10 pointer-events-none">
+    <div className="absolute inset-0 flex flex-col items-center justify-center p-6 pb-[10vh] z-10 pointer-events-none">
       <div className="max-w-[480px] w-full flex flex-col items-center gap-10 animate-[fadeIn_0.8s_ease-out] pointer-events-none">
         
         {/* Header Section */}
