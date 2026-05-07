@@ -437,13 +437,13 @@ export default function Home() {
     }`}>
       {/* Subtle Archive Title */}
       <div 
-        className={`fixed top-6 left-6 md:top-8 md:left-1/2 md:-translate-x-1/2 z-[100] pointer-events-none select-none transition-all duration-1000 animate-sharpen ${
+        className={`fixed top-4 md:top-8 left-6 md:left-1/2 md:-translate-x-1/2 z-[100] h-[40px] md:h-[56px] flex items-center pointer-events-none select-none transition-all duration-1000 animate-sharpen ${
           activeTemplate === 'scrapbook' ? 'text-scrapbook-accent opacity-40' : 
           activeTemplate === 'noir' ? 'text-white opacity-20' : 
           'text-primary opacity-30'
         }`}
       >
-        <h1 className="font-handwriting text-2xl md:text-3xl tracking-[0.4em] md:tracking-[0.8em] font-light">기억</h1>
+        <h1 className="font-handwriting text-2xl md:text-3xl tracking-[0.4em] md:tracking-[0.8em] font-light leading-none">기억</h1>
       </div>
 
       {activeTemplate === 'noir' && (
