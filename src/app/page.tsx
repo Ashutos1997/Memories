@@ -462,7 +462,7 @@ export default function Home() {
                   </div>
                 )}
               </div>
-              <span className={`text-[11px] font-mono tracking-[0.4em] uppercase font-bold ${manifestingType === 'image' ? 'text-text-muted' : 'text-primary/60'}`}>
+              <span className={`text-[12px] font-mono tracking-[0.4em] uppercase font-bold ${manifestingType === 'image' ? 'text-text-muted' : 'text-primary/60'}`}>
                 {manifestingType === 'audio' ? '오디오 동기화' : '기억 선명화'}
               </span>
             </div>

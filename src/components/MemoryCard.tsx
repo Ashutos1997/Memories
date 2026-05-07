@@ -73,7 +73,7 @@ export const MemoryCard: React.FC<MemoryCardProps> = ({ serial, tag, date, varia
           <div className="absolute -top-1.5 -right-1.5 w-3 h-3 border-t-2 border-r-2 border-accent z-[50]" />
           <div className="absolute -bottom-1.5 -left-1.5 w-3 h-3 border-b-2 border-l-2 border-accent z-[50]" />
           <div className="absolute -bottom-1.5 -right-1.5 w-3 h-3 border-b-2 border-r-2 border-accent z-[50]" />
-          <div className="absolute -bottom-5 right-0 text-[9px] font-mono text-primary/70 tracking-widest uppercase">
+          <div className="absolute -bottom-5 right-0 text-[12px] font-mono text-primary/70 tracking-widest uppercase">
             X_{Math.round(x)}:Y_{Math.round(y)}
           </div>
         </>
@@ -148,7 +148,7 @@ export const RawImageCard: React.FC<{
         <div className="absolute -top-1.5 -right-1.5 w-3 h-3 border-t-2 border-r-2 border-primary z-[50]" />
         <div className="absolute -bottom-1.5 -left-1.5 w-3 h-3 border-b-2 border-l-2 border-primary z-[50]" />
         <div className="absolute -bottom-1.5 -right-1.5 w-3 h-3 border-b-2 border-r-2 border-primary z-[50]" />
-        <div className="absolute -bottom-5 right-0 text-[9px] font-mono text-primary/70 tracking-widest uppercase">
+        <div className="absolute -bottom-5 right-0 text-[12px] font-mono text-primary/70 tracking-widest uppercase">
           X_{Math.round(x)}:Y_{Math.round(y)}
         </div>
       </>

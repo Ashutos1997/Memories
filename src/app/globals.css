@@ -20,7 +20,7 @@
 
   --color-text-primary: hsl(0, 0%, 100%);
   --color-text-secondary: hsla(0, 0%, 100%, 0.6);
-  --color-text-muted: hsla(0, 0%, 100%, 0.4);
+  --color-text-muted: hsla(0, 0%, 100%, 0.5);
 
   /* Spacing - 8pt Grid */
   --spacing-1: 4px;
@@ -35,10 +35,15 @@
   --radius-sm: 4px;   /* Badges, Tags, Small utility buttons */
   --radius-md: 8px;   /* Memory Cards, Primary buttons, Navigation items */
   --radius-lg: 12px;  /* Main Prompt Bar, Minimap, Popups */
+  --radius-xl: 16px;
   --radius-full: 9999px;
 
   /* Typography */
   --font-pretendard: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+
+  /* Elevation */
+  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.4);
+  --shadow-elevated: 0 20px 50px rgba(0, 0, 0, 0.6);
 
   /* Transitions */
   --transition-timing-function-archival: cubic-bezier(0.65, 0, 0.35, 1);
@@ -70,7 +75,8 @@ body {
 
 @layer utilities {
   .interactive-state {
-    @apply transition-all duration-300;
+    @apply duration-300;
+    transition-property: transform, filter, opacity, background-color, border-color, color, box-shadow;
     transition-timing-function: var(--transition-timing-function-archival);
   }
 

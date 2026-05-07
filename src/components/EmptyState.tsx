@@ -49,7 +49,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ onAction }) => {
         </div>
 
         {/* Minimal Shortcuts Footer */}
-        <div className="flex flex-wrap justify-center items-center gap-3 md:gap-4 text-[10px] md:text-[11px] font-mono text-text-muted/60 tracking-wider">
+        <div className="flex flex-wrap justify-center items-center gap-3 md:gap-4 text-[12px] font-mono text-text-muted/60 tracking-wider">
           <span className="flex items-center gap-1"><kbd className="text-primary">V</kbd> 선택</span>
           <span className="flex items-center gap-1"><kbd className="text-primary">H</kbd> 이동</span>
           <span className="flex items-center gap-1"><kbd className="text-primary">D</kbd> 그리기</span>
