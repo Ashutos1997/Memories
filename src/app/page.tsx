@@ -9,7 +9,6 @@ import { NoteCard, GalleryCard, TimelineCard, QuoteCard, RawImageCard, MemoryVar
 import { AudioMemoryCard } from "@/components/AudioMemoryCard";
 import { Image as ImageIcon, LockSimple } from "@phosphor-icons/react";
 import { InteractionMode } from "@/types";
-import { OnboardingOverlay } from "@/components/OnboardingOverlay";
 
 interface Memory {
   id: string;
@@ -81,8 +80,6 @@ export default function Home() {
   const [manifestingPos, setManifestingPos] = useState({ x: 0, y: 0 });
   const [manifestingType, setManifestingType] = useState<"text" | "image" | "audio">("text");
 
-  const [showOnboarding, setShowOnboarding] = useState(false);
-
 
 
   // Mobile Detection
@@ -111,12 +108,6 @@ export default function Home() {
       if (savedDrawings) setDrawings(savedDrawings);
       if (savedOffset) setOffset(savedOffset);
       if (savedZoom) setZoom(savedZoom);
-
-      // Check onboarding
-      const hasSeenOnboarding = localStorage.getItem("hasSeenOnboarding");
-      if (!hasSeenOnboarding) {
-        setShowOnboarding(true);
-      }
     };
     loadArchive();
   }, []);
@@ -571,15 +562,6 @@ export default function Home() {
         onModeChange={setInteractionMode} 
         activeTemplate={activeTemplate}
       />
-
-      {showOnboarding && (
-        <OnboardingOverlay 
-          onClose={() => {
-            setShowOnboarding(false);
-            localStorage.setItem("hasSeenOnboarding", "true");
-          }} 
-        />
-      )}
     </main>
     </>
   );
