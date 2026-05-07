@@ -16,6 +16,7 @@ interface AudioMemoryCardProps {
   y?: number;
   onDragStart?: (e: React.PointerEvent) => void;
   onDelete?: () => void;
+  isDragging?: boolean;
   className?: string;
 }
 
@@ -31,6 +32,7 @@ export const AudioMemoryCard: React.FC<AudioMemoryCardProps> = ({
   y,
   onDragStart, 
   onDelete, 
+  isDragging,
   className 
 }) => {
   return (
@@ -45,6 +47,7 @@ export const AudioMemoryCard: React.FC<AudioMemoryCardProps> = ({
       y={y}
       onDragStart={onDragStart} 
       onDelete={onDelete}
+      isDragging={isDragging}
       className={className}
     >
       <div className="py-1">
