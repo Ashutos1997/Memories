@@ -29,43 +29,43 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ onAction }) => {
         </div>
 
         {/* Staggered Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 md:gap-6 w-full max-w-[480px]">
+        <div className="grid grid-cols-3 gap-2 md:gap-6 w-full max-w-[480px]">
           <button 
             onClick={() => onAction("note")}
-            className="flex items-center gap-3 p-3 md:p-4 bg-chrome/40 backdrop-blur-md border border-white/5 rounded-lg interactive-state hover:border-primary/40 group pointer-events-auto md:-translate-y-4"
+            className="flex flex-col md:flex-row items-center gap-2 md:gap-3 p-2 md:p-4 bg-chrome/40 backdrop-blur-md border border-white/5 rounded-lg interactive-state hover:border-primary/40 group pointer-events-auto md:-translate-y-4"
           >
             <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
               <Plus size={16} className="text-primary md:size-[18px]" weight="bold" />
             </div>
-            <div className="flex flex-col items-start text-left">
-              <span className="text-[13px] md:text-[14px] font-bold text-white/90">새 노트</span>
-              <span className="text-[11px] text-text-muted font-mono tracking-wider">텍스트</span>
+            <div className="flex flex-col items-center md:items-start text-center md:text-left">
+              <span className="text-[12px] md:text-[14px] font-bold text-white/90">노트</span>
+              <span className="hidden md:block text-[11px] text-text-muted font-mono tracking-wider">텍스트</span>
             </div>
           </button>
           
           <button 
             onClick={() => onAction("image")}
-            className="flex items-center gap-3 p-3 md:p-4 bg-chrome/40 backdrop-blur-md border border-white/5 rounded-lg interactive-state hover:border-primary/40 group pointer-events-auto md:translate-y-2"
+            className="flex flex-col md:flex-row items-center gap-2 md:gap-3 p-2 md:p-4 bg-chrome/40 backdrop-blur-md border border-white/5 rounded-lg interactive-state hover:border-primary/40 group pointer-events-auto md:translate-y-2"
           >
             <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
               <ImageIcon size={16} className="text-primary md:size-[18px]" weight="bold" />
             </div>
-            <div className="flex flex-col items-start text-left">
-              <span className="text-[13px] md:text-[14px] font-bold text-white/90">이미지</span>
-              <span className="text-[11px] text-text-muted font-mono tracking-wider">비주얼</span>
+            <div className="flex flex-col items-center md:items-start text-center md:text-left">
+              <span className="text-[12px] md:text-[14px] font-bold text-white/90">이미지</span>
+              <span className="hidden md:block text-[11px] text-text-muted font-mono tracking-wider">비주얼</span>
             </div>
           </button>
 
           <button 
             onClick={() => onAction("audio")}
-            className="flex items-center gap-3 p-3 md:p-4 bg-chrome/40 backdrop-blur-md border border-white/5 rounded-lg interactive-state hover:border-primary/40 group pointer-events-auto md:-translate-y-2"
+            className="flex flex-col md:flex-row items-center gap-2 md:gap-3 p-2 md:p-4 bg-chrome/40 backdrop-blur-md border border-white/5 rounded-lg interactive-state hover:border-primary/40 group pointer-events-auto md:-translate-y-2"
           >
             <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
               <Microphone size={16} className="text-primary md:size-[18px]" weight="bold" />
             </div>
-            <div className="flex flex-col items-start text-left">
-              <span className="text-[13px] md:text-[14px] font-bold text-white/90">음성</span>
-              <span className="text-[11px] text-text-muted font-mono tracking-wider">오디오</span>
+            <div className="flex flex-col items-center md:items-start text-center md:text-left">
+              <span className="text-[12px] md:text-[14px] font-bold text-white/90">음성</span>
+              <span className="hidden md:block text-[11px] text-text-muted font-mono tracking-wider">오디오</span>
             </div>
           </button>
         </div>
