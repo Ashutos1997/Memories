@@ -1,0 +1,158 @@
+@import "tailwindcss";
+
+@theme {
+  /* Colors - Pure Obsidian Structured Palette */
+  --color-canvas: hsl(240, 10%, 4%);
+  --color-chrome: hsl(240, 10%, 7%);
+  
+  --color-primary: hsl(38, 42%, 61%); /* #c5a572 */
+  --color-primary-foreground: hsl(240, 10%, 4%);
+  
+  --color-secondary: hsl(240, 5%, 15%);
+  --color-secondary-foreground: hsl(0, 0%, 100%);
+
+  --color-surface: hsla(240, 10%, 7%, 0.8);
+  --color-surface-hover: hsla(240, 10%, 12%, 0.9);
+  
+  --color-border: hsla(0, 0%, 100%, 0.1);
+  --color-border-subtle: hsla(0, 0%, 100%, 0.05);
+  --color-border-focus: hsla(38, 42%, 61%, 0.5);
+
+  --color-text-primary: hsl(0, 0%, 100%);
+  --color-text-secondary: hsla(0, 0%, 100%, 0.6);
+  --color-text-muted: hsla(0, 0%, 100%, 0.4);
+
+  /* Spacing - 8pt Grid */
+  --spacing-1: 4px;
+  --spacing-2: 8px;
+  --spacing-3: 12px;
+  --spacing-4: 16px;
+  --spacing-6: 24px;
+  --spacing-8: 32px;
+  --spacing-12: 48px;
+
+  /* Radius - Archival Geometric System */
+  --radius-sm: 4px;   /* Badges, Tags, Small utility buttons */
+  --radius-md: 8px;   /* Memory Cards, Primary buttons, Navigation items */
+  --radius-lg: 12px;  /* Main Prompt Bar, Minimap, Popups */
+  --radius-full: 9999px;
+
+  /* Typography */
+  --font-pretendard: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+
+  /* Transitions */
+  --transition-timing-function-archival: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+:root {
+  --canvas: hsl(240, 10%, 4%);
+  --chrome: hsl(240, 10%, 7%);
+  --primary: hsl(38, 42%, 61%);
+}
+
+body {
+  background-color: var(--color-canvas);
+  color: var(--color-text-primary);
+  -webkit-font-smoothing: antialiased;
+  touch-action: none;
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  -webkit-text-size-adjust: none;
+}
+
+.glass {
+  background: rgba(18, 18, 20, 0.8);
+  backdrop-filter: blur(32px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+@layer utilities {
+  .interactive-state {
+    @apply transition-all duration-300;
+    transition-timing-function: var(--transition-timing-function-archival);
+  }
+
+  .interactive-state:hover {
+    @apply brightness-110;
+  }
+
+  .interactive-state:active {
+    @apply scale-[0.98] brightness-90;
+  }
+
+  .interactive-state:focus-visible {
+    @apply outline-none ring-2 ring-primary/50 ring-offset-2 ring-offset-canvas;
+  }
+}
+
+/* Manifestation: Blurred-to-sharp entry */
+@keyframes memoryManifest {
+  0% { 
+    opacity: 0; 
+    transform: translate(-50%, -40%) scale(0.98); 
+    filter: blur(12px); 
+  }
+  100% { 
+    opacity: 1; 
+    transform: translate(-50%, -50%) scale(1); 
+    filter: blur(0px); 
+  }
+}
+
+/* Disposal: Archival dissolution */
+@keyframes memoryDispose {
+  0% { 
+    opacity: 1; 
+    transform: translate(-50%, -50%) scale(1); 
+    filter: blur(0px); 
+    letter-spacing: normal;
+  }
+  100% { 
+    opacity: 0; 
+    transform: translate(-50%, -55%) scale(0.95); 
+    filter: blur(24px);
+    letter-spacing: 0.2em;
+  }
+}
+
+.animate-manifest {
+  animation: memoryManifest 0.8s var(--transition-timing-function-archival) forwards;
+}
+
+.animate-dispose {
+  animation: memoryDispose 0.7s var(--transition-timing-function-archival) forwards;
+}
+
+/* Ghost State: Manifesting placeholder */
+@keyframes ghostPulse {
+  0%, 100% { opacity: 0.05; border-color: hsla(0, 0%, 100%, 0.1); }
+  50% { opacity: 0.15; border-color: var(--color-primary); }
+}
+
+.animate-ghost {
+  animation: ghostPulse 3s ease-in-out infinite;
+}
+
+@keyframes ambientBreathing {
+  0%, 100% { opacity: 0.015; }
+  50% { opacity: 0.03; }
+}
+
+.bg-ambient {
+  background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.4) 100%), #0a0a0b;
+}
+
+.noise-breathing {
+  animation: ambientBreathing 8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
