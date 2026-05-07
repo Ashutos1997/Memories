@@ -18,7 +18,7 @@ interface EmptyStateProps {
 export const EmptyState: React.FC<EmptyStateProps> = ({ onAction, onModeChange }) => {
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center p-6 z-10 overflow-y-auto pointer-events-none">
-      <div className="max-w-[640px] w-full flex flex-col items-center gap-12 animate-[fadeIn_1s_ease-out] pointer-events-auto">
+      <div className="max-w-[640px] w-full flex flex-col items-center gap-12 animate-[fadeIn_1s_ease-out] pointer-events-none">
         
         {/* Header Section */}
         <div className="flex flex-col items-center text-center gap-4">
@@ -40,7 +40,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ onAction, onModeChange }
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
           <button 
             onClick={() => onAction("note")}
-            className="flex flex-col items-center gap-4 p-6 bg-chrome border border-border-subtle rounded-xl interactive-state hover:border-primary/40 group"
+            className="flex flex-col items-center gap-4 p-6 bg-chrome border border-border-subtle rounded-xl interactive-state hover:border-primary/40 group pointer-events-auto"
           >
             <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
               <Plus size={20} className="text-text-muted group-hover:text-primary" />
@@ -50,7 +50,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ onAction, onModeChange }
           
           <button 
             onClick={() => onAction("image")}
-            className="flex flex-col items-center gap-4 p-6 bg-chrome border border-border-subtle rounded-xl interactive-state hover:border-primary/40 group"
+            className="flex flex-col items-center gap-4 p-6 bg-chrome border border-border-subtle rounded-xl interactive-state hover:border-primary/40 group pointer-events-auto"
           >
             <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
               <ImageIcon size={20} className="text-text-muted group-hover:text-primary" />
@@ -60,7 +60,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ onAction, onModeChange }
 
           <button 
             onClick={() => onAction("audio")}
-            className="flex flex-col items-center gap-4 p-6 bg-chrome border border-border-subtle rounded-xl interactive-state hover:border-primary/40 group"
+            className="flex flex-col items-center gap-4 p-6 bg-chrome border border-border-subtle rounded-xl interactive-state hover:border-primary/40 group pointer-events-auto"
           >
             <div className="w-10 h-10 rounded-lg bg-white/5 flex items-center justify-center group-hover:bg-primary/10 transition-colors">
               <Microphone size={20} className="text-text-muted group-hover:text-primary" />
@@ -73,7 +73,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ onAction, onModeChange }
         <div className="w-full pt-8 border-t border-white/5">
           <div className="flex flex-wrap justify-center gap-6 md:gap-12">
             <div className="flex items-center gap-3">
-              <kbd className="w-8 h-8 flex items-center justify-center bg-white/5 border border-white/10 rounded text-[12px] font-mono font-bold text-primary">V</kbd>
+              <kbd className="w-8 h-8 flex items-center justify-center bg-white/5 border border-white/10 rounded text-[12px] font-mono font-bold text-primary pointer-events-auto">V</kbd>
               <div className="flex flex-col">
                 <span className="text-[11px] text-text-muted font-bold uppercase tracking-wider">선택 모드</span>
                 <CursorClick size={14} className="text-white/20" />
@@ -81,7 +81,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ onAction, onModeChange }
             </div>
 
             <div className="flex items-center gap-3">
-              <kbd className="w-8 h-8 flex items-center justify-center bg-white/5 border border-white/10 rounded text-[12px] font-mono font-bold text-primary">H</kbd>
+              <kbd className="w-8 h-8 flex items-center justify-center bg-white/5 border border-white/10 rounded text-[12px] font-mono font-bold text-primary pointer-events-auto">H</kbd>
               <div className="flex flex-col">
                 <span className="text-[11px] text-text-muted font-bold uppercase tracking-wider">이동 모드</span>
                 <HandPalm size={14} className="text-white/20" />
@@ -89,7 +89,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ onAction, onModeChange }
             </div>
 
             <div className="flex items-center gap-3">
-              <kbd className="w-8 h-8 flex items-center justify-center bg-white/5 border border-white/10 rounded text-[12px] font-mono font-bold text-primary">D</kbd>
+              <kbd className="w-8 h-8 flex items-center justify-center bg-white/5 border border-white/10 rounded text-[12px] font-mono font-bold text-primary pointer-events-auto">D</kbd>
               <div className="flex flex-col">
                 <span className="text-[11px] text-text-muted font-bold uppercase tracking-wider">드로잉 모드</span>
                 <PencilLine size={14} className="text-white/20" />
@@ -97,7 +97,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ onAction, onModeChange }
             </div>
 
             <div className="flex items-center gap-3">
-              <kbd className="w-8 h-8 flex items-center justify-center bg-white/5 border border-white/10 rounded text-[12px] font-mono font-bold text-primary">S</kbd>
+              <kbd className="w-8 h-8 flex items-center justify-center bg-white/5 border border-white/10 rounded text-[12px] font-mono font-bold text-primary pointer-events-auto">S</kbd>
               <div className="flex flex-col">
                 <span className="text-[11px] text-text-muted font-bold uppercase tracking-wider">저장소 검색</span>
                 <MagnifyingGlass size={14} className="text-white/20" />
@@ -105,7 +105,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ onAction, onModeChange }
             </div>
 
             <div className="flex items-center gap-3">
-              <kbd className="px-2 h-8 flex items-center justify-center bg-white/5 border border-white/10 rounded text-[12px] font-mono font-bold text-primary">+/-</kbd>
+              <kbd className="px-2 h-8 flex items-center justify-center bg-white/5 border border-white/10 rounded text-[12px] font-mono font-bold text-primary pointer-events-auto">+/-</kbd>
               <div className="flex flex-col">
                 <span className="text-[11px] text-text-muted font-bold uppercase tracking-wider">확대/축소</span>
                 <PlusMinus size={14} className="text-white/20" />
