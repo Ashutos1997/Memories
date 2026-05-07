@@ -17,8 +17,8 @@ interface EmptyStateProps {
 
 export const EmptyState: React.FC<EmptyStateProps> = ({ onAction, onModeChange }) => {
   return (
-    <div className="absolute inset-0 flex flex-col items-center justify-center p-6 z-10 overflow-y-auto">
-      <div className="max-w-[640px] w-full flex flex-col items-center gap-12 animate-[fadeIn_1s_ease-out]">
+    <div className="absolute inset-0 flex flex-col items-center justify-center p-6 z-10 overflow-y-auto pointer-events-none">
+      <div className="max-w-[640px] w-full flex flex-col items-center gap-12 animate-[fadeIn_1s_ease-out] pointer-events-auto">
         
         {/* Header Section */}
         <div className="flex flex-col items-center text-center gap-4">
