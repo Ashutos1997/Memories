@@ -13,9 +13,10 @@ interface PromptBarProps {
   mode: InteractionMode;
   onModeChange: (mode: InteractionMode) => void;
   activeTemplate: string;
+  externalAction?: { type: 'note' | 'image' | 'audio'; timestamp: number } | null;
 }
 
-export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSearch, onScrapbook, onReset, isLoading, mode, onModeChange, activeTemplate }) => {
+export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSearch, onScrapbook, onReset, isLoading, mode, onModeChange, activeTemplate, externalAction }) => {
   const [value, setValue] = useState("");
   const [showAttachmentPopup, setShowAttachmentPopup] = useState(false);
   const [statusIndicator, setStatusIndicator] = useState<{ message: string; type: 'info' | 'error' | 'success' } | null>(null);
@@ -43,6 +44,21 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
     }
     // We don't clear value here anymore to prevent losing tags when starting recordings
   }, [mode]);
+
+  useEffect(() => {
+    if (externalAction) {
+      if (externalAction.type === 'note') {
+        onModeChange('select');
+        setTimeout(() => inputRef.current?.focus(), 50);
+      } else if (externalAction.type === 'image') {
+        onModeChange('select');
+        setShowAttachmentPopup(true);
+      } else if (externalAction.type === 'audio') {
+        onModeChange('select');
+        setShowAttachmentPopup(true);
+      }
+    }
+  }, [externalAction]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

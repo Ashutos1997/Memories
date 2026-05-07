@@ -8,6 +8,7 @@ import { Minimap } from "@/components/Minimap";
 import { NoteCard, GalleryCard, TimelineCard, QuoteCard, RawImageCard, MemoryVariant } from "@/components/MemoryCard";
 import { AudioMemoryCard } from "@/components/AudioMemoryCard";
 import { Image as ImageIcon, LockSimple } from "@phosphor-icons/react";
+import { EmptyState } from "@/components/EmptyState";
 import { InteractionMode } from "@/types";
 
 interface Memory {
@@ -79,7 +80,7 @@ export default function Home() {
   
   const [manifestingPos, setManifestingPos] = useState({ x: 0, y: 0 });
   const [manifestingType, setManifestingType] = useState<"text" | "image" | "audio">("text");
-
+  const [externalAction, setExternalAction] = useState<{ type: 'note' | 'image' | 'audio'; timestamp: number } | null>(null);
 
 
   // Mobile Detection
@@ -438,20 +439,10 @@ export default function Home() {
         externalOffset={offset}
       >
         {memories.length === 0 && drawings.length === 0 && !isLoading && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none z-0">
-            <div className="flex flex-col items-center gap-6 animate-[fadeIn_2s_ease-in-out] opacity-40">
-              <div className="w-[1px] h-16 bg-gradient-to-b from-transparent via-primary to-transparent" />
-              <div className="flex flex-col items-center text-center gap-2">
-                <span className="text-[11px] md:text-[13px] font-mono tracking-[0.6em] uppercase text-primary font-bold whitespace-nowrap">
-                  기록을 시작하세요
-                </span>
-                <span className="text-[9px] md:text-[11px] font-mono tracking-[0.4em] uppercase text-text-muted whitespace-nowrap">
-                  Begin your archive in the infinite vault
-                </span>
-              </div>
-              <div className="w-[1px] h-16 bg-gradient-to-b from-transparent via-primary to-transparent" />
-            </div>
-          </div>
+          <EmptyState 
+            onModeChange={setInteractionMode}
+            onAction={(type) => setExternalAction({ type, timestamp: Date.now() })}
+          />
         )}
 
         {isLoading && (
@@ -561,6 +552,7 @@ export default function Home() {
         mode={interactionMode} 
         onModeChange={setInteractionMode} 
         activeTemplate={activeTemplate}
+        externalAction={externalAction}
       />
     </main>
     </>
