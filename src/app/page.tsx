@@ -438,13 +438,6 @@ export default function Home() {
         drawings={drawings}
         externalOffset={offset}
       >
-        {memories.length === 0 && drawings.length === 0 && !isLoading && (
-          <EmptyState 
-            onModeChange={setInteractionMode}
-            onAction={(type) => setExternalAction({ type, timestamp: Date.now() })}
-          />
-        )}
-
         {isLoading && (
           <div className="absolute z-[60] pointer-events-none animate-manifest" style={{ left: `calc(50% + ${manifestingPos.x}px)`, top: `calc(50% + ${manifestingPos.y}px)`, transform: 'translate(-50%, -50%)' }}>
             <div className={`flex flex-col items-center justify-center gap-2 md:gap-4 animate-ghost glass border-border-subtle rounded-md px-3.5 py-5 md:p-6 shadow-2xl ${
@@ -542,6 +535,13 @@ export default function Home() {
           </div>
         ))}
       </Canvas>
+
+      {memories.length === 0 && drawings.length === 0 && !isLoading && (
+        <EmptyState 
+          onModeChange={setInteractionMode}
+          onAction={(type) => setExternalAction({ type, timestamp: Date.now() })}
+        />
+      )}
       <PromptBar 
         onSubmit={handleAddMemory} 
         onUpload={handleFileUpload} 
