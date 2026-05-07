@@ -437,7 +437,7 @@ export default function Home() {
     }`}>
       {/* Subtle Archive Title */}
       <div 
-        className={`fixed top-4 md:top-8 left-1/2 -translate-x-1/2 z-[100] pointer-events-none select-none transition-all duration-1000 animate-sharpen ${
+        className={`fixed top-6 left-6 md:top-8 md:left-1/2 md:-translate-x-1/2 z-[100] pointer-events-none select-none transition-all duration-1000 animate-sharpen ${
           activeTemplate === 'scrapbook' ? 'text-scrapbook-accent opacity-40' : 
           activeTemplate === 'noir' ? 'text-white opacity-20' : 
           'text-primary opacity-30'

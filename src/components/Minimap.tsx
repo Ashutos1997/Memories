@@ -79,7 +79,7 @@ export const Minimap: React.FC<MinimapProps> = ({ memories, offset, zoom }) => {
   const initialPos = calculatePos(offset.x, offset.y, zoom);
 
   return (
-    <aside className="fixed top-4 md:top-auto md:bottom-8 left-4 md:left-auto md:right-8 z-[200]">
+    <aside className="fixed top-auto bottom-[120px] md:bottom-8 right-4 md:right-8 z-[200]">
       <div 
         className="border border-border-subtle shadow-[0_20px_50px_rgba(0,0,0,1)] rounded-lg bg-black overflow-hidden relative transition-all duration-300"
         style={{ width, height }}
