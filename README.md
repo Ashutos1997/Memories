@@ -2,7 +2,7 @@
 
 A high-fidelity, mobile-responsive archival interface designed for the spatial curation of memories. Built with a minimalist "Archival Obsidian" aesthetic, it transforms traditional data entry into a tactile, cinematic experience.
 
-![Memories Preview](https://via.placeholder.com/1200x600/0a0a0a/C5A572?text=MEMORIES:+INFINITE+SPATIAL+ARCHIVE)
+<img width="2856" height="1592" alt="image" src="https://github.com/user-attachments/assets/e919b152-f1db-43da-9121-0b8e0ae1ea63" />
 
 ## ✨ Core Features
 
