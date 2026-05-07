@@ -236,11 +236,11 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
             </div>
 
             {/* Mobile Mode Toggles */}
-            <div className="md:hidden flex items-center gap-1.5 bg-chrome border border-border-subtle rounded-md p-1 shadow-xl">
+            <div className="md:hidden flex items-center gap-1.5 bg-chrome border border-border-subtle rounded-lg p-1 shadow-xl">
               <button
                 type="button"
                 onClick={() => onModeChange("select")}
-                className={`w-[40px] h-[40px] rounded-sm flex items-center justify-center transition-all ${mode === 'select' ? 'bg-primary text-primary-foreground shadow-lg' : 'text-text-muted hover:text-text-primary'}`}
+                className={`w-[40px] h-[40px] rounded-md flex items-center justify-center transition-all ${mode === 'select' ? 'bg-primary text-primary-foreground shadow-lg' : 'text-text-muted hover:text-text-primary'}`}
                 aria-label="Selection mode"
               >
                 <CursorClick size={18} weight={mode === 'select' ? 'fill' : 'bold'} />
@@ -248,7 +248,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
               <button
                 type="button"
                 onClick={() => onModeChange("pan")}
-                className={`w-[40px] h-[40px] rounded-sm flex items-center justify-center transition-all ${mode === 'pan' ? 'bg-primary text-primary-foreground shadow-lg' : 'text-text-muted hover:text-text-primary'}`}
+                className={`w-[40px] h-[40px] rounded-md flex items-center justify-center transition-all ${mode === 'pan' ? 'bg-primary text-primary-foreground shadow-lg' : 'text-text-muted hover:text-text-primary'}`}
                 aria-label="Pan mode"
               >
                 <HandPalm size={18} weight={mode === 'pan' ? 'fill' : 'bold'} />
@@ -257,7 +257,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
               <button
                 type="button"
                 onClick={() => onModeChange(mode === 'search' ? 'select' : 'search')}
-                className={`w-[40px] h-[40px] rounded-sm flex items-center justify-center transition-all ${mode === 'search' ? 'bg-primary text-primary-foreground' : 'text-text-muted'}`}
+                className={`w-[40px] h-[40px] rounded-md flex items-center justify-center transition-all ${mode === 'search' ? 'bg-primary text-primary-foreground' : 'text-text-muted'}`}
                 aria-label="Search mode"
               >
                 <MagnifyingGlass size={18} weight={mode === 'search' ? 'fill' : 'bold'} />
@@ -268,16 +268,18 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
               <button
                 type="button"
                 onClick={() => onModeChange("draw")}
-                className={`w-[40px] h-[40px] rounded-sm flex items-center justify-center transition-all ${mode === 'draw' ? 'bg-primary text-primary-foreground' : 'text-text-muted'}`}
+                className={`w-[40px] h-[40px] rounded-md flex items-center justify-center transition-all ${mode === 'draw' ? 'bg-primary text-primary-foreground' : 'text-text-muted'}`}
                 aria-label="Draw mode"
               >
                 <PencilLine size={18} weight={mode === 'draw' ? 'fill' : 'bold'} />
               </button>
 
+              <div className="w-[1px] h-3 bg-border-subtle mx-0.5" />
+
               <button
                 type="button"
                 onClick={onScrapbook}
-                className={`w-[40px] h-[40px] rounded-sm flex items-center justify-center transition-all ${activeTemplate === 'scrapbook' ? 'bg-primary/20 text-primary border border-primary/20 shadow-inner' : 'text-text-muted'}`}
+                className={`w-[40px] h-[40px] rounded-md flex items-center justify-center transition-all ${activeTemplate === 'scrapbook' ? 'bg-primary/20 text-primary border border-primary/20 shadow-inner' : 'text-text-muted'}`}
                 aria-label="Scrapbook mode"
               >
                 <Notebook size={18} weight={activeTemplate === 'scrapbook' ? 'fill' : 'bold'} />
@@ -287,7 +289,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
                 <button
                   type="button"
                   onClick={onReset}
-                  className="w-[40px] h-[40px] rounded-sm flex items-center justify-center text-text-muted animate-[fadeIn_0.3s_ease-out]"
+                  className="w-[40px] h-[40px] rounded-md flex items-center justify-center text-text-muted animate-[fadeIn_0.3s_ease-out]"
                   aria-label="Reset layout"
                 >
                   <ArrowCounterClockwise size={18} weight="bold" />
