@@ -245,6 +245,9 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
               >
                 <CursorClick size={18} weight={mode === 'select' ? 'fill' : 'bold'} />
               </button>
+
+              <div className="w-[1px] h-3 bg-border-subtle mx-0.5" />
+
               <button
                 type="button"
                 onClick={() => onModeChange("pan")}
