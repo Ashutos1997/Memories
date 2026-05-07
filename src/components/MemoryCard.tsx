@@ -20,6 +20,7 @@ interface MemoryCardProps {
   isHighlighted?: boolean;
   onDragStart?: (e: React.PointerEvent) => void;
   onDelete?: () => void;
+  isDragging?: boolean;
 }
 
 export const MemoryCard: React.FC<MemoryCardProps> = ({ serial, tag, date, variant = "default", x = 0, y = 0, children, className, isHighlighted, onDragStart, onDelete, isDragging }) => {
