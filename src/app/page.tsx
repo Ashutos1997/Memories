@@ -435,6 +435,17 @@ export default function Home() {
       activeTemplate === 'scrapbook' ? 'bg-[#1a1410] bg-[url("https://www.transparenttextures.com/patterns/p6.png")]' : 
       'bg-canvas'
     }`}>
+      {/* Subtle Archive Title */}
+      <div 
+        className={`fixed top-4 md:top-8 left-1/2 -translate-x-1/2 z-[100] pointer-events-none select-none transition-all duration-1000 animate-sharpen ${
+          activeTemplate === 'scrapbook' ? 'text-scrapbook-accent opacity-40' : 
+          activeTemplate === 'noir' ? 'text-white opacity-20' : 
+          'text-primary opacity-30'
+        }`}
+      >
+        <h1 className="font-handwriting text-2xl md:text-3xl tracking-[0.4em] md:tracking-[0.8em] font-light">기억</h1>
+      </div>
+
       {activeTemplate === 'noir' && (
         <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_center,transparent_0%,rgba(0,0,0,0.8)_100%)] z-10" />
       )}
