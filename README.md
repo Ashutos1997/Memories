@@ -64,4 +64,4 @@ A high-fidelity, mobile-responsive archival interface designed for the spatial c
 
 ---
 
-Designed with 🖤 by the Archival Team.
+Ash J @2026
