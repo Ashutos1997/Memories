@@ -606,7 +606,7 @@ export default function Home() {
               className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-[0_0_80px_rgba(197,165,114,0.15)] animate-[scaleIn_0.4s_cubic-bezier(0.16,1,0.3,1)]"
             />
             <button 
-              className="px-6 py-2 bg-white/10 hover:bg-white/20 text-white rounded-full font-mono text-[12px] tracking-widest uppercase transition-colors"
+              className="px-6 py-2 bg-white/10 hover:bg-white/20 text-white rounded-md font-mono text-[12px] tracking-widest uppercase transition-colors"
               onClick={() => setLightboxImage(null)}
             >
               닫기 (ESC)
