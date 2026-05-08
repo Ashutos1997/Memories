@@ -122,12 +122,12 @@ export const MemoryCard: React.FC<MemoryCardProps> = ({ serial, tag, date, varia
         </div>
       </div>
 
-      <div className={`text-[14px] md:text-[15px] leading-relaxed max-w-prose relative z-10 pr-4 md:pr-8 transition-colors duration-500 ${styles.text} ${isHighlighted ? 'text-white' : ''}`}>
+      <div className={`text-[14px] md:text-[15px] leading-relaxed max-w-prose relative z-10 pr-4 md:pr-8 ${styles.text}`}>
         {children}
       </div>
 
       <div className="mt-3 md:mt-4 flex items-center gap-4">
-        <time dateTime={date} className={`text-[12px] font-mono tracking-[0.2em] uppercase font-bold transition-colors duration-500 ${styles.accent} ${isHighlighted ? 'opacity-100' : 'opacity-40'}`}>
+        <time dateTime={date} className={`text-[12px] font-mono tracking-[0.2em] uppercase font-bold opacity-40 transition-colors duration-500 ${styles.accent} ${isHighlighted ? 'opacity-100' : ''}`}>
           {date}
         </time>
       </div>
@@ -217,7 +217,7 @@ export const NoteCard: React.FC<{
   isDragging?: boolean;
 }> = ({ serial, tag, date, content, isHighlighted, variant, x, y, onDragStart, onDelete, isDragging }) => (
   <MemoryCard type="note" serial={serial} tag={tag} date={date} isHighlighted={isHighlighted} variant={variant} x={x} y={y} onDragStart={onDragStart} onDelete={onDelete} isDragging={isDragging}>
-    <p className="whitespace-pre-wrap">{content}</p>
+    <p className={`whitespace-pre-wrap ${variant === 'scrapbook' ? 'text-[#5D4037]' : ''}`}>{content}</p>
   </MemoryCard>
 );
 
@@ -264,9 +264,9 @@ export const TimelineCard: React.FC<{
     <div className="space-y-4 md:space-y-6">
       {items.map((item, i) => (
         <div key={i} className="relative">
-          <div className={`absolute -left-[22px] md:-left-[38px] top-1.5 md:top-2 w-1 md:w-1.5 h-1 md:h-1.5 interactive-state ${variant === 'vector' ? 'rounded-none bg-primary shadow-[4px_4px_0px_rgba(0,0,0,0.5)]' : 'rounded-full bg-primary shadow-[0_0_8px_hsla(38, 42%, 61%, 0.4)]'} ${isHighlighted ? 'bg-text-primary shadow-[0_0_12px_#fff]' : ''}`} />
-          <span className={`text-[12px] font-mono mb-0.5 md:mb-1 block uppercase tracking-[0.2em] font-bold transition-colors duration-500 ${isHighlighted ? 'text-text-primary' : 'text-primary/60'}`}>{item.time}</span>
-          <p className={`text-[13px] md:text-[13px] font-normal leading-relaxed transition-colors duration-500 ${isHighlighted ? 'text-white' : 'text-white/90'}`}>{item.text}</p>
+          <div className={`absolute -left-[22px] md:-left-[38px] top-1.5 md:top-2 w-1 md:w-1.5 h-1 md:h-1.5 interactive-state ${variant === 'vector' ? 'rounded-none bg-primary shadow-[4px_4px_0px_rgba(0,0,0,0.5)]' : 'rounded-full bg-primary shadow-[0_0_8px_hsla(38, 42%, 61%, 0.4)]'}`} />
+          <span className={`text-[12px] font-mono mb-0.5 md:mb-1 block uppercase tracking-[0.2em] font-bold text-primary/60`}>{item.time}</span>
+          <p className={`text-[13px] md:text-[13px] font-normal leading-relaxed`}>{item.text}</p>
         </div>
       ))}
     </div>
@@ -290,13 +290,13 @@ export const QuoteCard: React.FC<{
 }> = ({ serial, tag, date, quote, author, isHighlighted, variant, x, y, onDragStart, onDelete, isDragging }) => (
   <MemoryCard type="quote" serial={serial} tag={tag} date={date} isHighlighted={isHighlighted} variant={variant} x={x} y={y} onDragStart={onDragStart} onDelete={onDelete} isDragging={isDragging}>
     <div className="relative py-1 md:py-4 pr-1 md:pr-4">
-      <span className={`absolute -top-3 md:-top-4 -left-3 md:-left-4 text-4xl md:text-6xl font-bold opacity-30 select-none transition-colors duration-500 ${isHighlighted ? 'text-white' : 'text-accent/10'}`}>"</span>
-      <blockquote className={`text-[16px] md:text-lg font-bold leading-relaxed tracking-tight italic transition-colors duration-500 ${isHighlighted ? 'text-white' : 'text-white/95'}`}>
+      <span className={`absolute -top-3 md:-top-4 -left-3 md:-left-4 text-4xl md:text-6xl font-bold opacity-30 select-none transition-colors duration-500 text-accent/10`}>"</span>
+      <blockquote className={`text-[16px] md:text-lg font-bold leading-relaxed tracking-tight italic`}>
         {quote}
       </blockquote>
       <div className="flex items-center gap-3 md:gap-4 mt-4 md:mt-6">
-        <div className={`w-6 md:w-8 h-[1px] transition-colors duration-500 ${isHighlighted ? 'bg-white' : 'bg-accent/30'}`} />
-        <cite className={`text-[12px] font-bold not-italic tracking-[0.2em] uppercase transition-colors duration-500 ${isHighlighted ? 'text-white' : 'text-accent/80'}`}>{author}</cite>
+        <div className={`w-6 md:w-8 h-[1px] transition-colors duration-500 bg-accent/30`} />
+        <cite className={`text-[12px] font-bold not-italic tracking-[0.2em] uppercase transition-colors duration-500 text-accent/80`}>{author}</cite>
       </div>
     </div>
   </MemoryCard>

@@ -253,6 +253,34 @@ export default function Home() {
     }
   };
 
+  const handleStepChronological = useCallback((direction: 'prev' | 'next') => {
+    if (memories.length === 0) return;
+    
+    // Sort memories by date (newest first)
+    const sorted = [...memories].sort((a, b) => {
+      const dateA = new Date(a.date.replace('년 ', '-').replace('월 ', '-').replace('일', '')).getTime();
+      const dateB = new Date(b.date.replace('년 ', '-').replace('월 ', '-').replace('일', '')).getTime();
+      return dateB - dateA;
+    });
+
+    let targetIndex = 0;
+    if (highlightedId) {
+      const currentIndex = sorted.findIndex(m => m.id === highlightedId);
+      if (direction === 'prev') {
+        targetIndex = (currentIndex + 1) % sorted.length;
+      } else {
+        targetIndex = (currentIndex - 1 + sorted.length) % sorted.length;
+      }
+    } else {
+      // If nothing highlighted, start with the most recent (prev) or oldest (next)
+      targetIndex = direction === 'prev' ? 0 : sorted.length - 1;
+    }
+
+    const targetMemory = sorted[targetIndex];
+    setOffset({ x: -targetMemory.x * zoom, y: -targetMemory.y * zoom });
+    setHighlightedId(targetMemory.id);
+  }, [memories, highlightedId, zoom]);
+
   const onMemoryDragStart = (id: string, e: React.PointerEvent, element: HTMLDivElement) => {
     if (interactionMode !== 'select') return;
     e.stopPropagation();
@@ -489,6 +517,8 @@ export default function Home() {
         offset={offset} 
         onZoomIn={handleZoomIn} 
         onZoomOut={handleZoomOut} 
+        onPrevMemory={() => handleStepChronological('prev')}
+        onNextMemory={() => handleStepChronological('next')}
       />
       
       <Minimap memories={memories} offset={offset} zoom={zoom} />
