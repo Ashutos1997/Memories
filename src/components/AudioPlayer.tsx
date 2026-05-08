@@ -125,7 +125,7 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, variant = "defaul
       </div>
 
       {/* Time Display */}
-      <div className="flex items-center justify-between text-[12px] text-text-muted font-mono">
+      <div className={`flex items-center justify-between text-[12px] font-mono ${variant === 'scrapbook' ? 'text-[#5D4037]/60' : 'text-text-muted'}`}>
         <span>{formatTime(currentTime)}</span>
         <span>{formatTime(duration)}</span>
       </div>
