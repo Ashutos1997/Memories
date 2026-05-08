@@ -84,7 +84,7 @@ export default function Home() {
   const [manifestingType, setManifestingType] = useState<"text" | "image" | "audio">("text");
   const [externalAction, setExternalAction] = useState<{ type: 'note' | 'image' | 'audio'; timestamp: number } | null>(null);
   const [isInitialLoad, setIsInitialLoad] = useState(true);
-  const [focusedMemoryId, setFocusedMemoryId] = useState<string | null>(null);
+  const [lightboxImage, setLightboxImage] = useState<string | null>(null);
 
 
   // Mobile Detection
@@ -100,8 +100,8 @@ export default function Home() {
   useEffect(() => {
     const handlePopState = (e: PopStateEvent) => {
       // If we have an overlay open, close it and prevent default navigation
-      if (focusedMemoryId || interactionMode === 'search') {
-        setFocusedMemoryId(null);
+      if (lightboxImage || interactionMode === 'search') {
+        setLightboxImage(null);
         setInteractionMode('select');
       }
     };
@@ -109,14 +109,14 @@ export default function Home() {
     window.addEventListener('popstate', handlePopState);
     
     // When an overlay opens, push a dummy state to history
-    if (focusedMemoryId || interactionMode === 'search') {
+    if (lightboxImage || interactionMode === 'search') {
       window.history.pushState({ overlay: true }, "");
     }
 
     return () => {
       window.removeEventListener('popstate', handlePopState);
     };
-  }, [focusedMemoryId, interactionMode]);
+  }, [lightboxImage, interactionMode]);
 
   // Persistence Layer
   useEffect(() => {
@@ -253,20 +253,6 @@ export default function Home() {
     }
   };
 
-  const handleNextMemory = useCallback(() => {
-    if (!focusedMemoryId || memories.length === 0) return;
-    const currentIndex = memories.findIndex(m => m.id === focusedMemoryId);
-    const nextIndex = (currentIndex + 1) % memories.length;
-    setFocusedMemoryId(memories[nextIndex].id);
-  }, [focusedMemoryId, memories]);
-
-  const handlePrevMemory = useCallback(() => {
-    if (!focusedMemoryId || memories.length === 0) return;
-    const currentIndex = memories.findIndex(m => m.id === focusedMemoryId);
-    const prevIndex = (currentIndex - 1 + memories.length) % memories.length;
-    setFocusedMemoryId(memories[prevIndex].id);
-  }, [focusedMemoryId, memories]);
-
   const onMemoryDragStart = (id: string, e: React.PointerEvent, element: HTMLDivElement) => {
     if (interactionMode !== 'select') return;
     e.stopPropagation();
@@ -318,14 +304,8 @@ export default function Home() {
       else if (key === '+' || key === '=') { e.preventDefault(); handleZoomIn(); }
       else if (key === '-' || key === '_') { e.preventDefault(); handleZoomOut(); }
       else if (e.key === 'Escape') {
-        if (focusedMemoryId) setFocusedMemoryId(null);
+        if (lightboxImage) setLightboxImage(null);
         else if (interactionMode === 'search') setInteractionMode('select');
-      }
-      else if (e.key === 'ArrowRight' && focusedMemoryId) {
-        handleNextMemory();
-      }
-      else if (e.key === 'ArrowLeft' && focusedMemoryId) {
-        handlePrevMemory();
       }
     };
 
@@ -342,7 +322,7 @@ export default function Home() {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
     };
-  }, [handleZoomIn, handleZoomOut, interactionMode, focusedMemoryId]);
+  }, [handleZoomIn, handleZoomOut, interactionMode, lightboxImage]);
 
   // Template System Logic
   const applyTemplate = useCallback((templateId: string) => {
@@ -623,7 +603,7 @@ export default function Home() {
                 <div onClick={(e) => {
                   if (!isDraggingMove.current) {
                     e.stopPropagation();
-                    setFocusedMemoryId(memory.data.src);
+                    setLightboxImage(memory.data.src);
                   }
                 }}>
                   <RawImageCard serial={memory.serial} tag={memory.tag} src={memory.data.src} onDelete={() => handleDeleteMemory(memory.id)} isHighlighted={highlightedId === memory.id} variant={activeTemplate} x={memory.x} y={memory.y} isDragging={activeDragId === memory.id} />
@@ -655,40 +635,17 @@ export default function Home() {
       />
 
       {/* Focus Mode Lightbox */}
-      {focusedMemoryId && (
+      {lightboxImage && (
         <div 
-          className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/95 backdrop-blur-2xl animate-[fadeIn_0.3s_ease-out] p-4 md:p-12 overflow-hidden"
-          onClick={() => setFocusedMemoryId(null)}
+          className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/90 backdrop-blur-xl animate-[fadeIn_0.3s_ease-out] cursor-zoom-out p-4 md:p-12"
+          onClick={() => setLightboxImage(null)}
         >
-          {/* Progress Indicator */}
-          <div className="fixed top-6 left-1/2 -translate-x-1/2 z-[1002] flex items-center gap-1.5 px-3 py-1.5 bg-white/5 border border-white/10 rounded-full font-mono text-[10px] text-white/40 tracking-[0.2em] uppercase">
-            <span>{memories.findIndex(m => m.id === focusedMemoryId) + 1}</span>
-            <span className="opacity-20">/</span>
-            <span>{memories.length}</span>
-          </div>
-
-          {/* Navigation Controls - Desktop */}
-          <button 
-            className="fixed left-6 top-1/2 -translate-y-1/2 z-[1002] w-12 h-12 hidden md:flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-white transition-all hover:scale-110 active:scale-90 border border-white/5"
-            onClick={(e) => { e.stopPropagation(); handlePrevMemory(); }}
-            aria-label="Previous memory"
-          >
-            <div className="w-3 h-3 border-l-2 border-t-2 border-white -rotate-45 translate-x-1" />
-          </button>
-
-          <button 
-            className="fixed right-6 top-1/2 -translate-y-1/2 z-[1002] w-12 h-12 hidden md:flex items-center justify-center rounded-full bg-white/5 hover:bg-white/10 text-white transition-all hover:scale-110 active:scale-90 border border-white/5"
-            onClick={(e) => { e.stopPropagation(); handleNextMemory(); }}
-            aria-label="Next memory"
-          >
-            <div className="w-3 h-3 border-r-2 border-t-2 border-white rotate-45 -translate-x-1" />
-          </button>
           {/* Top Right Close Button for Mobile/Desktop Ergonomics */}
           <button 
             className="fixed top-6 right-6 md:top-12 md:right-12 z-[1001] w-12 h-12 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white transition-all hover:scale-110 active:scale-95"
             onClick={(e) => {
               e.stopPropagation();
-              setFocusedMemoryId(null);
+              setLightboxImage(null);
             }}
             aria-label="Close lightbox"
           >
@@ -698,50 +655,18 @@ export default function Home() {
             </div>
           </button>
 
-          <div 
-            className="relative w-full max-w-4xl h-full flex flex-col items-center justify-center gap-8 animate-[focusIn_0.5s_cubic-bezier(0.16,1,0.3,1)]"
-            onClick={e => e.stopPropagation()}
-          >
-            {(() => {
-              const memory = memories.find(m => m.id === focusedMemoryId);
-              if (!memory) return null;
-              
-              return (
-                <div className="w-full flex flex-col items-center gap-8">
-                  <div className="w-full max-w-[500px] scale-[1.1] md:scale-[1.25] transition-transform duration-500">
-                    {memory.type === "note" && <NoteCard id={memory.id} serial={memory.serial} tag={memory.tag} date={memory.date} content={memory.data.content} onDelete={() => { handleDeleteMemory(memory.id); setFocusedMemoryId(null); }} isHighlighted={false} variant={activeTemplate} x={memory.x} y={memory.y} isDragging={false} />}
-                    {memory.type === "gallery" && <GalleryCard id={memory.id} serial={memory.serial} tag={memory.tag} date={memory.date} images={Array.isArray(memory.data.content) ? memory.data.content : []} onDelete={() => { handleDeleteMemory(memory.id); setFocusedMemoryId(null); }} isHighlighted={false} variant={activeTemplate} x={memory.x} y={memory.y} isDragging={false} />}
-                    {memory.type === "timeline" && <TimelineCard id={memory.id} serial={memory.serial} tag={memory.tag} date={memory.date} items={Array.isArray(memory.data.content) ? memory.data.content : []} onDelete={() => { handleDeleteMemory(memory.id); setFocusedMemoryId(null); }} isHighlighted={false} variant={activeTemplate} x={memory.x} y={memory.y} isDragging={false} />}
-                    {memory.type === "quote" && <QuoteCard id={memory.id} serial={memory.serial} tag={memory.tag} date={memory.date} quote={memory.data.content} author={memory.data.author || "익명"} onDelete={() => { handleDeleteMemory(memory.id); setFocusedMemoryId(null); }} isHighlighted={false} variant={activeTemplate} x={memory.x} y={memory.y} isDragging={false} />}
-                    {memory.type === "image-raw" && <RawImageCard serial={memory.serial} tag={memory.tag} src={memory.data.src} onDelete={() => { handleDeleteMemory(memory.id); setFocusedMemoryId(null); }} isHighlighted={false} variant={activeTemplate} x={memory.x} y={memory.y} isDragging={false} />}
-                    {memory.type === "audio" && <AudioMemoryCard id={memory.id} serial={memory.serial} tag={memory.tag} date={memory.date} src={memory.data.src} onDelete={() => { handleDeleteMemory(memory.id); setFocusedMemoryId(null); }} isHighlighted={false} variant={activeTemplate} x={memory.x} y={memory.y} isDragging={false} />}
-                  </div>
-                  
-                  {/* Mobile Navigation Helpers */}
-                  <div className="md:hidden flex items-center gap-12 mt-8">
-                    <button 
-                      className="w-14 h-14 flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-white active:bg-white/10 active:scale-90 transition-all"
-                      onClick={handlePrevMemory}
-                    >
-                      <div className="w-4 h-4 border-l-2 border-t-2 border-white -rotate-45 translate-x-1" />
-                    </button>
-                    <button 
-                      className="w-14 h-14 flex items-center justify-center rounded-full bg-white/5 border border-white/10 text-white active:bg-white/10 active:scale-90 transition-all"
-                      onClick={handleNextMemory}
-                    >
-                      <div className="w-4 h-4 border-r-2 border-t-2 border-white rotate-45 -translate-x-1" />
-                    </button>
-                  </div>
-
-                  <button 
-                    className="mt-4 px-8 py-3 bg-white/10 hover:bg-white/20 text-white rounded-md font-mono text-[12px] tracking-[0.3em] uppercase transition-all hover:tracking-[0.4em] active:scale-95"
-                    onClick={() => setFocusedMemoryId(null)}
-                  >
-                    닫기 (ESC)
-                  </button>
-                </div>
-              );
-            })()}
+          <div className="relative max-w-full max-h-full flex flex-col items-center gap-4" onClick={e => e.stopPropagation()}>
+            <img 
+              src={lightboxImage} 
+              alt="Archival Focus" 
+              className="max-w-full max-h-[85vh] object-contain rounded-lg shadow-[0_0_80px_rgba(197,165,114,0.15)] animate-[scaleIn_0.4s_cubic-bezier(0.16,1,0.3,1)]"
+            />
+            <button 
+              className="px-6 py-2 bg-white/10 hover:bg-white/20 text-white rounded-md font-mono text-[12px] tracking-widest uppercase transition-colors"
+              onClick={() => setLightboxImage(null)}
+            >
+              닫기 (ESC)
+            </button>
           </div>
         </div>
       )}
