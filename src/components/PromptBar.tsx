@@ -60,6 +60,27 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
     }
   }, [externalAction]);
 
+  // History Support for Popup
+  useEffect(() => {
+    const handlePopState = () => {
+      if (showAttachmentPopup) setShowAttachmentPopup(false);
+    };
+    window.addEventListener('popstate', handlePopState);
+    if (showAttachmentPopup) window.history.pushState({ popup: true }, "");
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, [showAttachmentPopup]);
+
+  // Escape Support for Popup
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && showAttachmentPopup) {
+        setShowAttachmentPopup(false);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [showAttachmentPopup]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!value.trim()) return;

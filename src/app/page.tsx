@@ -95,6 +95,29 @@ export default function Home() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
+  // --- Navigation & History Logic ---
+  // This ensures that 'Back' button/gesture closes overlays instead of exiting the app
+  useEffect(() => {
+    const handlePopState = (e: PopStateEvent) => {
+      // If we have an overlay open, close it and prevent default navigation
+      if (lightboxImage || interactionMode === 'search') {
+        setLightboxImage(null);
+        setInteractionMode('select');
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    
+    // When an overlay opens, push a dummy state to history
+    if (lightboxImage || interactionMode === 'search') {
+      window.history.pushState({ overlay: true }, "");
+    }
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [lightboxImage, interactionMode]);
+
   // Persistence Layer
   useEffect(() => {
     const loadArchive = async () => {
@@ -280,6 +303,10 @@ export default function Home() {
       }
       else if (key === '+' || key === '=') { e.preventDefault(); handleZoomIn(); }
       else if (key === '-' || key === '_') { e.preventDefault(); handleZoomOut(); }
+      else if (e.key === 'Escape') {
+        if (lightboxImage) setLightboxImage(null);
+        else if (interactionMode === 'search') setInteractionMode('select');
+      }
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
@@ -295,7 +322,7 @@ export default function Home() {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
     };
-  }, [handleZoomIn, handleZoomOut, interactionMode]);
+  }, [handleZoomIn, handleZoomOut, interactionMode, lightboxImage]);
 
   // Template System Logic
   const applyTemplate = useCallback((templateId: string) => {
@@ -613,7 +640,22 @@ export default function Home() {
           className="fixed inset-0 z-[1000] flex items-center justify-center bg-black/90 backdrop-blur-xl animate-[fadeIn_0.3s_ease-out] cursor-zoom-out p-4 md:p-12"
           onClick={() => setLightboxImage(null)}
         >
-          <div className="relative max-w-full max-h-full flex flex-col items-center gap-4">
+          {/* Top Right Close Button for Mobile/Desktop Ergonomics */}
+          <button 
+            className="fixed top-6 right-6 md:top-12 md:right-12 z-[1001] w-12 h-12 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 text-white transition-all hover:scale-110 active:scale-95"
+            onClick={(e) => {
+              e.stopPropagation();
+              setLightboxImage(null);
+            }}
+            aria-label="Close lightbox"
+          >
+            <div className="relative w-6 h-6">
+              <div className="absolute top-1/2 left-0 w-full h-[2px] bg-white rotate-45" />
+              <div className="absolute top-1/2 left-0 w-full h-[2px] bg-white -rotate-45" />
+            </div>
+          </button>
+
+          <div className="relative max-w-full max-h-full flex flex-col items-center gap-4" onClick={e => e.stopPropagation()}>
             <img 
               src={lightboxImage} 
               alt="Archival Focus" 
