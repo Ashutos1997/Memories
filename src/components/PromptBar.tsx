@@ -361,6 +361,17 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
                 </div>
               )}
               
+              {mode === 'search' && (
+                <button
+                  type="button"
+                  onClick={() => onModeChange('select')}
+                  className="flex items-center justify-center w-8 h-8 md:w-11 md:h-11 rounded-md border border-border-subtle bg-white/5 text-text-muted hover:text-text-primary hover:bg-white/10 interactive-state mr-2"
+                  aria-label="Exit search"
+                >
+                  <ArrowCounterClockwise weight="bold" className="w-4 h-4 md:w-5 md:h-5" />
+                </button>
+              )}
+
               <input type="file" ref={fileInputRef} onChange={(e) => onUpload?.(e.target.files![0], value)} className="hidden" accept="image/*" />
               
               <input
