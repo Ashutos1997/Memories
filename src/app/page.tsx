@@ -539,27 +539,63 @@ export default function Home() {
       >
         {isLoading && (
           <div className="absolute z-[60] pointer-events-none animate-manifest" style={{ left: `calc(50% + ${manifestingPos.x}px)`, top: `calc(50% + ${manifestingPos.y}px)`, transform: 'translate(-50%, -50%)' }}>
-            <div className={`flex flex-col items-center justify-center gap-2 md:gap-4 animate-ghost glass border-border-subtle rounded-md px-4 py-5 md:p-6 shadow-2xl ${
+            <div className={`flex flex-col items-center justify-center gap-2 md:gap-4 animate-ghost shadow-2xl transition-all duration-700 ${
+              activeTemplate === 'noir' ? 'rounded-archival border border-white/10 bg-black/40 backdrop-blur-md shadow-[0_30px_60px_rgba(0,0,0,0.8)]' :
+              activeTemplate === 'vector' ? 'rounded-none border-2 border-primary bg-canvas shadow-[8px_8px_0px_var(--color-primary)]' :
+              activeTemplate === 'scrapbook' ? 'rounded-archival border border-scrapbook-border bg-scrapbook-surface shadow-[5px_5px_15px_rgba(0,0,0,0.2)]' :
+              'glass border border-border-subtle rounded-md'
+            } px-4 py-5 md:p-6 ${
               manifestingType === 'image' ? 'w-[200px] md:w-[320px] h-[140px] md:h-[200px]' : 
               manifestingType === 'audio' ? 'w-[85vw] max-w-[320px] md:max-w-[400px] h-[100px] md:h-[120px]' :
               'w-[85vw] max-w-[320px] md:max-w-[400px] h-[160px] md:h-[240px]'
             }`}>
+              {activeTemplate === 'vector' && (
+                <>
+                  <div className="absolute -top-1.5 -left-1.5 w-3 h-3 border-t-2 border-l-2 border-primary" />
+                  <div className="absolute -top-1.5 -right-1.5 w-3 h-3 border-t-2 border-r-2 border-primary" />
+                </>
+              )}
+              {activeTemplate === 'scrapbook' && (
+                <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-12 h-4 bg-white/20 backdrop-blur-[1px] -rotate-1 border border-white/10" />
+              )}
+              
               <div className="relative">
                 {manifestingType === 'image' ? (
-                  <ImageIcon size={32} className="text-primary/20" />
+                  <ImageIcon size={32} className={
+                    activeTemplate === 'scrapbook' ? 'text-scrapbook-accent/30' :
+                    activeTemplate === 'noir' ? 'text-white/20' :
+                    'text-primary/30'
+                  } />
                 ) : manifestingType === 'audio' ? (
                   <div className="flex items-center gap-1.5 h-6">
                     {[1,2,3,4,5].map(i => (
-                      <div key={i} className="w-1 bg-primary/40 rounded-full animate-pulse" style={{ height: `${20 + Math.random() * 80}%`, animationDelay: `${i * 0.2}s` }} />
+                      <div key={i} className={`w-1 rounded-full animate-pulse ${
+                        activeTemplate === 'scrapbook' ? 'bg-scrapbook-accent/40' :
+                        activeTemplate === 'noir' ? 'bg-white/40' :
+                        'bg-primary/40'
+                      }`} style={{ height: `${20 + Math.random() * 80}%`, animationDelay: `${i * 0.2}s` }} />
                     ))}
                   </div>
                 ) : (
-                  <div className="w-8 h-8 md:w-10 md:h-10 border-2 border-primary/20 rounded-sm animate-pulse flex items-center justify-center">
-                    <div className="w-3 h-3 md:w-4 md:h-4 bg-primary/20" />
+                  <div className={`w-8 h-8 md:w-10 md:h-10 border-2 rounded-sm animate-pulse flex items-center justify-center ${
+                    activeTemplate === 'scrapbook' ? 'border-scrapbook-accent/20' :
+                    activeTemplate === 'noir' ? 'border-white/20' :
+                    'border-primary/20'
+                  }`}>
+                    <div className={`w-3 h-3 md:w-4 md:h-4 ${
+                      activeTemplate === 'scrapbook' ? 'bg-scrapbook-accent/20' :
+                      activeTemplate === 'noir' ? 'bg-white/20' :
+                      'bg-primary/20'
+                    }`} />
                   </div>
                 )}
               </div>
-              <span className={`text-[12px] font-mono tracking-[0.4em] uppercase font-bold ${manifestingType === 'image' ? 'text-text-muted' : 'text-primary/60'}`}>
+              <span className={`text-[11px] md:text-[12px] tracking-[0.4em] uppercase font-bold text-center ${
+                activeTemplate === 'scrapbook' ? 'text-scrapbook-accent/60 font-handwriting' :
+                activeTemplate === 'noir' ? 'text-white/40 font-serif' :
+                activeTemplate === 'vector' ? 'text-primary/70 font-mono' :
+                'text-primary/60 font-mono'
+              }`}>
                 {manifestingType === 'audio' ? '오디오 동기화' : '기억 선명화'}
               </span>
             </div>
