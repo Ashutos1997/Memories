@@ -166,10 +166,10 @@ export default function Home() {
   const handleZoomIn = useCallback(() => setZoom(prev => Math.min(prev + 0.1, 2)), []);
   const handleZoomOut = useCallback(() => setZoom(prev => Math.max(prev - 0.1, 0.1)), []);
 
-  const handleAddMemory = async (prompt: string) => {
+  const handleAddMemory = async (prompt: string, customTag?: string) => {
     // Extract tag if present (e.g., #vacation)
     const tagMatch = prompt.match(/#(\w+)/);
-    const tag = tagMatch ? tagMatch[1] : undefined;
+    const tag = customTag || (tagMatch ? tagMatch[1] : undefined);
     const cleanContent = prompt.replace(/#(\w+)/, '').trim();
 
     const currentPosX = -offset.x / zoom;
@@ -193,9 +193,9 @@ export default function Home() {
     setIsLoading(false);
   };
 
-  const handleFileUpload = async (file: File, prompt?: string) => {
+  const handleFileUpload = async (file: File, prompt?: string, customTag?: string) => {
     const tagMatch = prompt?.match(/#(\w+)/);
-    const tag = tagMatch ? tagMatch[1] : undefined;
+    const tag = customTag || (tagMatch ? tagMatch[1] : undefined);
 
     const isAudio = file.type.startsWith('audio/');
     const currentPosX = -offset.x / zoom;

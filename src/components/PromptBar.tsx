@@ -4,8 +4,8 @@ import { AttachmentPopup } from "./AttachmentPopup";
 import { InteractionMode } from "../types";
 
 interface PromptBarProps {
-  onSubmit: (prompt: string) => void;
-  onUpload?: (file: File, prompt?: string) => void;
+  onSubmit: (prompt: string, tag?: string) => void;
+  onUpload?: (file: File, prompt?: string, tag?: string) => void;
   onSearch?: (query: string) => void;
   onScrapbook?: () => void;
   onReset?: () => void;
@@ -21,6 +21,15 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
   const [showAttachmentPopup, setShowAttachmentPopup] = useState(false);
   const [statusIndicator, setStatusIndicator] = useState<{ message: string; type: 'info' | 'error' | 'success' } | null>(null);
   
+  // Tag Flow States
+  const [showTagInput, setShowTagInput] = useState(false);
+  const [tagValue, setTagValue] = useState("");
+  const [pendingContent, setPendingContent] = useState<{
+    type: 'text' | 'image' | 'audio';
+    value?: string;
+    file?: File;
+  } | null>(null);
+
   // Recording States
   const [isRecording, setIsRecording] = useState(false);
   const [recordingTime, setRecordingTime] = useState(0);
@@ -64,22 +73,30 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
   useEffect(() => {
     const handlePopState = () => {
       if (showAttachmentPopup) setShowAttachmentPopup(false);
+      if (showTagInput) {
+        setShowTagInput(false);
+        setPendingContent(null);
+      }
     };
     window.addEventListener('popstate', handlePopState);
-    if (showAttachmentPopup) window.history.pushState({ popup: true }, "");
+    if (showAttachmentPopup || showTagInput) window.history.pushState({ popup: true }, "");
     return () => window.removeEventListener('popstate', handlePopState);
-  }, [showAttachmentPopup]);
+  }, [showAttachmentPopup, showTagInput]);
 
   // Escape Support for Popup
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && showAttachmentPopup) {
-        setShowAttachmentPopup(false);
+      if (e.key === 'Escape') {
+        if (showAttachmentPopup) setShowAttachmentPopup(false);
+        if (showTagInput) {
+          setShowTagInput(false);
+          setPendingContent(null);
+        }
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [showAttachmentPopup]);
+  }, [showAttachmentPopup, showTagInput]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -88,15 +105,17 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
     if (mode === 'search') {
       onSearch?.(value);
     } else if (!isLoading) {
-      onSubmit(value);
-      setValue("");
+      setPendingContent({ type: 'text', value });
+      setShowTagInput(true);
+      setTagValue("");
     }
   };
 
   const handleImageSelect = (file: File) => {
-    onUpload?.(file, value);
+    setPendingContent({ type: 'image', file, value });
+    setShowTagInput(true);
+    setTagValue("");
     setShowAttachmentPopup(false);
-    setValue("");
   };
 
   const startRecording = async () => {
@@ -114,8 +133,9 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
         const blob = new Blob(chunksRef.current, { type: 'audio/wav' });
         const file = new File([blob], 'recording.wav', { type: 'audio/wav' });
         // Use the captured valueRef to avoid stale closures
-        onUpload?.(file, valueRef.current);
-        setValue("");
+        setPendingContent({ type: 'audio', file, value: valueRef.current });
+        setShowTagInput(true);
+        setTagValue("");
         stream.getTracks().forEach(track => track.stop());
       };
 
@@ -151,9 +171,67 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
     startRecording();
   };
 
+  const handleTagSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!pendingContent) return;
+
+    const finalTag = tagValue.trim();
+    
+    if (pendingContent.type === 'text') {
+      onSubmit(pendingContent.value || "", finalTag);
+    } else if (pendingContent.file) {
+      onUpload?.(pendingContent.file, pendingContent.value, finalTag);
+    }
+
+    setShowTagInput(false);
+    setTagValue("");
+    setPendingContent(null);
+    setValue("");
+  };
+
   return (
     <>
       <div className="fixed bottom-4 md:bottom-[32px] left-1/2 -translate-x-1/2 w-full max-w-[840px] z-[200] px-3 md:px-6">
+        
+        {/* Tag Input Popup */}
+        {showTagInput && (
+          <div className="absolute bottom-full left-3 right-3 md:left-1/2 md:right-auto md:-translate-x-1/2 mb-4 md:mb-6 w-auto md:w-[320px] bg-chrome/95 backdrop-blur-2xl border border-primary/40 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.6)] p-4 md:p-5 animate-[fadeIn_0.2s_ease-out] z-[500]">
+            <form onSubmit={handleTagSubmit} className="flex flex-col gap-3 md:gap-4">
+              <div className="flex flex-col gap-1.5">
+                <label htmlFor="tag-input" className="text-[10px] md:text-[11px] font-mono font-bold text-primary tracking-[0.2em] uppercase opacity-70">
+                  기억 분류 태그 (최대 14자)
+                </label>
+                <div className="relative flex items-center">
+                  <span className="absolute left-3 text-primary/50 font-mono font-bold text-[14px] md:text-[16px]">#</span>
+                  <input
+                    id="tag-input"
+                    autoFocus
+                    type="text"
+                    value={tagValue}
+                    onChange={(e) => setTagValue(e.target.value.replace(/\s+/g, '').slice(0, 14))}
+                    placeholder="TAG..."
+                    className="w-full bg-white/5 border border-white/10 rounded-md py-2 md:py-3 pl-8 pr-4 text-white font-mono font-bold text-[14px] md:text-[16px] focus:outline-none focus:border-primary/50 transition-colors placeholder:text-white/20"
+                  />
+                </div>
+              </div>
+              <button
+                type="submit"
+                disabled={!tagValue.trim()}
+                className="w-full bg-primary text-primary-foreground py-2 md:py-3 rounded-md font-bold text-[12px] md:text-[14px] tracking-widest uppercase interactive-state shadow-lg border border-transparent disabled:bg-white/5 disabled:text-white/20 disabled:border-white/10 disabled:shadow-none"
+              >
+                저장 완료 (ENTER)
+              </button>
+              <button
+                type="button"
+                onClick={() => { setShowTagInput(false); setPendingContent(null); }}
+                className="w-full py-2 md:py-3 rounded-md border border-border-subtle bg-white/5 text-text-muted hover:text-text-primary hover:bg-white/10 interactive-state font-bold text-[10px] md:text-[12px] tracking-[0.2em] uppercase"
+              >
+                취소
+              </button>
+            </form>
+          </div>
+        )}
+
         {isRecording ? (
           <div className="flex items-center justify-between bg-[#121214] border border-accent/40 rounded-[16px] p-2 md:p-3 shadow-2xl h-[48px] md:h-[64px] animate-[fadeIn_0.3s_ease-out]">
             <div className="flex items-center gap-3 px-4">
@@ -388,7 +466,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
               <button
                 type="submit"
                 disabled={!value.trim() || (isLoading && mode !== 'search')}
-                className={`relative overflow-hidden px-3 md:px-6 py-1.5 md:py-2.5 rounded-md interactive-state font-bold hover:brightness-110 flex items-center gap-2 text-[12px] md:text-sm bg-primary text-primary-foreground disabled:opacity-10 disabled:grayscale h-full md:h-auto`}
+                className={`relative overflow-hidden px-3 md:px-6 py-1.5 md:py-2.5 rounded-md interactive-state font-bold flex items-center gap-2 text-[12px] md:text-sm bg-primary text-primary-foreground h-full md:h-auto border border-transparent disabled:bg-white/5 disabled:text-white/20 disabled:border-white/10 disabled:shadow-none`}
               >
                 {isLoading && mode !== 'search' && <div className="w-3 h-3 md:w-4 md:h-4 border-2 border-primary-foreground rounded-full animate-spin" />}
                 <span>{mode === 'search' ? '검색' : '기억'}</span>
