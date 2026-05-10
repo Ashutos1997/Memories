@@ -65,6 +65,48 @@ const loadFromDB = async (key: string): Promise<any> => {
   }
 };
 
+// --- Image Compression Utility ---
+const compressImage = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      const img = new Image();
+      img.src = event.target?.result as string;
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const MAX_WIDTH = 1200;
+        const MAX_HEIGHT = 1200;
+        let width = img.width;
+        let height = img.height;
+
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height *= MAX_WIDTH / width;
+            width = MAX_WIDTH;
+          }
+        } else {
+          if (height > MAX_HEIGHT) {
+            width *= MAX_HEIGHT / height;
+            height = MAX_HEIGHT;
+          }
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        ctx?.drawImage(img, 0, 0, width, height);
+        
+        // Quality 0.7 for good balance between size and detail
+        const dataUrl = canvas.toDataURL("image/jpeg", 0.7);
+        resolve(dataUrl);
+      };
+      img.onerror = (e) => reject(e);
+    };
+    reader.onerror = (e) => reject(e);
+  });
+};
+
 export default function Home() {
   const [memories, setMemories] = useState<Memory[]>([]);
   const canvasRef = useRef<HTMLDivElement>(null);
@@ -203,9 +245,22 @@ export default function Home() {
     setManifestingPos({ x: currentPosX, y: currentPosY });
     setManifestingType(isAudio ? "audio" : "image");
     setIsLoading(true);
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      const base64String = reader.result as string;
+
+    try {
+      let src: string;
+      if (isAudio) {
+        // Audio doesn't need compression for now, just read as data URL
+        src = await new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => resolve(reader.result as string);
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+      } else {
+        // Compress and resize images to prevent broken images on mobile due to size limits
+        src = await compressImage(file);
+      }
+
       const newId = Math.random().toString(36).substring(7);
       const newMemory: Memory = {
         id: newId,
@@ -215,12 +270,15 @@ export default function Home() {
         date: new Date().toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' }),
         x: currentPosX,
         y: currentPosY,
-        data: { src: base64String },
+        data: { src },
       };
       setMemories(prev => [...prev, newMemory]);
+    } catch (error) {
+      console.error("File processing error:", error);
+      // Fallback or alert could go here
+    } finally {
       setIsLoading(false);
-    };
-    reader.readAsDataURL(file);
+    }
   };
 
   const handleDeleteMemory = async (id: string) => {
