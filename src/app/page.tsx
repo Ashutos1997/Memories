@@ -623,6 +623,13 @@ export default function Home() {
         onDrawingDragStart={onDrawingDragStart}
         drawings={drawings}
         externalOffset={offset}
+        onClick={() => {
+          if (searchQuery || interactionMode === 'search') {
+            setSearchQuery(null);
+            setHighlightedId(null);
+            setInteractionMode('select');
+          }
+        }}
       >
         {isLoading && (
           <div className="absolute z-[60] pointer-events-none animate-manifest" style={{ left: `calc(50% + ${manifestingPos.x}px)`, top: `calc(50% + ${manifestingPos.y}px)`, transform: 'translate(-50%, -50%)' }}>

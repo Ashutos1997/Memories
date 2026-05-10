@@ -12,6 +12,7 @@ interface CanvasProps {
   onDrawingDragStart?: (id: string, e: React.PointerEvent) => void;
   externalOffset?: { x: number; y: number };
   drawings?: { id: string; points: { x: number; y: number }[] }[];
+  onClick?: () => void;
 }
 
 const ARCHIVAL_TRANSITION = "transform 0.7s cubic-bezier(0.65, 0, 0.35, 1)";
@@ -25,7 +26,8 @@ export const Canvas: React.FC<CanvasProps> = ({
   onDrawComplete,
   onDrawingDragStart,
   externalOffset,
-  drawings = []
+  drawings = [],
+  onClick
 }) => {
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [currentPath, setCurrentPath] = useState<{ x: number; y: number }[] | null>(null);
@@ -38,6 +40,7 @@ export const Canvas: React.FC<CanvasProps> = ({
   const wheelTimeout = useRef<NodeJS.Timeout | null>(null);
   const lastTouchDistance = useRef<number | null>(null);
   const lastTouchMidpoint = useRef<{ x: number; y: number } | null>(null);
+  const totalMovement = useRef(0);
   
   const currentOffset = useRef({ x: 0, y: 0 });
   const [vSize, setVSize] = useState({ w: 1200, h: 900 });
@@ -164,6 +167,7 @@ export const Canvas: React.FC<CanvasProps> = ({
   const onPointerDown = (e: React.PointerEvent) => {
     if (mode === "pan") {
       isInteracting.current = true;
+      totalMovement.current = 0;
       lastPos.current = { x: e.clientX, y: e.clientY };
       (e.target as HTMLElement).setPointerCapture(e.pointerId);
       if (containerRef.current) containerRef.current.style.transition = "none";
@@ -181,6 +185,7 @@ export const Canvas: React.FC<CanvasProps> = ({
     if (mode === "pan") {
       const dx = e.clientX - lastPos.current.x;
       const dy = e.clientY - lastPos.current.y;
+      totalMovement.current += Math.abs(dx) + Math.abs(dy);
       currentOffset.current.x += dx;
       currentOffset.current.y += dy;
       lastPos.current = { x: e.clientX, y: e.clientY };
@@ -205,6 +210,10 @@ export const Canvas: React.FC<CanvasProps> = ({
     } else if (mode === "draw" && currentPath && currentPath.length > 1) {
       onDrawComplete?.(currentPath);
       setCurrentPath(null);
+    }
+    
+    if (totalMovement.current < 5) {
+      onClick?.();
     }
   };
 
