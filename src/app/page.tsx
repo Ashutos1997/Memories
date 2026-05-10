@@ -141,7 +141,7 @@ export default function Home() {
   const [manifestingPos, setManifestingPos] = useState({ x: 0, y: 0 });
   const [manifestingType, setManifestingType] = useState<"text" | "image" | "audio">("text");
   const [externalAction, setExternalAction] = useState<{ type: 'note' | 'image' | 'audio'; timestamp: number } | null>(null);
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [isInitialLoad, setIsInitialLoad] = useState(false);
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
 
 

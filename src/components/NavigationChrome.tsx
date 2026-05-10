@@ -51,12 +51,12 @@ export const NavigationChrome: React.FC<NavigationChromeProps> = ({ memories, zo
         {/* Zoom Controls */}
         <div className="flex items-center gap-0.5 md:gap-1 pr-1">
           <button 
-            onClick={onZoomIn}
+            onClick={onZoomOut}
             className="w-7 h-7 md:w-10 md:h-10 rounded-md flex items-center justify-center text-text-muted hover:text-text-primary hover:bg-white/5 interactive-state"
-            aria-label="Zoom in (+)"
-            title="확대 (+)"
+            aria-label="Zoom out (-)"
+            title="축소 (-)"
           >
-            <Plus className="w-3.5 h-3.5 md:w-4 md:h-4" weight="bold" />
+            <Minus className="w-3.5 h-3.5 md:w-4 md:h-4" weight="bold" />
           </button>
           
           <div className="px-1 md:px-2 min-w-[32px] md:min-w-[48px] text-center">
@@ -66,12 +66,12 @@ export const NavigationChrome: React.FC<NavigationChromeProps> = ({ memories, zo
           </div>
 
           <button 
-            onClick={onZoomOut}
+            onClick={onZoomIn}
             className="w-7 h-7 md:w-10 md:h-10 rounded-md flex items-center justify-center text-text-muted hover:text-text-primary hover:bg-white/5 interactive-state"
-            aria-label="Zoom out (-)"
-            title="축소 (-)"
+            aria-label="Zoom in (+)"
+            title="확대 (+)"
           >
-            <Minus className="w-3.5 h-3.5 md:w-4 md:h-4" weight="bold" />
+            <Plus className="w-3.5 h-3.5 md:w-4 md:h-4" weight="bold" />
           </button>
         </div>
       </div>
