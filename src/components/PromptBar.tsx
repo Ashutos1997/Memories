@@ -14,9 +14,10 @@ interface PromptBarProps {
   onModeChange: (mode: InteractionMode) => void;
   activeTemplate: string;
   externalAction?: { type: 'note' | 'image' | 'audio'; timestamp: number } | null;
+  existingTags?: string[];
 }
 
-export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSearch, onScrapbook, onReset, isLoading, mode, onModeChange, activeTemplate, externalAction }) => {
+export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSearch, onScrapbook, onReset, isLoading, mode, onModeChange, activeTemplate, externalAction, existingTags = [] }) => {
   const [value, setValue] = useState("");
   const [showAttachmentPopup, setShowAttachmentPopup] = useState(false);
   const [statusIndicator, setStatusIndicator] = useState<{ message: string; type: 'info' | 'error' | 'success' } | null>(null);
@@ -24,6 +25,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
   // Tag Flow States
   const [showTagInput, setShowTagInput] = useState(false);
   const [tagValue, setTagValue] = useState("");
+  const [tagExists, setTagExists] = useState(false);
   const [pendingContent, setPendingContent] = useState<{
     type: 'text' | 'image' | 'audio';
     value?: string;
@@ -108,6 +110,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
       setPendingContent({ type: 'text', value });
       setShowTagInput(true);
       setTagValue("");
+      setTagExists(false);
     }
   };
 
@@ -115,6 +118,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
     setPendingContent({ type: 'image', file, value });
     setShowTagInput(true);
     setTagValue("");
+    setTagExists(false);
     setShowAttachmentPopup(false);
   };
 
@@ -136,6 +140,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
         setPendingContent({ type: 'audio', file, value: valueRef.current });
         setShowTagInput(true);
         setTagValue("");
+        setTagExists(false);
         stream.getTracks().forEach(track => track.stop());
       };
 
@@ -185,6 +190,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
 
     setShowTagInput(false);
     setTagValue("");
+    setTagExists(false);
     setPendingContent(null);
     setValue("");
   };
@@ -208,15 +214,24 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
                     autoFocus
                     type="text"
                     value={tagValue}
-                    onChange={(e) => setTagValue(e.target.value.replace(/\s+/g, '').slice(0, 14))}
+                    onChange={(e) => {
+                      const val = e.target.value.replace(/\s+/g, '').slice(0, 14);
+                      setTagValue(val);
+                      setTagExists(existingTags.some(t => t?.toLowerCase() === val.toLowerCase()));
+                    }}
                     placeholder="TAG..."
-                    className="w-full bg-white/5 border border-white/10 rounded-md py-2 md:py-3 pl-8 pr-4 text-white font-mono font-bold text-[14px] md:text-[16px] focus:outline-none focus:border-primary/50 transition-colors placeholder:text-white/20"
+                    className={`w-full bg-white/5 border rounded-md py-2 md:py-3 pl-8 pr-4 text-white font-mono font-bold text-[14px] md:text-[16px] focus:outline-none transition-colors placeholder:text-white/20 ${tagExists ? 'border-red-500/50 focus:border-red-500' : 'border-white/10 focus:border-primary/50'}`}
                   />
                 </div>
+                {tagExists && (
+                  <span className="text-[10px] md:text-[11px] text-red-400 font-medium animate-[fadeIn_0.2s_ease-out]">
+                    이미 사용 중인 태그입니다.
+                  </span>
+                )}
               </div>
               <button
                 type="submit"
-                disabled={!tagValue.trim()}
+                disabled={!tagValue.trim() || tagExists}
                 className="w-full bg-primary text-primary-foreground py-2 md:py-3 rounded-md font-bold text-[12px] md:text-[14px] tracking-widest uppercase interactive-state shadow-lg border border-transparent disabled:bg-white/5 disabled:text-white/20 disabled:border-white/10 disabled:shadow-none"
               >
                 저장 완료 (ENTER)

@@ -772,6 +772,7 @@ export default function Home() {
         onModeChange={setInteractionMode} 
         activeTemplate={activeTemplate}
         externalAction={externalAction}
+        existingTags={memories.map(m => m.tag).filter((t): t is string => !!t)}
       />
 
       {/* Focus Mode Lightbox */}
