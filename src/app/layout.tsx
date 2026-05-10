@@ -36,7 +36,7 @@ export default function RootLayout({
   return (
     <html lang="ko" className={`${noto.variable}`}>
       <head>
-        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+        <link rel="apple-touch-icon" href="/icons/icon.svg" />
       </head>
       <body className="font-noto touch-none">
         {children}
