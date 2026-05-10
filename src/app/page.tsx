@@ -143,6 +143,7 @@ export default function Home() {
   const [externalAction, setExternalAction] = useState<{ type: 'note' | 'image' | 'audio'; timestamp: number } | null>(null);
   const [isInitialLoad, setIsInitialLoad] = useState(false);
   const [lightboxImage, setLightboxImage] = useState<string | null>(null);
+  const [searchQuery, setSearchQuery] = useState<string | null>(null);
 
 
   // Mobile Detection
@@ -315,6 +316,14 @@ export default function Home() {
   }, []);
 
   const handleSearchRetrieve = (query: string) => {
+    if (query.trim() === "") {
+      setSearchQuery(null);
+      setHighlightedId(null);
+      return;
+    }
+
+    setSearchQuery(query);
+
     const memory = memories.find(m => 
       m.tag?.toLowerCase() === query.toLowerCase().replace('#', '') ||
       m.serial.toLowerCase() === query.toLowerCase() || 
@@ -407,7 +416,11 @@ export default function Home() {
       else if (key === '-' || key === '_') { e.preventDefault(); handleZoomOut(); }
       else if (e.key === 'Escape') {
         if (lightboxImage) setLightboxImage(null);
-        else if (interactionMode === 'search') setInteractionMode('select');
+        else if (interactionMode === 'search' || searchQuery) {
+          setInteractionMode('select');
+          setSearchQuery(null);
+          setHighlightedId(null);
+        }
       }
     };
 
@@ -734,7 +747,18 @@ export default function Home() {
             }} 
             onPointerDown={(e) => onMemoryDragStart(memory.id, e, e.currentTarget)}
           >
-            <div className={`${memory.type === 'image-raw' ? 'w-[200px] md:w-[320px]' : 'w-[85vw] max-w-[320px] md:max-w-[400px]'} ${activeDragId === memory.id ? 'scale-[1.02] rotate-[2deg]' : ''} transition-transform duration-300`}>
+            <div 
+              className={`
+                ${memory.type === 'image-raw' ? 'w-[200px] md:w-[320px]' : 'w-[85vw] max-w-[320px] md:max-w-[400px]'} 
+                ${activeDragId === memory.id ? 'scale-[1.02] rotate-[2deg]' : ''} 
+                transition-all duration-300
+                ${searchQuery && !(
+                  memory.tag?.toLowerCase().includes(searchQuery.toLowerCase().replace('#', '')) ||
+                  memory.serial.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                  (memory.type === 'note' && memory.data.content.toLowerCase().includes(searchQuery.toLowerCase()))
+                ) ? 'opacity-20 grayscale scale-[0.98] blur-[1px]' : 'opacity-100'}
+              `}
+            >
               {memory.type === "note" && <NoteCard id={memory.id} serial={memory.serial} tag={memory.tag} date={memory.date} content={memory.data.content} onDelete={() => handleDeleteMemory(memory.id)} isHighlighted={highlightedId === memory.id} variant={activeTemplate} x={memory.x} y={memory.y} isDragging={activeDragId === memory.id} />}
               {memory.type === "gallery" && <GalleryCard id={memory.id} serial={memory.serial} tag={memory.tag} date={memory.date} images={Array.isArray(memory.data.content) ? memory.data.content : []} onDelete={() => handleDeleteMemory(memory.id)} isHighlighted={highlightedId === memory.id} variant={activeTemplate} x={memory.x} y={memory.y} isDragging={activeDragId === memory.id} />}
               {memory.type === "timeline" && <TimelineCard id={memory.id} serial={memory.serial} tag={memory.tag} date={memory.date} items={Array.isArray(memory.data.content) ? memory.data.content : []} onDelete={() => handleDeleteMemory(memory.id)} isHighlighted={highlightedId === memory.id} variant={activeTemplate} x={memory.x} y={memory.y} isDragging={activeDragId === memory.id} />}

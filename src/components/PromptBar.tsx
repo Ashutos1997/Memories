@@ -133,11 +133,37 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
         if (e.data.size > 0) chunksRef.current.push(e.data);
       };
 
-      mediaRecorder.onstop = () => {
+      mediaRecorder.onstop = async () => {
         const blob = new Blob(chunksRef.current, { type: 'audio/wav' });
         const file = new File([blob], 'recording.wav', { type: 'audio/wav' });
-        // Use the captured valueRef to avoid stale closures
-        setPendingContent({ type: 'audio', file, value: valueRef.current });
+        
+        setStatusIndicator({ message: "음성 분석 중...", type: 'info' });
+        
+        let transcribedValue = "";
+        try {
+          const formData = new FormData();
+          formData.append('file', file);
+          
+          const response = await fetch('/api/transcribe', {
+            method: 'POST',
+            body: formData,
+          });
+          
+          const data = await response.json();
+          if (data.text) {
+            transcribedValue = data.text;
+            setValue(data.text);
+            setStatusIndicator({ message: "분석 완료", type: 'success' });
+            setTimeout(() => setStatusIndicator(null), 2000);
+          }
+        } catch (error) {
+          console.error("Transcription error:", error);
+          setStatusIndicator({ message: "음성 분석 실패", type: 'error' });
+          setTimeout(() => setStatusIndicator(null), 2000);
+        }
+
+        const transcribedText = transcribedValue || valueRef.current;
+        setPendingContent({ type: 'audio', file, value: transcribedText });
         setShowTagInput(true);
         setTagValue("");
         setTagExists(false);
