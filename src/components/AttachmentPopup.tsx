@@ -53,7 +53,7 @@ export const AttachmentPopup: React.FC<AttachmentPopupProps> = ({
   return (
     <div 
       ref={popupRef}
-      className="absolute bottom-full left-0 mb-6 z-[300] w-[260px] bg-chrome/90 backdrop-blur-xl border border-border rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-2 animate-[fadeIn_0.2s_ease-out] origin-bottom-left"
+      className="absolute bottom-full left-0 mb-2 md:mb-6 z-[300] w-[260px] bg-chrome/90 backdrop-blur-xl border border-border rounded-lg shadow-[0_20px_50px_rgba(0,0,0,0.5)] p-2 animate-[fadeIn_0.2s_ease-out] origin-bottom-left"
     >
       {/* Status Indicator */}
       {status && (
