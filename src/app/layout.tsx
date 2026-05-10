@@ -18,6 +18,10 @@ export const metadata: Metadata = {
     statusBarStyle: "black-translucent",
     title: "Memories",
   },
+  icons: {
+    icon: "/icons/icon.png",
+    apple: "/icons/icon.png",
+  },
 };
 
 export const viewport: Viewport = {
@@ -35,9 +39,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko" className={`${noto.variable}`}>
-      <head>
-        <link rel="apple-touch-icon" href="/icons/icon.svg" />
-      </head>
       <body className="font-noto touch-none">
         {children}
         <Analytics />
