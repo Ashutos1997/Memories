@@ -2,7 +2,7 @@
 
 기억의 공간적 큐레이션을 위해 설계된 고해상도 모바일 반응형 아카이브 인터페이스입니다. 미니멀한 "Archival Obsidian" 미학으로 구축되어, 전통적인 데이터 입력을 촉각적이고 영화적인 경험으로 변화시킵니다.
 
-<img width="2856" height="1592" alt="image" src="https://github.com/user-attachments/assets/0898ace8-e29b-49dc-8c81-524155d34bef" />
+<img width="2856" height="1592" alt="image" src="https://github.com/user-attachments/assets/b6df5c74-d48f-401a-a8df-3e19167fb48b" />
 
 ## ✨ 주요 기능
 
