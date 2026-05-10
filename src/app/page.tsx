@@ -299,7 +299,6 @@ export default function Home() {
       setMemories(prev => [...prev, newMemory]);
     } catch (error) {
       console.error("File processing error:", error);
-      window.alert("File processing error: " + (error instanceof Error ? error.message : String(error)));
     } finally {
       setIsLoading(false);
     }
