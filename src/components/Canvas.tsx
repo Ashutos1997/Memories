@@ -173,9 +173,15 @@ export const Canvas: React.FC<CanvasProps> = ({
       if (containerRef.current) containerRef.current.style.transition = "none";
     } else if (mode === "draw") {
       isInteracting.current = true;
+      totalMovement.current = 0;
       const worldPos = screenToWorld(e.clientX, e.clientY);
       setCurrentPath([worldPos]);
       (e.target as HTMLElement).setPointerCapture(e.pointerId);
+    } else {
+      // select mode or others
+      isInteracting.current = true;
+      totalMovement.current = 0;
+      lastPos.current = { x: e.clientX, y: e.clientY };
     }
   };
 
@@ -195,13 +201,22 @@ export const Canvas: React.FC<CanvasProps> = ({
     } else if (mode === "draw") {
       const worldPos = screenToWorld(e.clientX, e.clientY);
       setCurrentPath(prev => prev ? [...prev, worldPos] : [worldPos]);
+    } else {
+      const dx = e.clientX - lastPos.current.x;
+      const dy = e.clientY - lastPos.current.y;
+      totalMovement.current += Math.abs(dx) + Math.abs(dy);
+      lastPos.current = { x: e.clientX, y: e.clientY };
     }
   };
 
   const onPointerUp = (e: React.PointerEvent) => {
     if (!isInteracting.current) return;
     isInteracting.current = false;
-    (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+    if (e.pointerId !== undefined) {
+      try {
+        (e.target as HTMLElement).releasePointerCapture(e.pointerId);
+      } catch (err) {}
+    }
 
     if (mode === "pan") {
       if (containerRef.current) containerRef.current.style.transition = ARCHIVAL_TRANSITION;

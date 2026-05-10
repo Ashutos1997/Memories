@@ -52,8 +52,10 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
     if (mode === 'search') {
       setValue("");
       setTimeout(() => inputRef.current?.focus(), 10);
+    } else {
+      // Clear search value when returning to select/pan mode
+      setValue("");
     }
-    // We don't clear value here anymore to prevent losing tags when starting recordings
   }, [mode]);
 
   useEffect(() => {
