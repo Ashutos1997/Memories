@@ -462,16 +462,18 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
               className={`flex-1 group relative flex items-center bg-chrome border rounded-lg p-1.5 md:p-2 shadow-2xl h-[48px] md:h-[64px] transition-all duration-300 ${mode === 'search' ? 'border-border focus-within:border-primary/40' : 'border-border-subtle focus-within:border-primary/40'}`}
             >
               {mode !== 'search' && (
-                <div className="relative">
-                  <button
-                    type="button"
-                    onClick={() => setShowAttachmentPopup(!showAttachmentPopup)}
-                    className={`flex items-center justify-center w-8 h-8 md:w-11 md:h-11 rounded-md border transition-all duration-200 group/upload ${showAttachmentPopup ? 'bg-primary/20 border-primary/40 text-primary' : 'border-border-subtle bg-white/5 text-text-muted hover:text-text-primary hover:bg-white/10 hover:border-primary/40'}`}
-                    aria-label="Add attachment"
-                    aria-expanded={showAttachmentPopup}
-                  >
-                    <Plus weight="bold" className="w-4 h-4 md:w-5 md:h-5" />
-                  </button>
+                <>
+                  <div className="relative">
+                    <button
+                      type="button"
+                      onClick={() => setShowAttachmentPopup(!showAttachmentPopup)}
+                      className={`flex items-center justify-center w-8 h-8 md:w-11 md:h-11 rounded-md border transition-all duration-200 group/upload ${showAttachmentPopup ? 'bg-primary/20 border-primary/40 text-primary' : 'border-border-subtle bg-white/5 text-text-muted hover:text-text-primary hover:bg-white/10 hover:border-primary/40'}`}
+                      aria-label="Add attachment"
+                      aria-expanded={showAttachmentPopup}
+                    >
+                      <Plus weight="bold" className="w-4 h-4 md:w-5 md:h-5" />
+                    </button>
+                  </div>
 
                   <AttachmentPopup
                     isOpen={showAttachmentPopup}
@@ -479,7 +481,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
                     onImageSelect={handleImageSelect}
                     onVoiceRecord={handleVoiceRecord}
                   />
-                </div>
+                </>
               )}
               
               {mode === 'search' && (
