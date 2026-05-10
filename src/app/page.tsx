@@ -68,57 +68,65 @@ const loadFromDB = async (key: string): Promise<any> => {
 // --- Image Compression Utility ---
 const compressImage = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = (event) => {
-      const img = document.createElement("img");
-      img.src = event.target?.result as string;
-      img.onload = () => {
-        try {
-          const canvas = document.createElement("canvas");
-          const MAX_WIDTH = 1200;
-          const MAX_HEIGHT = 1200;
-          let width = img.width;
-          let height = img.height;
+    const img = document.createElement("img");
+    const objectUrl = URL.createObjectURL(file);
+    
+    img.onload = () => {
+      try {
+        const canvas = document.createElement("canvas");
+        const MAX_WIDTH = 1000;
+        const MAX_HEIGHT = 1000;
+        let width = img.width;
+        let height = img.height;
 
-          if (width > height) {
-            if (width > MAX_WIDTH) {
-              height *= MAX_WIDTH / width;
-              width = MAX_WIDTH;
-            }
-          } else {
-            if (height > MAX_HEIGHT) {
-              width *= MAX_HEIGHT / height;
-              height = MAX_HEIGHT;
-            }
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height *= MAX_WIDTH / width;
+            width = MAX_WIDTH;
           }
-
-          canvas.width = width;
-          canvas.height = height;
-          const ctx = canvas.getContext("2d");
-          
-          if (!ctx) {
-            reject(new Error("Canvas context failed"));
-            return;
+        } else {
+          if (height > MAX_HEIGHT) {
+            width *= MAX_HEIGHT / height;
+            height = MAX_HEIGHT;
           }
-
-          ctx.drawImage(img, 0, 0, width, height);
-          
-          const dataUrl = canvas.toDataURL("image/jpeg", 0.8);
-          
-          if (dataUrl === "data:," || dataUrl.length < 100) {
-            reject(new Error("Image compression resulted in empty output"));
-            return;
-          }
-
-          resolve(dataUrl);
-        } catch (err) {
-          reject(err);
         }
-      };
-      img.onerror = (err) => reject(new Error("Image loading failed"));
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext("2d");
+        
+        if (!ctx) {
+          URL.revokeObjectURL(objectUrl);
+          reject(new Error("Canvas context failed"));
+          return;
+        }
+
+        ctx.drawImage(img, 0, 0, width, height);
+        
+        // Quality 0.8 for good balance
+        const dataUrl = canvas.toDataURL("image/jpeg", 0.8);
+        
+        URL.revokeObjectURL(objectUrl);
+        
+        if (dataUrl === "data:," || dataUrl.length < 100) {
+          reject(new Error("Empty canvas output"));
+          return;
+        }
+
+        resolve(dataUrl);
+      } catch (err) {
+        URL.revokeObjectURL(objectUrl);
+        reject(err);
+      }
     };
-    reader.onerror = (err) => reject(new Error("File reading failed"));
+
+    img.onerror = (err) => {
+      URL.revokeObjectURL(objectUrl);
+      reject(new Error("Image load failed"));
+    };
+
+    // CRITICAL: Set src AFTER attaching listeners
+    img.src = objectUrl;
   });
 };
 
@@ -291,7 +299,7 @@ export default function Home() {
       setMemories(prev => [...prev, newMemory]);
     } catch (error) {
       console.error("File processing error:", error);
-      // Fallback or alert could go here
+      window.alert("File processing error: " + (error instanceof Error ? error.message : String(error)));
     } finally {
       setIsLoading(false);
     }
