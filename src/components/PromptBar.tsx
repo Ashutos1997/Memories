@@ -4,8 +4,8 @@ import { AttachmentPopup } from "./AttachmentPopup";
 import { InteractionMode } from "../types";
 
 interface PromptBarProps {
-  onSubmit: (prompt: string, tag?: string) => void;
-  onUpload?: (file: File, prompt?: string, tag?: string) => void;
+  onSubmit: (prompt: string, tag?: string) => Promise<void> | void;
+  onUpload?: (file: File, prompt?: string, tag?: string) => Promise<void> | void;
   onSearch?: (query: string) => void;
   onScrapbook?: () => void;
   onReset?: () => void;
@@ -204,23 +204,25 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
     startRecording();
   };
 
-  const handleTagSubmit = (e: React.FormEvent) => {
+  const handleTagSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!pendingContent) return;
+    if (!pendingContent || tagExists || !tagValue.trim()) return;
 
     const finalTag = tagValue.trim();
+    const content = pendingContent; // Capture to avoid race conditions
     
-    if (pendingContent.type === 'text') {
-      onSubmit(pendingContent.value || "", finalTag);
-    } else if (pendingContent.file) {
-      onUpload?.(pendingContent.file, pendingContent.value, finalTag);
-    }
-
+    // Clear UI state immediately for better UX
     setShowTagInput(false);
     setTagValue("");
     setTagExists(false);
     setPendingContent(null);
     setValue("");
+
+    if (content.type === 'text') {
+      await onSubmit(content.value || "", finalTag);
+    } else if (content.file) {
+      await onUpload?.(content.file, content.value, finalTag);
+    }
   };
 
   return (
@@ -246,6 +248,12 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
                       const val = e.target.value.replace(/\s+/g, '').slice(0, 14);
                       setTagValue(val);
                       setTagExists(existingTags.some(t => t?.toLowerCase() === val.toLowerCase()));
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && !tagExists && tagValue.trim()) {
+                        e.preventDefault();
+                        handleTagSubmit(e as any);
+                      }
                     }}
                     placeholder="TAG..."
                     className={`w-full bg-white/5 border rounded-md py-2 md:py-3 pl-8 pr-4 text-white font-mono font-bold text-[14px] md:text-[16px] focus:outline-none transition-colors placeholder:text-white/20 ${tagExists ? 'border-red-500/50 focus:border-red-500' : 'border-white/10 focus:border-primary/50'}`}
@@ -495,7 +503,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
                 </button>
               )}
 
-              <input type="file" ref={fileInputRef} onChange={(e) => onUpload?.(e.target.files![0], value)} className="hidden" accept="image/*" />
+
               
               <input
                 ref={inputRef}
