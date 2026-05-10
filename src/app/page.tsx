@@ -68,12 +68,11 @@ const loadFromDB = async (key: string): Promise<any> => {
 // --- Image Compression Utility ---
 const compressImage = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = (event) => {
-      const img = new Image();
-      img.src = event.target?.result as string;
-      img.onload = () => {
+    const img = new Image();
+    const objectUrl = URL.createObjectURL(file);
+    
+    img.onload = () => {
+      try {
         const canvas = document.createElement("canvas");
         const MAX_WIDTH = 1200;
         const MAX_HEIGHT = 1200;
@@ -95,15 +94,32 @@ const compressImage = (file: File): Promise<string> => {
         canvas.width = width;
         canvas.height = height;
         const ctx = canvas.getContext("2d");
-        ctx?.drawImage(img, 0, 0, width, height);
+        
+        if (!ctx) {
+          URL.revokeObjectURL(objectUrl);
+          reject(new Error("Could not get canvas context"));
+          return;
+        }
+
+        ctx.drawImage(img, 0, 0, width, height);
         
         // Quality 0.7 for good balance between size and detail
         const dataUrl = canvas.toDataURL("image/jpeg", 0.7);
+        
+        URL.revokeObjectURL(objectUrl);
         resolve(dataUrl);
-      };
-      img.onerror = (e) => reject(e);
+      } catch (err) {
+        URL.revokeObjectURL(objectUrl);
+        reject(err);
+      }
     };
-    reader.onerror = (e) => reject(e);
+
+    img.onerror = (err) => {
+      URL.revokeObjectURL(objectUrl);
+      reject(err);
+    };
+
+    img.src = objectUrl;
   });
 };
 
