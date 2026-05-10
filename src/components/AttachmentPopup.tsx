@@ -71,7 +71,7 @@ export const AttachmentPopup: React.FC<AttachmentPopupProps> = ({
       {/* Options List */}
       <div className="flex flex-col gap-1">
         {/* Image Option */}
-        <label className="flex items-center gap-3 p-2 rounded-sm hover:bg-white/5 cursor-pointer interactive-state group border border-transparent hover:border-border-subtle">
+        <label className="flex items-center gap-3 p-2 rounded-sm hover:bg-white/10 cursor-pointer group border border-transparent hover:border-border-subtle transition-all duration-200">
           <div className="w-10 h-10 rounded-sm bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
             <Image size={18} className="text-primary" weight="bold" />
           </div>
@@ -91,7 +91,7 @@ export const AttachmentPopup: React.FC<AttachmentPopupProps> = ({
         <button
           type="button"
           onClick={onVoiceRecord}
-          className="flex items-center gap-3 p-2 rounded-sm hover:bg-white/5 cursor-pointer interactive-state group w-full text-left border border-transparent hover:border-border-subtle"
+          className="flex items-center gap-3 p-2 rounded-sm hover:bg-white/10 cursor-pointer group w-full text-left border border-transparent hover:border-border-subtle transition-all duration-200"
         >
           <div className="w-10 h-10 rounded-sm bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
             <Microphone size={18} className="text-primary" weight="bold" />
