@@ -5,15 +5,32 @@ export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
     const file = formData.get("file") as File;
-    const apiKey = process.env.OPENAI_API_KEY;
+    const groqKey = process.env.GROQ_API_KEY;
+    const openaiKey = process.env.OPENAI_API_KEY;
 
-    if (!apiKey || apiKey === "sk-your-key-here") {
-      return new Response(JSON.stringify({ text: "[Transcription Mock] This is a mock transcription of your audio memory." }), {
+    if (groqKey) {
+      const client = new OpenAI({
+        apiKey: groqKey,
+        baseURL: "https://api.groq.com/openai/v1",
+      });
+
+      const transcription = await client.audio.transcriptions.create({
+        file: file,
+        model: "whisper-large-v3-turbo", // Groq's fast whisper model
+      });
+
+      return new Response(JSON.stringify({ text: transcription.text }), {
+        headers: { "Content-Type": "application/json" },
+      });
+    }
+
+    if (!openaiKey || openaiKey === "sk-your-key-here") {
+      return new Response(JSON.stringify({ text: "[Transcription Mock] This is a mock transcription. Add an OpenAI or Groq API key to enable real transcription." }), {
         headers: { "Content-Type": "application/json; charset=utf-8" },
       });
     }
 
-    const client = new OpenAI({ apiKey });
+    const client = new OpenAI({ apiKey: openaiKey });
     
     const transcription = await client.audio.transcriptions.create({
       file: file,
