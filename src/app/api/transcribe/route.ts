@@ -5,8 +5,8 @@ export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData();
     const file = formData.get("file") as File;
-    const groqKey = process.env.GROQ_API_KEY;
-    const openaiKey = process.env.OPENAI_API_KEY;
+    const groqKey = process.env.GROQ_API_KEY?.trim();
+    const openaiKey = process.env.OPENAI_API_KEY?.trim();
 
     if (groqKey) {
       const client = new OpenAI({
