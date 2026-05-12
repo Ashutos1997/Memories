@@ -10,9 +10,10 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ onAction }) => {
   return (
     <div className="absolute inset-0 flex flex-col items-center justify-center p-4 pb-[8vh] md:pb-[12vh] z-10 pointer-events-none overflow-hidden">
       
-      {/* Ambient Sanctuary Pulse */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[300px] md:w-[600px] md:h-[600px] bg-primary/5 rounded-full blur-[80px] md:blur-[120px] animate-sanctuary pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[150px] h-[150px] md:w-[300px] md:h-[300px] bg-primary/5 rounded-full blur-[40px] md:blur-[80px] animate-pulse pointer-events-none" />
+      {/* Ambient Sanctuary Pulse - Triple Layer Depth */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] md:w-[700px] md:h-[700px] bg-primary/10 rounded-full blur-[100px] md:blur-[160px] animate-sanctuary pointer-events-none opacity-40" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[200px] h-[200px] md:w-[400px] md:h-[400px] bg-primary/5 rounded-full blur-[60px] md:blur-[100px] animate-pulse pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100px] h-[100px] md:w-[200px] md:h-[200px] bg-white/5 rounded-full blur-[40px] md:blur-[60px] animate-ghost pointer-events-none" />
 
       <div className="max-w-[540px] w-full flex flex-col items-center gap-8 md:gap-16 animate-sharpen pointer-events-none relative z-10">
         
@@ -25,53 +26,65 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ onAction }) => {
         </div>
 
         {/* Staggered Quick Actions */}
-        <div className="grid grid-cols-3 gap-2 md:gap-6 w-full max-w-[480px]">
+        <div className="grid grid-cols-3 gap-3 md:gap-8 w-full max-w-[520px]">
           <button 
             onClick={() => onAction("note")}
-            className="flex flex-col md:flex-row items-center gap-2 md:gap-3 p-2 md:p-4 bg-chrome/40 backdrop-blur-md border border-white/5 rounded-lg interactive-state hover:border-primary/40 group pointer-events-auto md:-translate-y-4"
+            className="flex flex-col md:flex-row items-center gap-2 md:gap-4 p-3 md:p-5 bg-chrome/60 backdrop-blur-2xl border border-white/5 rounded-xl interactive-state hover:border-primary/50 group pointer-events-auto md:-translate-y-6 shadow-2xl"
           >
-            <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-              <Plus size={16} className="text-primary md:size-[18px]" weight="bold" />
+            <div className="w-9 h-9 md:w-12 md:h-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-all duration-500 group-hover:scale-110">
+              <Plus size={20} className="text-primary md:size-[24px]" weight="bold" />
             </div>
             <div className="flex flex-col items-center md:items-start text-center md:text-left">
-              <span className="text-[12px] md:text-[14px] font-bold text-white/90">노트</span>
-              <span className="hidden md:block text-[11px] text-text-muted font-mono tracking-wider">텍스트</span>
+              <span className="text-[13px] md:text-[15px] font-bold text-white tracking-tight">노트</span>
+              <span className="hidden md:block text-[11px] text-text-muted font-mono tracking-[0.2em] uppercase mt-0.5">TEXT</span>
             </div>
           </button>
           
           <button 
             onClick={() => onAction("image")}
-            className="flex flex-col md:flex-row items-center gap-2 md:gap-3 p-2 md:p-4 bg-chrome/40 backdrop-blur-md border border-white/5 rounded-lg interactive-state hover:border-primary/40 group pointer-events-auto md:translate-y-2"
+            className="flex flex-col md:flex-row items-center gap-2 md:gap-4 p-3 md:p-5 bg-chrome/60 backdrop-blur-2xl border border-white/5 rounded-xl interactive-state hover:border-primary/50 group pointer-events-auto md:translate-y-4 shadow-2xl"
           >
-            <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-              <ImageIcon size={16} className="text-primary md:size-[18px]" weight="bold" />
+            <div className="w-9 h-9 md:w-12 md:h-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-all duration-500 group-hover:scale-110">
+              <ImageIcon size={20} className="text-primary md:size-[24px]" weight="bold" />
             </div>
             <div className="flex flex-col items-center md:items-start text-center md:text-left">
-              <span className="text-[12px] md:text-[14px] font-bold text-white/90">이미지</span>
-              <span className="hidden md:block text-[11px] text-text-muted font-mono tracking-wider">비주얼</span>
+              <span className="text-[13px] md:text-[15px] font-bold text-white tracking-tight">이미지</span>
+              <span className="hidden md:block text-[11px] text-text-muted font-mono tracking-[0.2em] uppercase mt-0.5">IMAGE</span>
             </div>
           </button>
-
+          
           <button 
             onClick={() => onAction("audio")}
-            className="flex flex-col md:flex-row items-center gap-2 md:gap-3 p-2 md:p-4 bg-chrome/40 backdrop-blur-md border border-white/5 rounded-lg interactive-state hover:border-primary/40 group pointer-events-auto md:-translate-y-2"
+            className="flex flex-col md:flex-row items-center gap-2 md:gap-4 p-3 md:p-5 bg-chrome/60 backdrop-blur-2xl border border-white/5 rounded-xl interactive-state hover:border-primary/50 group pointer-events-auto md:-translate-y-2 shadow-2xl"
           >
-            <div className="w-8 h-8 md:w-10 md:h-10 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-              <Microphone size={16} className="text-primary md:size-[18px]" weight="bold" />
+            <div className="w-9 h-9 md:w-12 md:h-12 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-all duration-500 group-hover:scale-110">
+              <Microphone size={20} className="text-primary md:size-[24px]" weight="bold" />
             </div>
             <div className="flex flex-col items-center md:items-start text-center md:text-left">
-              <span className="text-[12px] md:text-[14px] font-bold text-white/90">음성</span>
-              <span className="hidden md:block text-[11px] text-text-muted font-mono tracking-wider">오디오</span>
+              <span className="text-[13px] md:text-[15px] font-bold text-white tracking-tight">음성</span>
+              <span className="hidden md:block text-[11px] text-text-muted font-mono tracking-[0.2em] uppercase mt-0.5">AUDIO</span>
             </div>
           </button>
         </div>
 
         {/* Refined Shortcuts Footer */}
-        <div className="hidden md:flex flex-wrap justify-center items-center gap-4 md:gap-8 text-[12px] font-mono text-text-muted tracking-widest opacity-60">
-          <span className="flex items-center gap-2 group"><kbd className="text-primary/80 bg-white/5 px-1.5 py-0.5 rounded border border-white/10 group-hover:border-primary/40 transition-colors">V</kbd> 선택</span>
-          <span className="flex items-center gap-2 group"><kbd className="text-primary/80 bg-white/5 px-1.5 py-0.5 rounded border border-white/10 group-hover:border-primary/40 transition-colors">H</kbd> 이동</span>
-          <span className="flex items-center gap-2 group"><kbd className="text-primary/80 bg-white/5 px-1.5 py-0.5 rounded border border-white/10 group-hover:border-primary/40 transition-colors">D</kbd> 그리기</span>
-          <span className="flex items-center gap-2 group"><kbd className="text-primary/80 bg-white/5 px-1.5 py-0.5 rounded border border-white/10 group-hover:border-primary/40 transition-colors">S</kbd> 검색</span>
+        <div className="hidden md:flex flex-wrap justify-center items-center gap-8 text-[11px] font-mono text-text-muted tracking-[0.3em] uppercase opacity-60">
+          <span className="flex items-center gap-3 group transition-all duration-300 hover:opacity-100">
+            <kbd className="text-primary bg-white/5 px-2 py-1 rounded-md border border-white/10 group-hover:border-primary/50 group-hover:bg-primary/10 transition-all duration-300 shadow-lg">V</kbd> 
+            <span className="font-bold">선택</span>
+          </span>
+          <span className="flex items-center gap-3 group transition-all duration-300 hover:opacity-100">
+            <kbd className="text-primary bg-white/5 px-2 py-1 rounded-md border border-white/10 group-hover:border-primary/50 group-hover:bg-primary/10 transition-all duration-300 shadow-lg">H</kbd> 
+            <span className="font-bold">이동</span>
+          </span>
+          <span className="flex items-center gap-3 group transition-all duration-300 hover:opacity-100">
+            <kbd className="text-primary bg-white/5 px-2 py-1 rounded-md border border-white/10 group-hover:border-primary/50 group-hover:bg-primary/10 transition-all duration-300 shadow-lg">D</kbd> 
+            <span className="font-bold">그리기</span>
+          </span>
+          <span className="flex items-center gap-3 group transition-all duration-300 hover:opacity-100">
+            <kbd className="text-primary bg-white/5 px-2 py-1 rounded-md border border-white/10 group-hover:border-primary/50 group-hover:bg-primary/10 transition-all duration-300 shadow-lg">S</kbd> 
+            <span className="font-bold">검색</span>
+          </span>
         </div>
 
       </div>
