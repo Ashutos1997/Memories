@@ -7,7 +7,7 @@ import { NavigationChrome } from "@/components/NavigationChrome";
 import { Minimap } from "@/components/Minimap";
 import { NoteCard, GalleryCard, TimelineCard, QuoteCard, RawImageCard, MemoryVariant } from "@/components/MemoryCard";
 import { AudioMemoryCard } from "@/components/AudioMemoryCard";
-import { Image as ImageIcon, LockSimple } from "@phosphor-icons/react";
+import { Image as ImageIcon } from "@phosphor-icons/react";
 import { EmptyState } from "@/components/EmptyState";
 import { InteractionMode } from "@/types";
 
