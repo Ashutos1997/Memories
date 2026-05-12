@@ -6,9 +6,10 @@ interface MinimapProps {
   memories: any[];
   offset: { x: number; y: number };
   zoom: number;
+  highlightedId?: string | null;
 }
 
-export const Minimap: React.FC<MinimapProps> = ({ memories, offset, zoom }) => {
+export const Minimap: React.FC<MinimapProps> = ({ memories, offset, zoom, highlightedId }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [vSize, setVSize] = useState({ w: 1200, h: 900 });
 
@@ -107,19 +108,22 @@ export const Minimap: React.FC<MinimapProps> = ({ memories, offset, zoom }) => {
         </div>
 
         {/* Memory Fragments (Map dots) */}
-        {memories.map((memory) => (
-          <div 
-            key={memory.id}
-            className="absolute rounded-full bg-primary shadow-[0_0_4px_hsla(38, 42%, 61%, 0.4)] transition-all duration-700"
-            style={{
-              width: 2,
-              height: 2,
-              left: (width / 2) + (memory.x * worldScale),
-              top: (height / 2) + (memory.y * worldScale),
-              transform: 'translate(-50%, -50%)',
-            }}
-          />
-        ))}
+        {memories.map((memory) => {
+          const isHighlighted = highlightedId === memory.id;
+          return (
+            <div 
+              key={memory.id}
+              className={`absolute rounded-full transition-all duration-700 ${isHighlighted ? 'bg-primary scale-[2.5] z-10 shadow-[0_0_12px_var(--color-primary)]' : 'bg-primary/40 shadow-[0_0_4px_hsla(38, 42%, 61%, 0.4)]'}`}
+              style={{
+                width: 2,
+                height: 2,
+                left: (width / 2) + (memory.x * worldScale),
+                top: (height / 2) + (memory.y * worldScale),
+                transform: 'translate(-50%, -50%)',
+              }}
+            />
+          );
+        })}
       </div>
     </aside>
   );

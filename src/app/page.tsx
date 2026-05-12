@@ -590,6 +590,10 @@ export default function Home() {
           activeTemplate === 'noir' ? 'text-white opacity-20' : 
           'text-primary opacity-30'
         }`}
+        style={{
+          transform: `translate(calc(-50% + ${offset.x * 0.02}px), ${offset.y * 0.02}px)`,
+          transition: activeDragId ? 'none' : 'transform 0.1s linear, opacity 1s ease'
+        }}
       >
         <h1 className="font-handwriting text-2xl md:text-3xl tracking-[0.4em] md:tracking-[0.8em] font-light leading-none">기억</h1>
       </div>
@@ -614,7 +618,7 @@ export default function Home() {
         onNextMemory={() => handleStepChronological('next')}
       />
       
-      <Minimap memories={memories} offset={offset} zoom={zoom} />
+      <Minimap memories={memories} offset={offset} zoom={zoom} highlightedId={highlightedId} />
       
       <Canvas 
         zoom={zoom} 
