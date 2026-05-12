@@ -61,7 +61,7 @@ export const MemoryCard: React.FC<MemoryCardProps> = ({ serial, tag, date, varia
 
   return (
     <article 
-      className={`group relative px-4 py-5 md:p-6 transition-all duration-500 border ${styles.container} ${className} ${isHighlighted ? 'ring-2 md:ring-4 ring-primary scale-[1.01]' : ''} ${isDragging ? '!shadow-2xl' : ''}`}
+      className={`group relative px-4 py-5 md:p-6 transition-all duration-500 border ${styles.container} ${className} ${isHighlighted ? 'border-primary ring-2 md:ring-4 ring-primary/30 scale-[1.01]' : 'border-border-subtle'} ${isDragging ? '!shadow-2xl' : ''}`}
       style={{ 
         boxShadow: isDragging 
           ? (variant === 'noir' ? '0 60px 100px rgba(0,0,0,0.9)' : variant === 'scrapbook' ? '15px 15px 40px rgba(0,0,0,0.3)' : '0 40px 80px rgba(0,0,0,0.6)')
@@ -148,7 +148,7 @@ export const RawImageCard: React.FC<{
   isDragging?: boolean;
 }> = ({ serial, tag, src, isHighlighted, variant = "default", x = 0, y = 0, onDragStart, onDelete, isDragging }) => (
   <article 
-    className={`group relative shadow-card hover:shadow-elevated transition-all duration-500 border ${variant === 'noir' ? 'rounded-[4px] border-white/20' : variant === 'vector' ? 'rounded-none border-2 border-primary shadow-[8px_8px_0px_var(--color-primary)]' : variant === 'scrapbook' ? 'rounded-[2px] border-[#E2D1C3] bg-white p-2' : 'rounded-lg border-border-subtle'} ${isHighlighted ? 'ring-2 ring-primary scale-[1.01]' : ''}`}
+    className={`group relative shadow-card hover:shadow-elevated transition-all duration-500 border ${variant === 'noir' ? 'rounded-archival border-white/20' : variant === 'vector' ? 'rounded-none border-2 border-primary shadow-[8px_8px_0px_var(--color-primary)]' : variant === 'scrapbook' ? 'rounded-archival border-[#E2D1C3] bg-white p-2' : 'rounded-md border-border-subtle'} ${isHighlighted ? 'border-primary ring-2 md:ring-4 ring-primary/30 scale-[1.01]' : 'border-border-subtle'}`}
     style={{
       boxShadow: isDragging 
         ? (variant === 'scrapbook' ? '15px 25px 40px rgba(0,0,0,0.4)' : variant === 'noir' ? '0 60px 100px rgba(0,0,0,0.9)' : '0 40px 80px rgba(0,0,0,0.6)')
@@ -196,8 +196,8 @@ export const RawImageCard: React.FC<{
         <DotsSixVertical size={20} weight="bold" aria-hidden="true" />
       </div>
     </div>
-    <div className={`overflow-hidden ${variant === 'noir' ? 'rounded-[4px]' : variant === 'vector' ? 'rounded-none' : variant === 'scrapbook' ? 'rounded-[2px]' : 'rounded-sm'}`}>
-      <img src={src} alt={`Memory Archive: ${serial || 'Image'}`} className={`w-full h-auto object-cover transition-all duration-700 block select-none ${isHighlighted ? 'opacity-100 scale-105' : 'opacity-90 group-hover:opacity-100'} ${variant === 'noir' ? 'border-[12px] border-white/5 shadow-inner' : variant === 'scrapbook' ? 'border border-black/5' : ''}`} draggable="false" />
+    <div className={`overflow-hidden ${variant === 'noir' ? 'rounded-archival' : variant === 'vector' ? 'rounded-none' : variant === 'scrapbook' ? 'rounded-archival' : 'rounded-sm'}`}>
+      <img src={src} alt={`Memory Archive: ${serial || 'Image'}`} className={`w-full h-auto object-cover transition-all duration-700 block select-none ${isHighlighted ? 'opacity-100 scale-105' : 'opacity-90 group-hover:opacity-100'} ${variant === 'noir' ? 'border-[8px] border-white/5 shadow-inner' : variant === 'scrapbook' ? 'border border-black/5' : ''}`} draggable="false" />
     </div>
   </article>
 );
