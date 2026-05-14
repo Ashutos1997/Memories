@@ -165,23 +165,19 @@ export const Canvas: React.FC<CanvasProps> = ({
   }, [zoom, mode, onZoomChange, onOffsetChange]);
 
   const onPointerDown = (e: React.PointerEvent) => {
+    isInteracting.current = true;
+    totalMovement.current = 0;
+    lastPos.current = { x: e.clientX, y: e.clientY };
+    
+    // Kill transitions immediately on interaction to prevent coordinate snapping/lag
+    if (containerRef.current) containerRef.current.style.transition = "none";
+    
     if (mode === "pan") {
-      isInteracting.current = true;
-      totalMovement.current = 0;
-      lastPos.current = { x: e.clientX, y: e.clientY };
       (e.target as HTMLElement).setPointerCapture(e.pointerId);
-      if (containerRef.current) containerRef.current.style.transition = "none";
     } else if (mode === "draw") {
-      isInteracting.current = true;
-      totalMovement.current = 0;
       const worldPos = screenToWorld(e.clientX, e.clientY);
       setCurrentPath([worldPos]);
       (e.target as HTMLElement).setPointerCapture(e.pointerId);
-    } else {
-      // select mode or others
-      isInteracting.current = true;
-      totalMovement.current = 0;
-      lastPos.current = { x: e.clientX, y: e.clientY };
     }
   };
 
@@ -218,8 +214,10 @@ export const Canvas: React.FC<CanvasProps> = ({
       } catch (err) {}
     }
 
+    // Re-enable archival transition after interaction is complete
+    if (containerRef.current) containerRef.current.style.transition = ARCHIVAL_TRANSITION;
+
     if (mode === "pan") {
-      if (containerRef.current) containerRef.current.style.transition = ARCHIVAL_TRANSITION;
       setOffset({ ...currentOffset.current });
       onOffsetChange?.({ ...currentOffset.current });
     } else if (mode === "draw" && currentPath && currentPath.length > 1) {
