@@ -8,9 +8,17 @@ interface AudioPlayerProps {
   src: string;
   variant?: MemoryVariant;
   className?: string;
+  isGlobalPlaying?: boolean;
+  onPlayStateChange?: (playing: boolean) => void;
 }
 
-export const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, variant = "default", className }) => {
+export const AudioPlayer: React.FC<AudioPlayerProps> = ({ 
+  src, 
+  variant = "default", 
+  className,
+  isGlobalPlaying,
+  onPlayStateChange
+}) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
@@ -48,9 +56,19 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, variant = "defaul
       audio.removeEventListener('loadedmetadata', updateDuration);
       audio.removeEventListener('play', updateDuration);
       audio.removeEventListener('canplay', updateDuration);
-      audio.removeEventListener('ended', () => setIsPlaying(false));
+      audio.removeEventListener('ended', () => {
+        setIsPlaying(false);
+        onPlayStateChange?.(false);
+      });
     };
-  }, [src]);
+  }, [src, onPlayStateChange]);
+
+  useEffect(() => {
+    if (isGlobalPlaying === false && isPlaying) {
+      audioRef.current?.pause();
+      setIsPlaying(false);
+    }
+  }, [isGlobalPlaying, isPlaying]);
 
   const togglePlayPause = () => {
     if (!audioRef.current) return;
@@ -58,9 +76,11 @@ export const AudioPlayer: React.FC<AudioPlayerProps> = ({ src, variant = "defaul
     if (isPlaying) {
       audioRef.current.pause();
       setIsPlaying(false);
+      onPlayStateChange?.(false);
     } else {
       audioRef.current.play();
       setIsPlaying(true);
+      onPlayStateChange?.(true);
     }
   };
 

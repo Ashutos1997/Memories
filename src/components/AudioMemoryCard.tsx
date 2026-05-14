@@ -5,7 +5,7 @@ import { AudioPlayer } from "./AudioPlayer";
 import { MemoryCard, MemoryVariant } from "./MemoryCard";
 
 interface AudioMemoryCardProps {
-  id?: string;
+  id: string;
   serial?: string;
   tag?: string;
   date: string;
@@ -18,6 +18,8 @@ interface AudioMemoryCardProps {
   onDelete?: () => void;
   isDragging?: boolean;
   className?: string;
+  isGlobalPlaying?: boolean;
+  onPlayStateChange?: (playing: boolean) => void;
 }
 
 export const AudioMemoryCard: React.FC<AudioMemoryCardProps> = ({ 
@@ -33,7 +35,9 @@ export const AudioMemoryCard: React.FC<AudioMemoryCardProps> = ({
   onDragStart, 
   onDelete, 
   isDragging,
-  className 
+  className,
+  isGlobalPlaying,
+  onPlayStateChange
 }) => {
   return (
     <MemoryCard 
@@ -51,7 +55,12 @@ export const AudioMemoryCard: React.FC<AudioMemoryCardProps> = ({
       contentClassName="!pr-[14px] md:!pr-[20px]"
     >
       <div className="py-1 pb-6">
-        <AudioPlayer src={src} variant={variant} />
+        <AudioPlayer 
+          src={src} 
+          variant={variant} 
+          isGlobalPlaying={isGlobalPlaying}
+          onPlayStateChange={onPlayStateChange}
+        />
       </div>
     </MemoryCard>
   );

@@ -139,6 +139,7 @@ export default function Home() {
   const [activeDragId, setActiveDragId] = useState<string | null>(null);
   const [interactionMode, setInteractionMode] = useState<InteractionMode>("select");
   const [activeTemplate, setActiveTemplate] = useState<MemoryVariant>("default");
+  const [currentlyPlayingId, setCurrentlyPlayingId] = useState<string | null>(null);
   const [highlightedId, setHighlightedId] = useState<string | null>(null);
   const [zIndices, setZIndices] = useState<Record<string, number>>({});
   const maxZ = useRef(10);
@@ -802,7 +803,26 @@ export default function Home() {
                   <RawImageCard serial={memory.serial} tag={memory.tag} date={memory.date} src={memory.data.src} onDelete={() => handleDeleteMemory(memory.id)} isHighlighted={highlightedId === memory.id} variant={activeTemplate} x={memory.x} y={memory.y} isDragging={activeDragId === memory.id} />
                 </div>
               )}
-              {memory.type === "audio" && <AudioMemoryCard id={memory.id} serial={memory.serial} tag={memory.tag} date={memory.date} src={memory.data.src} onDelete={() => handleDeleteMemory(memory.id)} isHighlighted={highlightedId === memory.id} variant={activeTemplate} x={memory.x} y={memory.y} isDragging={activeDragId === memory.id} />}
+              {memory.type === "audio" && (
+                <AudioMemoryCard 
+                  id={memory.id} 
+                  serial={memory.serial} 
+                  tag={memory.tag} 
+                  date={memory.date} 
+                  src={memory.data.src} 
+                  onDelete={() => handleDeleteMemory(memory.id)} 
+                  isHighlighted={highlightedId === memory.id} 
+                  variant={activeTemplate} 
+                  x={memory.x} 
+                  y={memory.y} 
+                  isDragging={activeDragId === memory.id}
+                  isGlobalPlaying={currentlyPlayingId === memory.id}
+                  onPlayStateChange={(playing) => {
+                    if (playing) setCurrentlyPlayingId(memory.id);
+                    else if (currentlyPlayingId === memory.id) setCurrentlyPlayingId(null);
+                  }}
+                />
+              )}
             </div>
           </div>
         ))}
