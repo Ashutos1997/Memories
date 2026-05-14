@@ -197,11 +197,16 @@ export default function Home() {
           serial: m.serial || (m.tag ? m.tag : `IDX-${Math.floor(100 + Math.random() * 900)}`)
         }));
         setMemories(updatedMemories);
-      }
+      const savedOffset = await loadFromDB("offset");
+      const savedZoom = await loadFromDB("zoom");
+      const savedTemplate = await loadFromDB("activeTemplate");
+      
+      if (savedMemories) setMemories(savedMemories);
       const savedDrawings = await loadFromDB("drawings");
       if (savedDrawings) setDrawings(savedDrawings);
       if (savedOffset) setOffset(savedOffset);
       if (savedZoom) setZoom(savedZoom);
+      if (savedTemplate) setActiveTemplate(savedTemplate);
       setIsInitialLoad(false);
     };
     loadArchive();
@@ -213,8 +218,9 @@ export default function Home() {
       saveToDB("drawings", drawings);
       saveToDB("offset", offset);
       saveToDB("zoom", zoom);
+      saveToDB("activeTemplate", activeTemplate);
     }
-  }, [memories, drawings, offset, zoom]);
+  }, [memories, drawings, offset, zoom, activeTemplate]);
 
   useEffect(() => {
     if (highlightedId) {
