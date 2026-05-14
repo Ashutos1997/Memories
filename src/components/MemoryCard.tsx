@@ -27,20 +27,20 @@ const DateStamp: React.FC<{ date: string; variant: MemoryVariant; isHighlighted?
   const getStampStyles = () => {
     switch (variant) {
       case 'scrapbook':
-        return "bg-scrapbook-accent/5 border-scrapbook-accent/20 text-scrapbook-accent font-handwriting rotate-[-3deg] shadow-sm";
+        return "bg-white/70 backdrop-blur-sm border-scrapbook-accent/30 text-scrapbook-accent font-handwriting rotate-[-3deg] shadow-md";
       case 'vector':
-        return "bg-primary/10 border-primary text-primary font-mono rounded-none";
+        return "bg-primary/20 border-primary text-primary font-mono rounded-none";
       case 'noir':
-        return "bg-white/5 border-white/20 text-white/60 font-serif italic rotate-[-1deg] backdrop-blur-sm";
+        return "bg-black/60 border-white/20 text-white font-serif italic rotate-[-1deg] backdrop-blur-md shadow-2xl";
       default:
-        return "bg-primary/5 border-primary/20 text-primary font-mono rotate-[-2deg] backdrop-blur-[2px]";
+        return "bg-black/50 backdrop-blur-md border-white/10 text-primary font-mono rotate-[-2deg] shadow-xl";
     }
   };
 
   return (
-    <div className={`flex items-center gap-1.5 px-2 py-1 border rounded-[2px] transition-all duration-500 group-hover:opacity-100 ${getStampStyles()} ${isHighlighted ? 'opacity-100 scale-105 border-primary/40' : 'opacity-40'} ${className}`}>
-      <Clock size={10} weight="bold" className="opacity-50" />
-      <time dateTime={date} className="text-[10px] md:text-[11px] font-bold tracking-widest uppercase whitespace-nowrap">
+    <div className={`flex items-center gap-1.5 px-2.5 py-1.5 border rounded-[2px] transition-all duration-500 group-hover:opacity-100 ${getStampStyles()} ${isHighlighted ? 'opacity-100 scale-105 border-primary/40' : 'opacity-60'} ${className}`}>
+      <Clock size={11} weight="bold" className="opacity-70" />
+      <time dateTime={date} className="text-[10px] md:text-[11px] font-bold tracking-[0.15em] uppercase whitespace-nowrap">
         {date}
       </time>
     </div>
