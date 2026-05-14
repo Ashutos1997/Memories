@@ -85,7 +85,7 @@ export const MemoryCard: React.FC<MemoryCardProps> = ({ serial, tag, date, varia
 
   return (
     <article 
-      className={`group relative px-4 py-5 md:p-6 transition-all duration-500 border ${styles.container} ${className} ${isHighlighted ? 'border-primary ring-2 md:ring-4 ring-primary/30 scale-[1.01]' : 'border-border-subtle'} ${isDragging ? '!shadow-2xl' : ''}`}
+      className={`group relative px-4 py-6 md:p-8 transition-all duration-500 border min-h-[120px] md:min-h-[150px] flex flex-col justify-between ${styles.container} ${className} ${isHighlighted ? 'border-primary ring-2 md:ring-4 ring-primary/30 scale-[1.01]' : 'border-border-subtle'} ${isDragging ? '!shadow-2xl' : ''}`}
       style={{ 
         boxShadow: isDragging 
           ? (variant === 'noir' ? '0 60px 100px rgba(0,0,0,0.9)' : variant === 'scrapbook' ? '15px 15px 40px rgba(0,0,0,0.3)' : '0 40px 80px rgba(0,0,0,0.6)')
@@ -171,7 +171,7 @@ export const RawImageCard: React.FC<{
   isDragging?: boolean;
 }> = ({ serial, tag, date, src, isHighlighted, variant = "default", x = 0, y = 0, onDragStart, onDelete, isDragging }) => (
   <article 
-    className={`group relative shadow-card hover:shadow-elevated transition-all duration-500 border ${variant === 'noir' ? 'rounded-archival border-white/20' : variant === 'vector' ? 'rounded-none border-2 border-primary shadow-[8px_8px_0px_var(--color-primary)]' : variant === 'scrapbook' ? 'rounded-archival border-[#E2D1C3] bg-white p-2' : 'rounded-md border-border-subtle'} ${isHighlighted ? 'border-primary ring-2 md:ring-4 ring-primary/30 scale-[1.01]' : 'border-border-subtle'}`}
+    className={`group relative shadow-card hover:shadow-elevated transition-all duration-500 border min-h-[150px] ${variant === 'noir' ? 'rounded-archival border-white/20' : variant === 'vector' ? 'rounded-none border-2 border-primary shadow-[8px_8px_0px_var(--color-primary)]' : variant === 'scrapbook' ? 'rounded-archival border-[#E2D1C3] bg-white p-2' : 'rounded-md border-border-subtle'} ${isHighlighted ? 'border-primary ring-2 md:ring-4 ring-primary/30 scale-[1.01]' : 'border-border-subtle'}`}
     style={{
       boxShadow: isDragging 
         ? (variant === 'scrapbook' ? '15px 25px 40px rgba(0,0,0,0.4)' : variant === 'noir' ? '0 60px 100px rgba(0,0,0,0.9)' : '0 40px 80px rgba(0,0,0,0.6)')
