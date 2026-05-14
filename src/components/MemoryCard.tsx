@@ -220,8 +220,8 @@ export const RawImageCard: React.FC<{
         <DotsSixVertical size={20} weight="bold" aria-hidden="true" />
       </div>
     </div>
-    <div className={`aspect-square overflow-hidden ${variant === 'noir' ? 'rounded-archival' : variant === 'vector' ? 'rounded-none' : variant === 'scrapbook' ? 'rounded-archival' : 'rounded-sm'}`}>
-      <img src={src} alt={`Memory Archive: ${serial || 'Image'}`} className={`w-full h-full object-cover transition-all duration-700 block select-none ${isHighlighted ? 'opacity-100 scale-105' : 'opacity-90 group-hover:opacity-100'} ${variant === 'noir' ? 'border-[8px] border-white/5 shadow-inner' : variant === 'scrapbook' ? 'border border-black/5' : ''}`} draggable="false" />
+    <div className={`aspect-square overflow-hidden flex items-center justify-center bg-black/20 ${variant === 'noir' ? 'rounded-archival' : variant === 'vector' ? 'rounded-none' : variant === 'scrapbook' ? 'rounded-archival bg-white' : 'rounded-sm'}`}>
+      <img src={src} alt={`Memory Archive: ${serial || 'Image'}`} className={`w-full h-full object-contain transition-all duration-700 block select-none ${isHighlighted ? 'opacity-100 scale-105' : 'opacity-90 group-hover:opacity-100'} ${variant === 'noir' ? 'border-[8px] border-white/5 shadow-inner' : variant === 'scrapbook' ? 'border-none' : ''}`} draggable="false" />
     </div>
 
     <div className="absolute bottom-3 right-3 md:bottom-5 md:right-5 z-[100]">
