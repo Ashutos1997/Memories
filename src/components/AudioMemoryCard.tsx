@@ -50,7 +50,7 @@ export const AudioMemoryCard: React.FC<AudioMemoryCardProps> = ({
       isDragging={isDragging}
       className={className}
     >
-      <div className="py-1">
+      <div className="py-1 pb-4">
         <AudioPlayer src={src} variant={variant} />
       </div>
     </MemoryCard>

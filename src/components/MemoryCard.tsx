@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { DotsSixVertical, Trash } from "@phosphor-icons/react";
+import { DotsSixVertical, Trash, Clock } from "@phosphor-icons/react";
 
 export type MemoryType = "note" | "gallery" | "timeline" | "quote" | "image-raw" | "audio";
 export type MemoryVariant = "default" | "noir" | "vector" | "scrapbook";
@@ -22,6 +22,30 @@ interface MemoryCardProps {
   onDelete?: () => void;
   isDragging?: boolean;
 }
+
+const DateStamp: React.FC<{ date: string; variant: MemoryVariant; isHighlighted?: boolean; className?: string }> = ({ date, variant, isHighlighted, className }) => {
+  const getStampStyles = () => {
+    switch (variant) {
+      case 'scrapbook':
+        return "bg-scrapbook-accent/5 border-scrapbook-accent/20 text-scrapbook-accent font-handwriting rotate-[-3deg] shadow-sm";
+      case 'vector':
+        return "bg-primary/10 border-primary text-primary font-mono rounded-none";
+      case 'noir':
+        return "bg-white/5 border-white/20 text-white/60 font-serif italic rotate-[-1deg] backdrop-blur-sm";
+      default:
+        return "bg-primary/5 border-primary/20 text-primary font-mono rotate-[-2deg] backdrop-blur-[2px]";
+    }
+  };
+
+  return (
+    <div className={`flex items-center gap-1.5 px-2 py-1 border rounded-[2px] transition-all duration-500 group-hover:opacity-100 ${getStampStyles()} ${isHighlighted ? 'opacity-100 scale-105 border-primary/40' : 'opacity-40'} ${className}`}>
+      <Clock size={10} weight="bold" className="opacity-50" />
+      <time dateTime={date} className="text-[10px] md:text-[11px] font-bold tracking-widest uppercase whitespace-nowrap">
+        {date}
+      </time>
+    </div>
+  );
+};
 
 export const MemoryCard: React.FC<MemoryCardProps> = ({ serial, tag, date, variant = "default", x = 0, y = 0, children, className, isHighlighted, onDragStart, onDelete, isDragging }) => {
   const getVariantStyles = () => {
@@ -122,14 +146,12 @@ export const MemoryCard: React.FC<MemoryCardProps> = ({ serial, tag, date, varia
         </div>
       </div>
 
-      <div className={`text-[14px] md:text-[15px] leading-relaxed max-w-prose relative z-10 pr-4 md:pr-8 ${styles.text}`}>
+      <div className={`text-[14px] md:text-[15px] leading-relaxed max-w-prose relative z-10 pr-6 md:pr-12 pb-6 md:pb-4 ${styles.text}`}>
         {children}
       </div>
 
-      <div className="mt-3 md:mt-4 flex items-center gap-4">
-        <time dateTime={date} className={`text-[12px] font-mono tracking-[0.2em] uppercase font-bold opacity-40 transition-colors duration-500 ${styles.accent} ${isHighlighted ? 'opacity-100' : ''}`}>
-          {date}
-        </time>
+      <div className="absolute bottom-3 right-3 md:bottom-5 md:right-5 z-[100]">
+        <DateStamp date={date} variant={variant} isHighlighted={isHighlighted} />
       </div>
     </article>
   );
@@ -138,6 +160,7 @@ export const MemoryCard: React.FC<MemoryCardProps> = ({ serial, tag, date, varia
 export const RawImageCard: React.FC<{ 
   serial?: string; 
   tag?: string;
+  date: string;
   src: string; 
   isHighlighted?: boolean; 
   variant?: MemoryVariant; 
@@ -146,7 +169,7 @@ export const RawImageCard: React.FC<{
   onDragStart?: (e: React.PointerEvent) => void; 
   onDelete?: () => void;
   isDragging?: boolean;
-}> = ({ serial, tag, src, isHighlighted, variant = "default", x = 0, y = 0, onDragStart, onDelete, isDragging }) => (
+}> = ({ serial, tag, date, src, isHighlighted, variant = "default", x = 0, y = 0, onDragStart, onDelete, isDragging }) => (
   <article 
     className={`group relative shadow-card hover:shadow-elevated transition-all duration-500 border ${variant === 'noir' ? 'rounded-archival border-white/20' : variant === 'vector' ? 'rounded-none border-2 border-primary shadow-[8px_8px_0px_var(--color-primary)]' : variant === 'scrapbook' ? 'rounded-archival border-[#E2D1C3] bg-white p-2' : 'rounded-md border-border-subtle'} ${isHighlighted ? 'border-primary ring-2 md:ring-4 ring-primary/30 scale-[1.01]' : 'border-border-subtle'}`}
     style={{
@@ -198,6 +221,10 @@ export const RawImageCard: React.FC<{
     </div>
     <div className={`overflow-hidden ${variant === 'noir' ? 'rounded-archival' : variant === 'vector' ? 'rounded-none' : variant === 'scrapbook' ? 'rounded-archival' : 'rounded-sm'}`}>
       <img src={src} alt={`Memory Archive: ${serial || 'Image'}`} className={`w-full h-auto object-cover transition-all duration-700 block select-none ${isHighlighted ? 'opacity-100 scale-105' : 'opacity-90 group-hover:opacity-100'} ${variant === 'noir' ? 'border-[8px] border-white/5 shadow-inner' : variant === 'scrapbook' ? 'border border-black/5' : ''}`} draggable="false" />
+    </div>
+
+    <div className="absolute bottom-3 right-3 md:bottom-5 md:right-5 z-[100]">
+      <DateStamp date={date} variant={variant} isHighlighted={isHighlighted} />
     </div>
   </article>
 );
