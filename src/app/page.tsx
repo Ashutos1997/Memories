@@ -188,25 +188,25 @@ export default function Home() {
   useEffect(() => {
     const loadArchive = async () => {
       const savedMemories = await loadFromDB("memories");
+      const savedDrawings = await loadFromDB("drawings");
       const savedOffset = await loadFromDB("offset");
       const savedZoom = await loadFromDB("zoom");
+      const savedTemplate = await loadFromDB("activeTemplate");
 
       if (savedMemories) {
+        // Ensure backward compatibility for serials if they are missing
         const updatedMemories = savedMemories.map((m: any) => ({
           ...m,
           serial: m.serial || (m.tag ? m.tag : `IDX-${Math.floor(100 + Math.random() * 900)}`)
         }));
         setMemories(updatedMemories);
-      const savedOffset = await loadFromDB("offset");
-      const savedZoom = await loadFromDB("zoom");
-      const savedTemplate = await loadFromDB("activeTemplate");
-      
-      if (savedMemories) setMemories(savedMemories);
-      const savedDrawings = await loadFromDB("drawings");
+      }
+
       if (savedDrawings) setDrawings(savedDrawings);
       if (savedOffset) setOffset(savedOffset);
       if (savedZoom) setZoom(savedZoom);
       if (savedTemplate) setActiveTemplate(savedTemplate);
+      
       setIsInitialLoad(false);
     };
     loadArchive();
