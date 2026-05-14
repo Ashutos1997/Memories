@@ -276,7 +276,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
             
             {/* Desktop Mode Toggles */}
             <div 
-              className="hidden md:flex items-center gap-2 md:gap-3 p-1.5 bg-chrome border border-border-subtle rounded-lg shadow-2xl h-[64px]"
+              className="hidden md:flex items-center gap-2 md:gap-3 p-2 bg-chrome border border-border-subtle rounded-lg shadow-2xl h-[64px]"
               role="radiogroup"
               aria-label="Interaction mode"
             >
@@ -375,7 +375,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
             </div>
 
             {/* Mobile Mode Toggles */}
-            <div className="md:hidden flex items-center gap-1.5 bg-chrome border border-border-subtle rounded-lg p-1 shadow-xl">
+            <div className="md:hidden flex items-center gap-1.5 bg-chrome border border-border-subtle rounded-lg p-1.5 shadow-xl">
               <button
                 type="button"
                 onClick={() => onModeChange("select")}
