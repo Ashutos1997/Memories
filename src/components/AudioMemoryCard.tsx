@@ -48,7 +48,7 @@ export const AudioMemoryCard: React.FC<AudioMemoryCardProps> = ({
       onDragStart={onDragStart} 
       onDelete={onDelete}
       isDragging={isDragging}
-      className={`!pr-4 md:!pr-6 ${className || ''}`}
+      className={`!pr-3.5 md:!pr-5 ${className || ''}`}
     >
       <div className="py-1 pb-6 -mx-1">
         <AudioPlayer src={src} variant={variant} />
