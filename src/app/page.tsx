@@ -483,12 +483,18 @@ export default function Home() {
             newRotation = 0;
             break;
 
-          case 'scrapbook': // Scrapbook uses organic cluster
-            const angle = (index / count) * Math.PI * 2;
-            const radius = 100 + Math.random() * 500;
-            newX = Math.cos(angle) * radius;
-            newY = Math.sin(angle) * radius;
-            newRotation = (Math.random() - 0.5) * 30;
+          case 'scrapbook': // Golden Spiral (Phyllotaxis) for organic but organized distribution
+            const goldenAngle = 137.5 * (Math.PI / 180);
+            const rBase = 280; // Distance between items
+            const r = Math.sqrt(index + 1) * rBase;
+            const theta = index * goldenAngle;
+            
+            newX = Math.cos(theta) * r;
+            newY = Math.sin(theta) * r;
+            // Slight jitter for that "hand-placed" feel
+            newX += (Math.random() - 0.5) * 100;
+            newY += (Math.random() - 0.5) * 100;
+            newRotation = (Math.random() - 0.5) * 25;
             break;
 
           case 'vector': // Vector uses poster as base
