@@ -466,14 +466,23 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
                 </>
               )}
               
+              {mode === 'search' && (
+                <button
+                  type="button"
+                  onClick={() => onModeChange('select')}
+                  className="flex items-center justify-center w-8 h-8 md:w-11 md:h-11 rounded-md border border-border-subtle bg-white/5 text-text-muted hover:text-text-primary hover:bg-white/10 interactive-state mr-2 shrink-0"
+                  aria-label="Exit search"
+                >
+                  <ArrowCounterClockwise weight="bold" className="w-4 h-4 md:w-5 md:h-5" />
                 </button>
               )}
 
               {mode === 'search' && value && (
-                <div className="absolute left-[56px] top-1/2 -translate-y-1/2 flex items-center gap-2 pointer-events-none animate-[fadeIn_0.2s_ease-out] z-10">
-                  <div className="bg-primary/20 border border-primary/40 text-primary text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-sm uppercase tracking-widest flex items-center gap-1.5 shadow-sm">
+                <div className="absolute left-[52px] md:left-[56px] top-1/2 -translate-y-1/2 flex items-center gap-2 pointer-events-none animate-[fadeIn_0.2s_ease-out] z-10">
+                  <div className="bg-primary/20 border border-primary/40 text-primary text-[8px] md:text-[10px] font-mono font-bold px-1.5 py-0.5 rounded-sm uppercase tracking-widest flex items-center gap-1 md:gap-1.5 shadow-sm whitespace-nowrap">
                     <MagnifyingGlass size={10} weight="bold" />
-                    필터링 중
+                    <span className="hidden xs:inline">필터링 중</span>
+                    <span className="xs:hidden">FILTER</span>
                   </div>
                 </div>
               )}
@@ -486,7 +495,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
                 value={value}
                 onChange={(e) => setValue(e.target.value)}
                 placeholder={mode === 'search' ? "기억 검색 (예: #여행 또는 ID)" : "기억 기록... (#태그 추가)"}
-                className={`flex-1 bg-transparent border-none outline-none py-1.5 md:py-3 px-2 md:px-4 transition-all duration-500 text-[14px] md:text-base tracking-tight ${mode === 'search' ? 'text-white placeholder:text-white/60' : 'text-white placeholder:text-white/50'} ${mode === 'search' && value ? 'pl-[90px]' : ''}`}
+                className={`flex-1 bg-transparent border-none outline-none py-1.5 md:py-3 px-2 md:px-4 transition-all duration-500 text-[14px] md:text-base tracking-tight ${mode === 'search' ? 'text-white placeholder:text-white/60' : 'text-white placeholder:text-white/50'} ${mode === 'search' && value ? 'pl-[64px] md:pl-[90px]' : ''}`}
                 aria-label={mode === 'search' ? "기억 검색" : "기억 기록"}
                 disabled={isLoading && mode !== 'search'}
               />
