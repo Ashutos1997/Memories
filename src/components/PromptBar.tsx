@@ -474,12 +474,6 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
                   />
                 </>
               )}
-
-              {mode === 'search' && (
-                <div className="pl-2 pr-1 text-white/30 hidden md:block">
-                  <MagnifyingGlass size={20} weight="bold" />
-                </div>
-              )}
               
               <input
                 ref={inputRef}
