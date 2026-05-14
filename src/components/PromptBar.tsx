@@ -494,7 +494,7 @@ export const PromptBar: React.FC<PromptBarProps> = ({ onSubmit, onUpload, onSear
                     onSearch?.("");
                     inputRef.current?.focus();
                   }}
-                  className="flex items-center justify-center w-8 h-8 rounded-full hover:bg-white/10 text-white/40 hover:text-white transition-all mr-2"
+                  className="flex items-center justify-center w-8 h-8 rounded-md bg-white/5 border border-white/10 text-white/40 hover:text-white hover:bg-white/10 transition-all mr-2"
                   aria-label="Clear search"
                 >
                   <X size={16} weight="bold" />
