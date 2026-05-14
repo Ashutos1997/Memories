@@ -16,6 +16,7 @@ interface MemoryCardProps {
   y?: number;
   children: React.ReactNode;
   className?: string;
+  contentClassName?: string;
   tag?: string;
   isHighlighted?: boolean;
   onDragStart?: (e: React.PointerEvent) => void;
@@ -47,7 +48,7 @@ const DateStamp: React.FC<{ date: string; variant: MemoryVariant; isHighlighted?
   );
 };
 
-export const MemoryCard: React.FC<MemoryCardProps> = ({ serial, tag, date, variant = "default", x = 0, y = 0, children, className, isHighlighted, onDragStart, onDelete, isDragging }) => {
+export const MemoryCard: React.FC<MemoryCardProps> = ({ serial, tag, date, variant = "default", x = 0, y = 0, children, className, contentClassName, isHighlighted, onDragStart, onDelete, isDragging }) => {
   const getVariantStyles = () => {
     switch (variant) {
       case 'noir':
@@ -146,7 +147,7 @@ export const MemoryCard: React.FC<MemoryCardProps> = ({ serial, tag, date, varia
         </div>
       </div>
 
-      <div className={`text-[14px] md:text-[15px] leading-relaxed max-w-prose relative z-10 pr-6 md:pr-12 pb-6 md:pb-4 ${styles.text}`}>
+      <div className={`text-[14px] md:text-[15px] leading-relaxed max-w-prose relative z-10 pr-6 md:pr-12 pb-6 md:pb-4 ${styles.text} ${contentClassName || ''}`}>
         {children}
       </div>
 
